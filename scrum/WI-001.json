@@ -8,5 +8,6 @@
   "priority": 1,
   "type": "task",
   "status": "review",
-  "revision": 1
+  "revision": 2,
+  "evidence": "OpenCode created and retrieved the sized item and published the Manual. Owner review: https://github.com/chakibelbassam/FoundationOS/pull/1"
 }
