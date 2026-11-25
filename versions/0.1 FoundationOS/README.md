@@ -1,7 +1,7 @@
 # 0.1 FoundationOS — Local server
 
-Status: planned product increment.
+Status: local acceptance passed, pending owner review.
 
-Start a loopback Node/TypeScript server, create two private profiles, restart and verify both homes. Scope every file operation to the authenticated principal and exclude links and traversal.
+Run Start.cmd with Node.js 24 or later. The console displays the loopback status URL. Follow the [server guide](FoundationOS%20Server/README.md) to create profiles and use the file API. Rerun the version acceptance with Python 3 on Windows using FoundationOS Server/verify.py. It uses temporary data and stops its test instances.
 
-See the [roadmap](../../planning/Roadmap.md) for dependencies and the shared [Vision](../../Product%20Information/FoundationOS%20Product%20Vision.md) for user journeys.
+The executable covers WI-002 to WI-007. This increment delivers the server. The client foundation starts in 0.2. See the [Manual](../../Product%20Information/FoundationOS%20Manual.md) and [roadmap](../../planning/Roadmap.md).

@@ -1,15 +1,23 @@
 # FoundationOS Manual
 
-**Development planning baseline · 25 November 2026**
+**Version 0.1 · Local server review candidate · 25 November 2026**
 
-## Find the product and its work
+## Start the local server
 
-Open FoundationOS Development and read README.md. Product Information holds this manual, the product vision and the interface guide. The versions folder holds a brief for each product increment. The 0.1 brief defines the local server acceptance journey.
+Install Node.js 24 or later on Windows. Open versions, then 0.1 FoundationOS, and double-click Start.cmd. The console prints a local address ending in /status. Open it in a browser to see the version and ready state. Keep the console open while you use the server. Press Ctrl+C to stop it.
 
-## Which version can I run?
+## Create a private profile
 
-This baseline organises development material. The 0.1 runtime is pending acceptance. The client and server folders at the product root are reserved for runnable releases. The earlier OneDrive checkout is a reference prototype.
+Open a terminal in the same version folder. Run the command below with your chosen lowercase profile name. Keep its returned key private. The operator uses this key as a bearer credential for the profile's file operations.
 
-## Find a decision
+```powershell
+.\Start.cmd create-user alice
+```
 
-Open planning, then harness-strategy, then 01-decision-log.md. D24 records the choice of a permanent development home. The roadmap assigns the earlier work items to increments; the original IDs remain useful for tracing a design back to the discussion.
+Each profile has a unique home with a profile.json file and a files directory. The default data location is %LOCALAPPDATA%/FoundationOS/development/0.1. Starting the server again there reopens the same profiles and files.
+
+## Read and write files
+
+GET /profile returns the profile for your key. GET /files lists its flat text files. PUT /files/weather.txt writes up to 64 KiB. GET /files/weather.txt returns its contents. Each request uses the Authorization header with the Bearer scheme. Two people can use the same filename independently.
+
+The 0.1 acceptance check exercised the Windows launcher, restart, independent file contents, missing credentials, traversal, hard links and a directory junction. This version runs on loopback in a directory controlled by the operator. The browser client and execution of imported apps are planned in later increments.
