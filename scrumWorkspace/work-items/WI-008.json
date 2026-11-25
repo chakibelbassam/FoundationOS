@@ -4,9 +4,10 @@
   "parent": "S-00-1",
   "title": "Rebuild the Edge Scrum workspace and development workflows",
   "acceptance": "A fresh Edge session can query PI-01 sprint 1, create and revise a draft, append a note, link it to a work item, run 0.1 server and browser QA, and publish a PDF using the documented commands.",
-  "status": "active",
-  "revision": 3,
+  "status": "review",
+  "revision": 4,
   "type": "enabler",
   "priority": 1,
-  "effort": 3
+  "effort": 3,
+  "evidence": "Baseline 3a48abb plus `manual`, `validate`, `receipt` and a 12-test suite. Verified: `npm test` 12/12, MCP initialize/tools/list/tools/call, `Run-EdgeTool.ps1 qa 0.1`, `browser 0.1`, `publish.py --changed`, and `validate` returns `ok: true` with 24 records. Limits: no FoundationOS UI yet; planning, control and access operations deferred; owner acceptance pending."
 }

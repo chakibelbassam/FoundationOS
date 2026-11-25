@@ -3,7 +3,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { randomUUID } from 'node:crypto';
 
-export const root = path.resolve(fileURLToPath(new URL('../../scrumWorkspace/', import.meta.url)));
+const defaultRoot = path.resolve(fileURLToPath(new URL('../../scrumWorkspace/', import.meta.url)));
+
+export const root = process.env.FOUNDATIONOS_SCRUM_ROOT
+  ? path.resolve(process.env.FOUNDATIONOS_SCRUM_ROOT)
+  : defaultRoot;
 
 export function isStored(pathname, kind) {
   const info = fs.lstatSync(pathname, { throwIfNoEntry: false });

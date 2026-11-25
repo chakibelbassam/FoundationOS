@@ -1,10 +1,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { createInterface } from 'node:readline';
+import { fileURLToPath } from 'node:url';
 import { markdownRefusal } from './markdown.ts';
 
 import { artifactTools } from './scrum-workspace-artifacts.mjs';
+import { manualAction, manualTool } from './scrum-workspace-manual.mjs';
+import { receiptAction, receiptTool, recoverReceipt, writeReceipt } from './scrum-workspace-receipts.mjs';
 import { checkFields, isStored, requireRevision, root, schema, withWriteLock, writeJson } from './scrum-workspace-storage.mjs';
+import { validate, validateTool } from './scrum-workspace-validate.mjs';
 const groups = { PI: 'increments', S: 'sprints', WI: 'work-items' };
 const kinds = { PI: 'pi', S: 'sprint', WI: 'item' };
 const recordId = /^(PI-\d{2}|S-\d{2}-\d+|WI-\d{3,})$/;
@@ -53,8 +57,15 @@ const updateFields = {
   }
 };
 const requiredUpdate = ['id', 'revision'];
+const requestIdField = {
+  type: 'string',
+  description: 'Optional UUID. Repeat the same call with the same fields to recover a lost response.'
+};
+const createInput = { ...properties, requestId: requestIdField };
+const updateInput = { ...updateFields, requestId: requestIdField };
 const artifacts = artifactTools(read, checkArtifactScope);
 const tools = [
+  manualTool,
   {
     name: 'query',
     description: 'Read one exact ID, list by kind/status/type/priority/text/parent, or query a PI and its descendants. Use pi and numeric sprint to get the sprint and its work items ordered by priority and ID. PI-00 is development setup, PI-01 is the first product increment. Paginate with offset and limit.',
@@ -62,20 +73,22 @@ const tools = [
   },
   {
     name: 'create',
-    description: 'Create a proposed PI, sprint or work item at revision zero. A sprint needs a PI parent. An item needs a sprint parent, type, priority and effort. Use a stable ID and query that ID if the response is lost.',
-    inputSchema: schema(properties, requiredRecord)
+    description: 'Create a proposed PI, sprint or work item at revision zero. A sprint needs a PI parent. An item needs a sprint parent, type, priority and effort. Supply an optional requestId UUID to recover a lost response by repeating the same call.',
+    inputSchema: schema(createInput, requiredRecord)
   },
   {
     name: 'update',
-    description: 'Query the record first, then send its exact revision and only the fields to change or clear. Other values stay in place. Owner approval controls PI and sprint activation and all final acceptance. A lost response requires reading the same ID and comparing state before another write.',
-    inputSchema: schema(updateFields, requiredUpdate)
+    description: 'Query the record first, then send its exact revision and only the fields to change or clear. Other values stay in place. Owner approval controls PI and sprint activation and all final acceptance. Supply an optional requestId UUID to recover a lost response by repeating the same call.',
+    inputSchema: schema(updateInput, requiredUpdate)
   },
   {
     name: 'save',
     description: 'Compatibility operation to save a complete record with its expected revision. Prefer create or update for new calls.',
     inputSchema: schema(properties, requiredRecord)
   },
-  ...artifacts.tools
+  ...artifacts.tools,
+  validateTool,
+  receiptTool
 ];
 
 function idPrefix(id) {
@@ -214,10 +227,19 @@ function updateRecord(previous, args) {
   return record;
 }
 
-function mutate(operation, args) {
+function mutate(operation, input) {
+  if (!input || typeof input !== 'object' || Array.isArray(input)) throw Error('Expected an object');
+  const { requestId, ...args } = input;
+  if (requestId !== undefined && !['create', 'update'].includes(operation)) {
+    throw Error('requestId is only supported for create and update');
+  }
   validateMutation(operation, args);
   idPrefix(args.id);
   return withWriteLock(() => {
+    if (requestId !== undefined) {
+      const saved = recoverReceipt({ requestId, operation, id: args.id, submitted: args });
+      if (saved) return saved;
+    }
     const { file, exists } = locate(args.id);
     const previous = exists ? readFile(args.id, file) : null;
     if (operation === 'create' && previous) throw Error('Already exists. Query ' + args.id);
@@ -226,13 +248,16 @@ function mutate(operation, args) {
 
     const record = operation === 'update' ? updateRecord(previous, args) : args;
     checkRecord(record, previous);
-    if (previous && Object.keys(record).length === Object.keys(previous).length &&
-        Object.entries(record).every(([key, value]) => previous[key] === value)) {
-      return previous;
+    let result = previous;
+    if (!(previous && Object.keys(record).length === Object.keys(previous).length &&
+        Object.entries(record).every(([key, value]) => previous[key] === value))) {
+      result = { ...record, revision: args.revision + 1 };
+      writeJson(file, result);
     }
-    const next = { ...record, revision: args.revision + 1 };
-    writeJson(file, next);
-    return next;
+    if (requestId !== undefined) {
+      writeReceipt({ requestId, operation, id: args.id, submitted: args, result });
+    }
+    return result;
   });
 }
 
@@ -295,7 +320,13 @@ function query(input) {
   return found.slice(start, start + (input.limit ?? 200));
 }
 
-function action(name, args) {
+export function action(name, args) {
+  if (name === 'manual') return manualAction(args);
+  if (name === 'validate') {
+    checkFields(args, {});
+    return validate();
+  }
+  if (name === 'receipt') return receiptAction(args);
   if (name === 'query') return query(args);
   if (['create', 'update', 'save'].includes(name)) return mutate(name, args);
   if (Object.hasOwn(artifacts.actions, name)) {
@@ -305,49 +336,55 @@ function action(name, args) {
   throw Error('Unknown tool ' + name);
 }
 
-if (process.argv[2]) {
-  try {
-    const json = process.argv[3] === '-' ? fs.readFileSync(0, 'utf8') : process.argv[3] ?? '{}';
-    console.log(JSON.stringify(action(process.argv[2], JSON.parse(json)), null, 2));
-  } catch (error) {
-    console.error(error.message);
-    process.exitCode = 1;
-  }
-} else {
-  for await (const line of createInterface({ input: process.stdin })) {
-    let message;
+export async function runCli() {
+  if (process.argv[2]) {
     try {
-      message = JSON.parse(line);
-      if (message.id === undefined) continue;
-      let result;
-      if (message.method === 'initialize') {
-        result = {
-          protocolVersion: message.params.protocolVersion,
-          capabilities: { tools: {} },
-          serverInfo: { name: 'scrumWorkSpace', version: '0.2' }
-        };
-      } else if (message.method === 'ping') {
-        result = {};
-      } else if (message.method === 'tools/list') {
-        result = { tools };
-      } else if (message.method === 'tools/call') {
-        try {
-          const value = action(message.params.name, message.params.arguments ?? {});
-          result = { content: [{ type: 'text', text: JSON.stringify(value) }] };
-        } catch (error) {
-          result = { isError: true, content: [{ type: 'text', text: error.message }] };
-        }
-      } else {
-        console.log(JSON.stringify({
-          jsonrpc: '2.0', id: message.id, error: { code: -32601, message: 'Unknown method' }
-        }));
-        continue;
-      }
-      console.log(JSON.stringify({ jsonrpc: '2.0', id: message.id, result }));
+      const json = process.argv[3] === '-' ? fs.readFileSync(0, 'utf8') : process.argv[3] ?? '{}';
+      console.log(JSON.stringify(action(process.argv[2], JSON.parse(json)), null, 2));
     } catch (error) {
-      console.log(JSON.stringify({
-        jsonrpc: '2.0', id: message?.id ?? null, error: { code: -32600, message: error.message }
-      }));
+      console.error(error.message);
+      process.exitCode = 1;
+    }
+  } else {
+    for await (const line of createInterface({ input: process.stdin })) {
+      let message;
+      try {
+        message = JSON.parse(line);
+        if (message.id === undefined) continue;
+        let result;
+        if (message.method === 'initialize') {
+          result = {
+            protocolVersion: message.params.protocolVersion,
+            capabilities: { tools: {} },
+            serverInfo: { name: 'scrumWorkSpace', version: '0.3' }
+          };
+        } else if (message.method === 'ping') {
+          result = {};
+        } else if (message.method === 'tools/list') {
+          result = { tools };
+        } else if (message.method === 'tools/call') {
+          try {
+            const value = action(message.params.name, message.params.arguments ?? {});
+            result = { content: [{ type: 'text', text: JSON.stringify(value) }] };
+          } catch (error) {
+            result = { isError: true, content: [{ type: 'text', text: error.message }] };
+          }
+        } else {
+          console.log(JSON.stringify({
+            jsonrpc: '2.0', id: message.id, error: { code: -32601, message: 'Unknown method' }
+          }));
+          continue;
+        }
+        console.log(JSON.stringify({ jsonrpc: '2.0', id: message.id, result }));
+      } catch (error) {
+        console.log(JSON.stringify({
+          jsonrpc: '2.0', id: message?.id ?? null, error: { code: -32600, message: error.message }
+        }));
+      }
     }
   }
+}
+
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  runCli();
 }

@@ -21,6 +21,7 @@ PI-00 tracks development setup. PI-01 is the first product increment. Read PI-00
 | `documents/PI-XX/*.md` | Documents owned by one PI |
 | `notes/<record-id>.json` | Append-only note journals |
 | `links/<work-item-id>.json` | Explicit document links for one work item |
+| `receipts/<request-id>.json` | Saved create/update acknowledgements for recovery |
 | `.write.lockdir` | Short-lived write lock |
 
 Documents use a revision header:
@@ -47,6 +48,17 @@ Work-item types are `feature`, `enhancement`, `bug`, `enabler` and `task`. Prior
 Statuses are `proposed`, `ready`, `active`, `review` and `done`. Planning records move between `proposed` and `ready`. Work items also move `ready` to `active`, `active` to `review`, and `review` back to `active`. Final acceptance, `done`, severity raising and PI/sprint activation are owner-controlled. A `review` item needs evidence. An accepted parent closes its scope to agent edits.
 
 ## Operations
+
+### manual
+
+Read the operation index or focused help before an unfamiliar write.
+
+```powershell
+node Edge/tools/scrumWorkSpace.mjs manual '{"action":"index"}'
+node Edge/tools/scrumWorkSpace.mjs manual '{"action":"topic","topic":"documents"}'
+```
+
+Topics are `overview`, `records`, `query`, `create`, `update`, `documents`, `notes`, `knowledge`, `validate`, `receipt` and `recovery`.
 
 ### query
 
@@ -116,10 +128,32 @@ node Edge/tools/scrumWorkSpace.mjs knowledge '{"action":"unlink","id":"WI-008","
 
 Use `documents backlinks` to answer what would change if a document changes.
 
+### validate
+
+Run a read-only consistency check after a migration, a manual edit or a failed write. It reports broken parentage, invalid fields, duplicate IDs, unsafe document paths and orphan sidecars. Warnings cover missing linked documents and a stale lock. Validation never changes records and never implies acceptance.
+
+```powershell
+node Edge/tools/scrumWorkSpace.mjs validate '{}'
+```
+
+### receipt
+
+`create` and `update` accept an optional `requestId` UUID. If the response is lost, repeat the exact same call with the same request ID and the tool returns the original saved record instead of writing again. `receipt` reads that acknowledgement directly.
+
+```powershell
+node Edge/tools/scrumWorkSpace.mjs receipt '{"requestId":"3f0f6b1e-7d2a-4f7e-9f0e-2f6a1c9d8b7a"}'
+```
+
+A missing receipt does not prove that an unreceipted write had no effect. Query the record as well. Reusing a request ID with different fields is refused.
+
 ## Revisions, locks and recovery
 
 Every write carries an observed revision. Item, document and knowledge revisions are separate domains; never substitute one for another. A conflict means reread and reconcile the newer state, not blind retry.
 
 Writes hold `scrumWorkspace/.write.lockdir` briefly. If a write is interrupted, confirm the writer has exited and inspect the affected record before removing only a stale lock directory. Never remove a live lock.
 
-If a write response is lost, query the record ID and compare state before another write. For notes, read the same request ID first. The `receipt` operation will make create and update recovery explicit.
+If a write response is lost, read the request ID receipt for a create or update, or the note request ID for a note, then query the record and compare state before another write. Never blindly retry.
+
+## Tests
+
+Run `npm test` from the Development root. The suite uses a temporary workspace root through `FOUNDATIONOS_SCRUM_ROOT` and covers records, lifecycle guards, documents, notes, knowledge links, receipts, validation and lock recovery.

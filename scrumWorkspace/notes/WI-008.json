@@ -1,0 +1,24 @@
+[
+  {
+    "submitted": {
+      "id": "WI-008",
+      "revision": 3,
+      "requestId": "7a3c9e2b-4f1d-4c8a-9b6e-2d5f8a1c3e7b",
+      "kind": "handoff",
+      "body": "Baseline committed as 3a48abb. Added manual, validate and receipt with 12 passing tests. 0.1 server and browser QA pass; publish --changed passes. Design note linked.",
+      "documentRefs": [
+        "PI-00/edge-workflows.md"
+      ]
+    },
+    "note": {
+      "id": "7a3c9e2b-4f1d-4c8a-9b6e-2d5f8a1c3e7b",
+      "recordId": "WI-008",
+      "at": "2026-11-25T21:39:48.467Z",
+      "kind": "handoff",
+      "body": "Baseline committed as 3a48abb. Added manual, validate and receipt with 12 passing tests. 0.1 server and browser QA pass; publish --changed passes. Design note linked.",
+      "documentRefs": [
+        "PI-00/edge-workflows.md"
+      ]
+    }
+  }
+]

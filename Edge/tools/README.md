@@ -6,6 +6,10 @@ Run these commands from the repository root. From Edge, use `tools/` in place of
 | --- | --- |
 | Inspect sprint 1 of PI-01 | `node Edge/tools/scrumWorkSpace.mjs query '{"pi":"PI-01","sprint":1}'` |
 | Read one record | `node Edge/tools/scrumWorkSpace.mjs query '{"id":"WI-008"}'` |
+| Read the tool manual | `node Edge/tools/scrumWorkSpace.mjs manual '{"action":"index"}'` |
+| Validate the Scrum store | `node Edge/tools/scrumWorkSpace.mjs validate '{}'` |
+| Recover a lost create or update | `node Edge/tools/scrumWorkSpace.mjs receipt '{"requestId":"<uuid>"}'` |
+| Run the Scrum tool tests | `npm test` |
 | Patch a title | Query the ID and revision, call `update` with `id`, `revision` and `changes`, then reread |
 | List drafts | `node Edge/tools/scrumWorkSpace.mjs documents '{"action":"list","scope":"drafts"}'` |
 | Create a draft | `documents` with `action:create`, `relativePath`, `revision:0` and `body` |
