@@ -1,0 +1,9 @@
+{
+  "id": "S-01-2",
+  "kind": "sprint",
+  "title": "Check persistence",
+  "acceptance": "Repeat provisioning and restart with both profiles and their files intact.",
+  "status": "proposed",
+  "revision": 1,
+  "parent": "PI-01"
+}

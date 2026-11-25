@@ -1,0 +1,9 @@
+{
+  "id": "S-01-1",
+  "kind": "sprint",
+  "title": "Implement profiles",
+  "acceptance": "Launch a local instance with a version-specific data home and create two profiles.",
+  "status": "proposed",
+  "revision": 1,
+  "parent": "PI-01"
+}

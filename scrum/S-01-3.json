@@ -1,0 +1,9 @@
+{
+  "id": "S-01-3",
+  "kind": "sprint",
+  "title": "Scope workspace operations",
+  "acceptance": "Read and write only through a server-owned user context.",
+  "status": "proposed",
+  "revision": 1,
+  "parent": "PI-01"
+}

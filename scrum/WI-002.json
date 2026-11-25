@@ -1,0 +1,12 @@
+{
+  "id": "WI-002",
+  "kind": "item",
+  "title": "Launch server 0.1",
+  "acceptance": "Double-click starts the version on loopback and shows status.",
+  "status": "proposed",
+  "revision": 1,
+  "parent": "S-01-1",
+  "type": "feature",
+  "priority": 1,
+  "effort": 4
+}

@@ -1,0 +1,13 @@
+{
+  "id": "WI-001",
+  "kind": "item",
+  "parent": "S-00-1",
+  "title": "Publish the verified development Manual",
+  "acceptance": "Manual Markdown and PDF are available in the review PR",
+  "effort": 4,
+  "priority": 1,
+  "type": "task",
+  "status": "review",
+  "revision": 2,
+  "evidence": "OpenCode created and retrieved the sized item and published the Manual. Owner review: https://github.com/chakibelbassam/FoundationOS/pull/1"
+}

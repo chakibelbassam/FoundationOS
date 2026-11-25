@@ -1,0 +1,8 @@
+{
+  "id": "PI-02",
+  "kind": "pi",
+  "title": "Client foundation",
+  "acceptance": "Open the React client against representative data. Verify folder and app widgets, focus, loading, empty and unavailable states.",
+  "status": "proposed",
+  "revision": 1
+}

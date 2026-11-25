@@ -1,0 +1,8 @@
+{
+  "id": "PI-06",
+  "kind": "pi",
+  "title": "Edge inside FoundationOS",
+  "acceptance": "Navigate back to the originating folder with the model offline. When connected, chat and dictate using a visible recording lock.",
+  "status": "proposed",
+  "revision": 1
+}

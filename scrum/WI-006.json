@@ -1,0 +1,12 @@
+{
+  "id": "WI-006",
+  "kind": "item",
+  "title": "Verify workspace boundaries",
+  "acceptance": "Check other-user requests, traversal and filesystem links through supported server operations.",
+  "status": "proposed",
+  "revision": 1,
+  "parent": "S-01-4",
+  "type": "task",
+  "priority": 1,
+  "effort": 2
+}

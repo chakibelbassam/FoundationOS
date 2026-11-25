@@ -1,0 +1,8 @@
+{
+  "id": "PI-01",
+  "kind": "pi",
+  "title": "Local server",
+  "acceptance": "Start a loopback Node/TypeScript server, create two private profiles, restart and verify both homes. Scope every file operation to the authenticated principal and exclude links and traversal.",
+  "status": "proposed",
+  "revision": 1
+}
