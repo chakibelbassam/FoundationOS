@@ -12,3 +12,4 @@
 | [manage-edge-handoff](development/manage-edge-handoff/SKILL.md) | Resume or hand off a FoundationOS work session using a short local scratchpad and durable project evidence. |
 | [publish-foundationos-manual](publishing/publish-foundationos-manual/SKILL.md) | Update verified product behaviour and produce visually checked FoundationOS PDF editions from Markdown. |
 | [manage-scrum-knowledge](planning/manage-scrum-knowledge/SKILL.md) | Work with drafts, document revisions, item notes and references. |
+| [opencode-terminal](computer-use/opencode-terminal/SKILL.md) | Run apps, builds, and git work in the OpenCode Desktop built-in terminal tab so the owner can watch. |

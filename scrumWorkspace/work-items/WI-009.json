@@ -1,0 +1,12 @@
+{
+  "id": "WI-009",
+  "kind": "item",
+  "parent": "S-00-1",
+  "title": "Show Git operations in the Edge terminal",
+  "acceptance": "Every Git and GitHub command in an Edge session runs in the OpenCode terminal tab with a visible work-item banner, and the lifecycle skill documents the naming, stacked-PR and commit-trailer rules.",
+  "status": "active",
+  "revision": 3,
+  "type": "enabler",
+  "priority": 2,
+  "effort": 2
+}

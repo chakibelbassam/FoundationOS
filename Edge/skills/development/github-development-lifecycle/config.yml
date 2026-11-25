@@ -9,6 +9,13 @@ merge:
 attribution:
   author: "Edge-{harness} ({model})"
   email: "edge-{harness}@foundationos.local"
+visibility:
+  terminal_skill: computer-use/opencode-terminal
+  banner: Edge/tools/Show-GitContext.ps1
+commits:
+  trailers:
+    - "Work-Item: {work_item}"
+    - "Agent: Edge-{harness} ({model})"
 checks:
   - npm test
   - node Edge/tools/scrumWorkSpace.mjs validate

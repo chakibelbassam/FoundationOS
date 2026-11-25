@@ -20,6 +20,12 @@ Run these commands from the repository root. From Edge, use `tools/` in place of
 | Regenerate only stale or missing PDFs | `python Edge/tools/publish.py --changed` |
 | Automatically republish while editing | `python Edge/tools/publish.py --watch` |
 | Publish one Markdown file | `python Edge/tools/publish.py "Product Information/FoundationOS Manual.md"` |
+| List the session terminals | `node Edge/tools/opencode-terminal.mjs list '{}'` |
+| Open a visible terminal | `node Edge/tools/opencode-terminal.mjs create '{"title":"edge-terminal"}'` |
+| Show the Git context in the terminal | `.\Edge\tools\Show-GitContext.ps1` |
+| Type a watched command | `node Edge/tools/opencode-terminal.mjs type '{"ptyID":"pty_persistent_...","text":"npm test","slowMs":90}'` |
+| Read the terminal screen | `node Edge/tools/opencode-terminal.mjs read '{"ptyID":"pty_persistent_..."}'` |
+| Run the terminal tool tests | `node --test Edge/tools/opencode-terminal.test.mjs` |
 
 Leave the watcher running during editing. It checks the source and publisher timestamps, writes each successful PDF beside its Markdown and preserves the previous edition on conversion failure. Ctrl+C stops the watcher. Each isolated acceptance run owns its temporary data and processes.
 

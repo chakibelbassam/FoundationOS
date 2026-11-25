@@ -25,6 +25,17 @@ git log --format="%h %an <%ae> | committer %cn" -5
 
 Use `edge-codex` for a Codex session and the current model name, not a remembered one.
 
+## Run Git in the owner's terminal
+
+Do not hide Git or GitHub work in a background shell. Follow [opencode-terminal](../../computer-use/opencode-terminal/SKILL.md) so the owner can watch the commands and their output:
+
+1. Announce the operation, then reuse the session terminal or create one titled `edge-terminal`.
+2. Change to the repository root once, then type one command at a time with `slowMs` 60-120.
+3. Print the context banner before the command: `.\Edge\tools\Show-GitContext.ps1`.
+4. Read the tab and quote the observed output. Never claim a Git result without reading it.
+
+The same rule covers long-running scripts, tests, builds and app launches when the owner asked to see them. Keep the terminal tab open for follow-ups.
+
 ## The seven phases
 
 ### 1. Sync
@@ -67,6 +78,15 @@ git diff --cached
 
 Commit titles follow `WI-### <plain verb phrase>`. No buzzwords: not "streamline", "robust", "seamless", "leverage", "comprehensive", "empower" or "enhance". Say what the change does. Good: `WI-008 Add manual, validate and receipt to scrumWorkSpace`.
 
+End each commit message with searchable trailers:
+
+```text
+Work-Item: WI-009
+Agent: Edge-OpenCode (DeepSeek V4 Pro)
+```
+
+Then `git log --grep="Work-Item: WI-009"` finds every commit for an item, and the PR body can quote the same identity.
+
 ### 5. Validate
 
 ```powershell
@@ -90,6 +110,12 @@ gh pr ready
 ```
 
 If a response is lost, run `gh pr view <branch>` or `gh pr list --head <branch>` before retrying. A duplicate PR is worse than a delayed one.
+
+### Stacked pull requests
+
+When the change depends on an unmerged PR, branch from that PR's branch and open the new PR against it, not the staging lane. The review then shows only the new increment. Once the parent merges, retarget the child to the staging branch and confirm the diff.
+
+Example: `edge-opencode/wi-009-visible-git` bases on `edge-opencode/wi-008-scrum-workspace` because the lifecycle skill only exists there until PR #3 merges.
 
 ### 7. Review and merge
 
