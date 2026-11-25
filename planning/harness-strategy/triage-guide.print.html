@@ -1,0 +1,119 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<title>FoundationOS Triage Guide v0.3</title>
+<style>
+  @page { size: A4; margin: 17mm 15mm 18mm 15mm; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif; font-size: 10.2pt; line-height: 1.45; color: #1b1b1b; margin: 0; }
+  .cover { padding-top: 34mm; padding-bottom: 10mm; border-bottom: 2px solid #1b1b1b; margin-bottom: 8mm; }
+  .kicker { font-size: 9pt; letter-spacing: .14em; text-transform: uppercase; color: #666; margin-bottom: 6mm; }
+  .cover h1 { font-size: 27pt; line-height: 1.1; margin: 0 0 6mm; page-break-before: avoid; }
+  .meta { font-size: 9pt; color: #555; }
+  h1 { font-size: 20pt; line-height: 1.15; margin: 10mm 0 3mm; page-break-after: avoid; }
+  h2 { font-size: 15pt; margin: 9mm 0 3mm; padding-bottom: 1.5mm; border-bottom: 1px solid #d0d0d0; page-break-after: avoid; }
+  h3 { font-size: 12pt; margin: 7mm 0 2mm; page-break-after: avoid; }
+  h4 { font-size: 10.5pt; margin: 5mm 0 1.5mm; page-break-after: avoid; }
+  p { margin: 0 0 2.4mm; }
+  ul, ol { margin: 0 0 2.6mm; padding-left: 5.5mm; }
+  li { margin: 0 0 1.1mm; }
+  li.check { list-style: none; margin-left: -4mm; }
+  strong { color: #000; }
+  code { font-family: "Cascadia Mono", Consolas, monospace; font-size: 8.8pt; background: #f2f2f2; padding: .2mm 1mm; border-radius: 1.5mm; }
+  pre.code { background: #f5f5f5; border: 1px solid #e0e0e0; border-radius: 2mm; padding: 3mm; font-size: 8.6pt; line-height: 1.35; white-space: pre-wrap; page-break-inside: avoid; }
+  pre.code code { background: none; padding: 0; }
+  blockquote { margin: 3mm 0; padding: 2mm 4mm; border-left: 3px solid #bdbdbd; color: #444; page-break-inside: avoid; }
+  table { width: 100%; border-collapse: collapse; margin: 2mm 0 4mm; font-size: 9.2pt; page-break-inside: auto; }
+  thead { display: table-header-group; }
+  tr { page-break-inside: avoid; }
+  th { text-align: left; background: #efefef; border: 1px solid #cfcfcf; padding: 1.8mm 2mm; font-size: 8.8pt; }
+  td { border: 1px solid #d8d8d8; padding: 1.8mm 2mm; vertical-align: top; }
+  hr { border: 0; border-top: 1px solid #d8d8d8; margin: 6mm 0; }
+  a { color: #0b57d0; text-decoration: none; }
+  @media print { a { color: #1b1b1b; } }
+</style></head><body>
+<header class="cover"><div class="kicker">FoundationOS · work organization</div><h1>Triage Guide v0.2</h1><div class="meta">Generated from <code>09-triage-guide.md</code> · 25 November 2026 · <strong>DRAFT</strong></div></header>
+<p>Status: <strong>DRAFT</strong>. This markdown is the single source; the PDF is generated from it. This export: <code>Triage-Guide-v0.2.pdf</code> (draft). Target: <code>Triage-Guide-v1.0.pdf</code>.</p>
+<hr>
+<h2>1. Purpose</h2>
+<p>One document that answers, without argument: what kind of work is this, how bad is it, how urgent is it, how hard is it for an agent, what must it contain, who may change it, and when is it done.</p>
+<p>Rules are enforced by schema where possible. A rule that only lives in a PDF will be ignored.</p>
+<h2>2. Vocabulary</h2>
+<table><thead><tr><th>Term</th><th>Meaning</th></tr></thead><tbody><tr><td><strong>Work Item</strong></td><td>The umbrella. Everything tracked is a work item</td></tr><tr><td><strong>SCR</strong></td><td><em>Software Change Request</em> — the <strong>intake record</strong>. It captures a request and produces one work item</td></tr><tr><td><strong>PRD</strong></td><td>Intent and scope for a body of work. Not a work item</td></tr><tr><td><strong>Sprint</strong></td><td>A timebox. One level only (no PI, see section 13)</td></tr><tr><td><strong>Epic</strong></td><td>Optional grouping label. Not a level agents must traverse</td></tr></tbody></table>
+<p><code>SCR</code> is the form, not a type. Types are in section 3. One word, one meaning.</p>
+<h2>3. Work item types</h2>
+<h3>3.1 Feature</h3>
+<p>A capability the product did not have. The user could not do this before.</p>
+<ul><li>Needs a new concept, a new surface, or a new store.</li><li>Example: &quot;Add a file previewer&quot; — there was no previewer at all.</li></ul>
+<h3>3.2 Enhancement — two flavours</h3>
+<table><thead><tr><th>Flavour</th><th>Meaning</th><th>Example</th></tr></thead><tbody><tr><td><code>new</code></td><td>Additive ability inside an existing feature, no new architecture</td><td>&quot;Preview <code>.json</code> files too&quot;</td></tr><tr><td><code>improve</code></td><td>Make existing behaviour better</td><td>&quot;Preview opens on Enter&quot;</td></tr></tbody></table>
+<p><strong>The worked example that fixes the boundary.</strong> A file previewer exists and opens <code>.txt</code> and <code>.png</code> but not <code>.json</code>. It was never built to read JSON, never claimed to. Opening a JSON file fails.</p>
+<ul><li><strong>Enhancement (<code>new</code>)</strong>, not a bug: nothing was promised, nothing regressed.</li><li>It becomes a <strong>Bug</strong> only if the feature <em>claimed</em> general support (&quot;preview</li></ul>
+<p>any file&quot;) or previously worked and stopped.</p>
+<p><strong>Rule: promise vs absence.</strong></p>
+<table><thead><tr><th>Situation</th><th>Type</th></tr></thead><tbody><tr><td>Exists, worked, now fails</td><td>Bug</td></tr><tr><td>Exists, documented/claimed, never worked</td><td>Bug</td></tr><tr><td>Exists, never claimed to do this</td><td>Enhancement (<code>new</code>)</td></tr><tr><td>New capability, needs new concept</td><td>Feature</td></tr><tr><td>No user-visible change</td><td>Enabler or Dev Task</td></tr></tbody></table>
+<h3>3.3 Bug</h3>
+<p>Behaviour differs from what was specified, promised or reasonably expected. Requires repro, expected and actual.</p>
+<p>If a crash or data loss happens in a path nobody specified, still file a bug — &quot;the app must not crash&quot; is an implicit promise. Then fix the spec.</p>
+<h3>3.4 Enabler</h3>
+<p>Work that unlocks other work but delivers no user-visible behaviour on its own.</p>
+<p>Examples: expand the storage model for future features, add a build pipeline, introduce a plugin seam, upgrade a dependency that unblocks two features.</p>
+<ul><li>Must name what it <strong>unblocks</strong> (<code>unblocks: [ids]</code>).</li><li>Must not be used as a hiding place: if it changes what users see, reclassify.</li><li>Distinct from Dev Task: an enabler exists <em>because</em> other items are blocked;</li></ul>
+<p>a dev task exists because the work itself must happen (QA, docs, install).</p>
+<h3>3.5 Development Task</h3>
+<p>Needed work with no direct user-visible change: build an app from a brief, run QA, install a library, refactor, spike, docs.</p>
+<p>Subtypes: <code>build</code>, <code>qa</code>, <code>spike</code>, <code>refactor</code>, <code>infra</code>, <code>docs</code>, <code>dependency</code>.</p>
+<h3>3.6 Classification order</h3>
+<p>Ask in this order, stop at the first yes:</p>
+<ol><li>Does it unlock other work and change nothing for users? -&gt; <strong>Enabler</strong></li><li>Is it work that must happen with no user-visible change? -&gt; <strong>Dev Task</strong></li><li>Did something that was promised or previously worked break? -&gt; <strong>Bug</strong></li><li>Is the capability absent entirely? -&gt; <strong>Feature</strong></li><li>Otherwise -&gt; <strong>Enhancement</strong> (<code>new</code> if additive, <code>improve</code> if refining)</li></ol>
+<h2>4. Severity — Sev 1 to Sev 5 (bugs only)</h2>
+<p>Impact, not urgency. 1 is worst.</p>
+<table><thead><tr><th>Sev</th><th>Name</th><th>Definition</th><th>Response</th></tr></thead><tbody><tr><td><strong>1</strong></td><td>Critical</td><td>Data loss, security, unusable product. No workaround</td><td>Stop other work, same day</td></tr><tr><td><strong>2</strong></td><td>Major</td><td>Core flow broken; painful workaround</td><td>Next working session</td></tr><tr><td><strong>3</strong></td><td>Moderate</td><td>Wrong in a specific case; easy workaround</td><td>Current sprint</td></tr><tr><td><strong>4</strong></td><td>Minor</td><td>Cosmetic or wording; does not block</td><td>Next sprint</td></tr><tr><td><strong>5</strong></td><td>Trivial</td><td>Typo, alignment, nitpick</td><td>Batched backlog</td></tr></tbody></table>
+<p>Severity is set at triage. Only a human may raise it. An agent may propose with a written justification.</p>
+<h2>5. Priority — P-1 to P-5 (all types)</h2>
+<p>Order of work. <strong>P-1 is the most urgent.</strong> Independent of severity and effort.</p>
+<table><thead><tr><th>P</th><th>Meaning</th></tr></thead><tbody><tr><td><strong>1</strong></td><td>Do now; blocks a release or another item</td></tr><tr><td><strong>2</strong></td><td>Next in the queue</td></tr><tr><td><strong>3</strong></td><td>Scheduled, not urgent (default)</td></tr><tr><td><strong>4</strong></td><td>Low; when convenient</td></tr><tr><td><strong>5</strong></td><td>Someday</td></tr></tbody></table>
+<p>Defaults: P-3. Never leave priority empty. A Sev-5 typo can be P-1 the day before a demo; that is normal and correct.</p>
+<h2>6. Effort — Ef-1 to Ef-5 (all types)</h2>
+<p>How hard the item is <strong>for an agent</strong>, where <strong>Ef-1 is the hardest</strong> and <strong>Ef-5 the easiest</strong>. Full rubric and reasoning: <code>12-effort-rubric.md</code>.</p>
+<table><thead><tr><th>Ef</th><th>One line</th></tr></thead><tbody><tr><td><strong>1</strong></td><td>New subsystem or algorithm, cross-cutting, ambiguous, hard to verify</td></tr><tr><td><strong>2</strong></td><td>Multi-file feature with new logic and some ambiguity</td></tr><tr><td><strong>3</strong></td><td>Contained change following an existing pattern; tests can prove it</td></tr><tr><td><strong>4</strong></td><td>Mechanical but wide: rename a field through the stack, copy a pattern</td></tr><tr><td><strong>5</strong></td><td>One line, one constant, one label</td></tr></tbody></table>
+<p>Effort is required at triage. An <strong>Ef-1 must be split</strong> into pieces of Ef-3 or easier before it enters a sprint. Effort never sets order; priority does.</p>
+<h2>7. The intake form</h2>
+<p>Common fields:</p>
+<pre class="code "><code>id, title, description, type, scope (foundationos | project:&lt;id&gt;), createdBy,
+workspaceId, projectId?, visibility (derived from project grant),
+createdAt, priority P-1..P-5, effort Ef-1..Ef-5, status, assigneeId?, links</code></pre>
+<p>Conditional fields:</p>
+<table><thead><tr><th>Type</th><th>Required extra</th></tr></thead><tbody><tr><td>Bug</td><td><code>userStory</code>, <code>reproSteps</code>, <code>expected</code>, <code>actual</code>, <code>severity</code>; <code>environment</code> auto-captured; <code>frequency</code> optional</td></tr><tr><td>Feature</td><td><code>userStory</code>, <code>acceptance[]</code>, <code>outOfScope</code></td></tr><tr><td>Enhancement</td><td><code>userStory</code>, <code>acceptance[]</code>, <code>currentBehaviour</code>; optional <code>reproSteps</code>, <code>expected</code>, <code>actual</code></td></tr><tr><td>Enabler</td><td><code>goal</code>, <code>acceptance[]</code>, <code>unblocks[]</code></td></tr><tr><td>Dev Task</td><td><code>goal</code>, <code>steps[]</code>, <code>definitionOfDone</code>, <code>dependsOn[]</code></td></tr></tbody></table>
+<p><code>reproSteps</code>, <code>expected</code>, <code>actual</code> are <strong>required for bugs</strong>, <strong>optional for enhancements</strong> (your JSON example has a real repro even though nothing was promised), and <strong>forbidden for features, enablers and dev tasks</strong>. Forcing them onto a feature is how forms become fiction.</p>
+<h2>8. Three intake templates</h2>
+<p>The user sees three doors, not one twelve-field form (<code>13-intake.md</code>):</p>
+<table><thead><tr><th>Door</th><th>Produces</th><th>Minimum input</th></tr></thead><tbody><tr><td><strong>Report a problem</strong></td><td>Bug</td><td>What happened + what you expected</td></tr><tr><td><strong>Request a feature</strong></td><td>Feature or Enhancement</td><td>What you want to do</td></tr><tr><td><strong>Ask for a task</strong></td><td>Dev Task or Enabler</td><td>What needs doing</td></tr></tbody></table>
+<p>Behind the doors it is one schema. Edge fills what it can from the sentence, the current screen and the app, then the user confirms.</p>
+<h2>9. Definition of Ready</h2>
+<ul><li class="check">☐ Type passes the section 3.6 order</li><li class="check">☐ Scope explicit: FoundationOS or a named app</li><li class="check">☐ Acceptance testable (bugs: expected vs actual is enough)</li><li class="check">☐ Priority P-1..P-5 set; bugs also have severity Sev 1-5</li><li class="check">☐ Effort Ef-1-Ef-5 set; Ef-1 split first</li><li class="check">☐ Evidence or reproduction exists for bugs</li><li class="check">☐ No dependency on an open decision</li></ul>
+<p>Failing any of these = <code>needs-info</code>, not <code>ready</code>.</p>
+<h2>10. Workflow</h2>
+<pre class="code "><code>Draft -&gt; Triaged -&gt; Ready -&gt; In Progress -&gt; In Review -&gt; Done
+             |          |          |            |
+             +----------+----------+------&gt; Blocked
+             |
+             +--&gt; Won't Do / Duplicate</code></pre>
+<ul><li><strong>Draft -&gt; Triaged:</strong> type/priority/effort proposed.</li><li><strong>Triaged -&gt; Ready:</strong> DoR passes.</li><li><strong>In Progress:</strong> one owner, one writer per app folder.</li><li><strong>In Review:</strong> evidence attached; no evidence, no review.</li><li><strong>Done:</strong> human acceptance only.</li><li><strong>Reopened:</strong> acceptance failed; cite the failing criterion.</li></ul>
+<h2>11. Authority matrix</h2>
+<table><thead><tr><th>Action</th><th>Agent</th><th>Automation</th><th>Human</th></tr></thead><tbody><tr><td>Create draft</td><td>yes</td><td>yes</td><td>yes</td></tr><tr><td>Propose type / severity / priority / effort</td><td>yes</td><td>no</td><td>yes</td></tr><tr><td>Confirm triage</td><td>no</td><td>no</td><td><strong>yes</strong></td></tr><tr><td>Move to Ready</td><td>no</td><td>no</td><td><strong>yes</strong></td></tr><tr><td>Claim and work</td><td>yes (scoped)</td><td>yes</td><td>yes</td></tr><tr><td>Attach evidence</td><td>yes</td><td>yes</td><td>yes</td></tr><tr><td>Move to Done</td><td><strong>no</strong></td><td>no</td><td><strong>yes</strong></td></tr><tr><td>Publish a build</td><td><strong>no</strong></td><td>no</td><td><strong>yes</strong></td></tr><tr><td>Delete</td><td>no</td><td>no</td><td><strong>yes</strong></td></tr></tbody></table>
+<p><strong>With accounts (D15), &quot;Human&quot; splits into roles.</strong> Under T3 hybrid, roles are <strong>per project</strong>: a user is always owner of their personal workspace, and holds an <code>admin</code> / <code>member</code> / <code>viewer</code> grant on a shared project. Server roles (owner/admin/member) govern the machine and never substitute for a project role. The authority above is the <em>maximum</em> for a human with that project role; roles narrow it:</p>
+<table><thead><tr><th>Role</th><th>Create / propose</th><th>Confirm triage</th><th>Ready / Done</th><th>Publish</th><th>Delete</th><th>Invite / roles</th></tr></thead><tbody><tr><td><strong>Owner</strong></td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr><tr><td><strong>Admin</strong></td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td><td>yes</td></tr><tr><td><strong>Member</strong></td><td>yes</td><td>no</td><td>no</td><td>no</td><td>no</td><td><strong>yes, ≤ own role</strong></td></tr><tr><td><strong>Viewer</strong></td><td>no</td><td>no</td><td>no</td><td>no</td><td>no</td><td>no</td></tr></tbody></table>
+<p>The invite ceiling is D18: a member may add a member or a viewer, never an admin. The project channel is the lobby, so adding someone there is the same act as granting the role; the confirm names what access is being given or removed.</p>
+<p>Agents are <strong>principals</strong>, never roles. An agent's grant is bounded by the role of the human who created it, and can only be <code>read</code> or <code>read+propose</code>.</p>
+<h2>12. Measurements</h2>
+<p>Lead time, WIP, reopen rate, escape rate, blocked age. Read monthly or delete.</p>
+<h2>13. Open questions</h2>
+<ol><li>~~PI~~ <strong>Answered:</strong> PI is removed; one timebox, Sprint (D9, <code>06</code> §7).</li><li>Should effort be visible on the board, or hidden behind details to avoid</li></ol>
+<p>people prioritising by effort? (Lean: visible as a small chip — <code>04-intake</code> §10.)</p>
+<ol><li>Is <code>Won't Do</code> a status or an archive? (Lean: a status; the item is kept with</li></ol>
+<p>its reason.)</p>
+<ol><li>Do we need <code>Incident</code> as a separate type, or is a Sev-1 bug enough? (Lean:</li></ol>
+<p>no; Sev-1 plus a label.)</p>
+<ol><li>Should an enabler require at least one linked unblocked item at creation?</li></ol>
+<p>(Lean: yes — otherwise it is a dev task in disguise.)</p>
+</body></html>
