@@ -1,0 +1,9 @@
+{
+  "id": "S-00-1",
+  "kind": "sprint",
+  "parent": "PI-00",
+  "title": "setup",
+  "acceptance": "development setup",
+  "status": "active",
+  "revision": 1
+}

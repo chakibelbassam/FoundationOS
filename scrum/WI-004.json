@@ -1,0 +1,12 @@
+{
+  "id": "WI-004",
+  "kind": "item",
+  "title": "Verify durable state",
+  "acceptance": "Restart retains both profiles and content.",
+  "status": "proposed",
+  "revision": 1,
+  "parent": "S-01-2",
+  "type": "task",
+  "priority": 1,
+  "effort": 4
+}

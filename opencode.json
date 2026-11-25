@@ -1,0 +1,17 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "skills": [
+    "./Edge/skills"
+  ],
+  "mcp": {
+    "servers": {
+      "foundation-scrum": {
+        "type": "local",
+        "command": [
+          "node",
+          "Edge/tools/scrum.mjs"
+        ]
+      }
+    }
+  }
+}

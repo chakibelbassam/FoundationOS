@@ -1,0 +1,8 @@
+{
+  "id": "PI-09",
+  "kind": "pi",
+  "title": "Shared projects",
+  "acceptance": "Verify membership, role ceilings, work records, chats, separate worktrees and access after removal with two accounts.",
+  "status": "proposed",
+  "revision": 1
+}
