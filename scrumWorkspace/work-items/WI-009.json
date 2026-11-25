@@ -4,9 +4,10 @@
   "parent": "S-00-1",
   "title": "Show Git operations in the Edge terminal",
   "acceptance": "Every Git and GitHub command in an Edge session runs in the OpenCode terminal tab with a visible work-item banner, and the lifecycle skill documents the naming, stacked-PR and commit-trailer rules.",
-  "status": "active",
-  "revision": 3,
+  "status": "review",
+  "revision": 4,
   "type": "enabler",
   "priority": 2,
-  "effort": 2
+  "effort": 2,
+  "evidence": "PR #4 on `edge-opencode/wi-009-visible-git`, stacked on `edge-opencode/wi-008-scrum-workspace`: https://github.com/chakibelbassam/FoundationOS/pull/4. Adds the OpenCode terminal skill and driver, `Show-GitContext.ps1`, `Work-Item` and `Agent` commit trailers, stacked-PR rules and the visible-execution rule in the lifecycle skill and AGENTS guide. Verified in the terminal tab: driver tests 8/8, `npm test` 12/12, `validate` ok with 25 records, and every Git step printed above the prompt. Limits: base retargets to `codex/development-workspace` after PR #3 merges; owner acceptance pending."
 }

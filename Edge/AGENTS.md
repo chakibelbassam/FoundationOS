@@ -30,7 +30,7 @@ Follow the [GitHub development lifecycle](skills/development/github-development-
 
 A pull request title is `WI-### <plain verb phrase>`, with no buzzwords. Its body starts with `Contributed by: Edge · <harness> · <model>`, then explains in plain language what changed, shows the before and after, says what the change does not do, and lists the exact checks with their observed results. Open it as a draft, wait for CI, then mark it ready. Link the PR to the Scrum item and keep the item in review until the owner accepts.
 
-Run every Git and GitHub command in the OpenCode terminal tab so the owner can watch, following [opencode-terminal](skills/computer-use/opencode-terminal/SKILL.md). Print `.\Edge\tools\Show-GitContext.ps1` first so the work item, branch and base are visible. Do the same for tests, builds and app launches the owner asked to see. End commit messages with `Work-Item:` and `Agent:` trailers.
+Run every Git and GitHub command in the OpenCode terminal tab so the owner can watch, following [opencode-terminal](skills/computer-use/opencode-terminal/SKILL.md). Print `.\Edge\tools\Show-GitContext.ps1` at the start of a Git sequence so the work item, branch and base are visible. Do the same for tests, builds and app launches the owner asked to see. End commit messages with `Work-Item:` and `Agent:` trailers.
 
 ## Maintain your working context
 

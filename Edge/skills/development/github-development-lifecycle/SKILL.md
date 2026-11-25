@@ -31,7 +31,7 @@ Do not hide Git or GitHub work in a background shell. Follow [opencode-terminal]
 
 1. Announce the operation, then reuse the session terminal or create one titled `edge-terminal`.
 2. Change to the repository root once, then type one command at a time with `slowMs` 60-120.
-3. Print the context banner before the command: `.\Edge\tools\Show-GitContext.ps1`.
+3. Print the context banner at the start of a Git sequence: `.\Edge\tools\Show-GitContext.ps1`.
 4. Read the tab and quote the observed output. Never claim a Git result without reading it.
 
 The same rule covers long-running scripts, tests, builds and app launches when the owner asked to see them. Keep the terminal tab open for follow-ups.
