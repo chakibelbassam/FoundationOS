@@ -5,11 +5,12 @@
   ],
   "mcp": {
     "servers": {
-      "foundation-scrum": {
+      "scrumWorkSpace": {
         "type": "local",
         "command": [
           "node",
-          "Edge/tools/scrum.mjs"
+          "--run",
+          "scrumWorkSpace"
         ]
       }
     }

@@ -1,3 +1,3 @@
-# deliver-foundationos-pr
+# deliver foundationos pr
 
-Take an agreed FoundationOS item through a branch, verification and a GitHub review PR. See [instructions](SKILL.md).
+Turn an agreed FoundationOS change into a reviewable PR with work-item evidence and an explicit base. [Open the workflow](SKILL.md).

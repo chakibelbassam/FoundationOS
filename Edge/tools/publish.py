@@ -1,6 +1,8 @@
 """Publish a Markdown document or a directory of documents as FoundationOS PDFs."""
 
 import argparse
+import sys
+import time
 import os
 from urllib.parse import unquote, urlsplit, urljoin
 from pathlib import Path
@@ -13,7 +15,8 @@ from docx import Document
 from docx.opc.constants import RELATIONSHIP_TYPE
 from docx.oxml import OxmlElement
 from docx.oxml.ns import qn
-from docx.shared import Inches, Pt, RGBColor
+from docx.shared import Inches, Pt, RGBColor, Mm
+from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.enum.style import WD_STYLE_TYPE
 
 
@@ -51,22 +54,39 @@ def create_word(source, target):
     doc.core_properties.subject = 'FoundationOS product information'
     doc.core_properties.author = 'FoundationOS'
     section = doc.sections[0]
-    section.top_margin = Inches(.83)
+    section.page_width = Mm(210)
+    section.page_height = Mm(297)
+    section.top_margin = Mm(24)
+    header = section.header.paragraphs[0]
+    header.paragraph_format.space_after = Pt(4)
+    mark = header.add_run("FOUNDATIONOS    /    PRODUCT INFORMATION")
+    mark.font.name = "Segoe UI"
+    mark.font.size = Pt(9)
+    mark.font.bold = True
+    mark.font.color.rgb = RGBColor.from_string("126B67")
+    border = OxmlElement("w:pBdr")
+    rule = OxmlElement("w:bottom")
+    for key, value in {"val":"single", "sz":"12", "color":"3C8D88", "space":"5"}.items():
+        rule.set(qn("w:" + key), value)
+    border.append(rule)
+    header._p.get_or_add_pPr().append(border)
     section.bottom_margin = Inches(.72)
-    section.left_margin = section.right_margin = Inches(.9)
+    section.left_margin = section.right_margin = Mm(22)
     section.header_distance = section.footer_distance = Inches(.45)
     normal = doc.styles['Normal']
-    normal.font.name = 'Calibri'
-    normal.font.size = Pt(11.5)
+    normal.font.name = 'Segoe UI'
+    normal.font.color.rgb = RGBColor.from_string('233740')
+    normal.font.size = Pt(10.5)
     normal.paragraph_format.line_spacing = 1.10
     normal.paragraph_format.space_after = Pt(5)
-    for name, size in [('Title', 31), ('Heading 1', 22), ('Heading 2', 14)]:
+    for name, size in [('Title', 28), ('Heading 1', 16), ('Heading 2', 13)]:
         style = doc.styles[name]
-        style.font.name = 'Calibri'
+        style.font.name = 'Segoe UI'
         style.font.size = Pt(size)
         style.font.bold = True
         style.font.color.rgb = RGBColor.from_string('184B52')
-        style.paragraph_format.space_before = Pt(14)
+        style.paragraph_format.space_before = Pt(11)
+        style.paragraph_format.keep_with_next = True
         style.paragraph_format.space_after = Pt(5)
     doc.styles['Title'].paragraph_format.space_before = Pt(0)
     for border in doc.styles['Title'].element.findall('.//' + qn('w:pBdr')):
@@ -83,6 +103,7 @@ def create_word(source, target):
     field.set(qn('w:instr'), 'PAGE')
     footer._p.append(field)
 
+    footer.alignment = WD_ALIGN_PARAGRAPH.RIGHT
     table = None
     in_code = False
     for line in source.read_text(encoding='utf-8-sig').splitlines():
@@ -90,7 +111,13 @@ def create_word(source, target):
             in_code = not in_code
             continue
         if in_code:
-            run = doc.add_paragraph().add_run(line)
+            p = doc.add_paragraph()
+            shade = OxmlElement('w:shd')
+            shade.set(qn('w:fill'), 'E7F2F1')
+            p._p.get_or_add_pPr().append(shade)
+            p.paragraph_format.left_indent = Mm(3)
+            p.paragraph_format.space_after = Pt(3)
+            run = p.add_run(line)
             run.font.name = 'Consolas'
             run.font.size = Pt(9)
             continue
@@ -98,12 +125,24 @@ def create_word(source, target):
             cells = [cell.strip() for cell in line.strip('|').split('|')]
             if all(re.fullmatch(r':?-+:?', cell) for cell in cells):
                 continue
-            if table is None:
+            first_row = table is None
+            if first_row:
                 table = doc.add_table(rows=0, cols=len(cells))
-                table.style = 'Light Shading Accent 1'
+                table.style = 'Table Grid'
             row = table.add_row()
+            if first_row:
+                row._tr.get_or_add_trPr().append(OxmlElement('w:tblHeader'))
+            row._tr.get_or_add_trPr().append(OxmlElement('w:cantSplit'))
             for cell, value in zip(row.cells, cells, strict=True):
-                add_inline(cell.paragraphs[0], value, source)
+                para = cell.paragraphs[0]
+                add_inline(para, value, source)
+                if first_row:
+                    tint = OxmlElement('w:shd')
+                    tint.set(qn('w:fill'), '184B52')
+                    cell._tc.get_or_add_tcPr().append(tint)
+                    for run in para.runs:
+                        run.bold = True
+                        run.font.color.rgb = RGBColor.from_string('FFFFFF')
             continue
         table = None
         if not line.strip():
@@ -122,27 +161,49 @@ def create_word(source, target):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('source', nargs='?', type=Path, default=ROOT / 'Product Information')
+    parser.add_argument('--watch', action='store_true', help='Check for changed Markdown every two seconds; Ctrl+C stops.')
+    parser.add_argument('--changed', action='store_true', help='Publish only missing or outdated PDFs.')
     parser.add_argument('--soffice', default=shutil.which('soffice') or str(Path(os.getenv('ProgramFiles', '')) / 'LibreOffice/program/soffice.com'))
     args = parser.parse_args()
-    sources = sorted(args.source.rglob('*.md')) if args.source.is_dir() else [args.source]
-    if not sources:
-        parser.error('No Markdown documents found.')
+    while True:
+        sources = sorted(args.source.rglob('*.md')) if args.source.is_dir() else [args.source]
+        if not sources and not args.watch:
+            parser.error('No Markdown documents found.')
+        for source in sources:
+            try:
+                source = source.resolve(strict=True)
+                if source.suffix.lower() != '.md':
+                    parser.error('Expected Markdown source.')
+                output = source.with_suffix('.pdf')
+                newest = max(source.stat().st_mtime_ns, Path(__file__).stat().st_mtime_ns)
+                if (args.watch or args.changed) and output.exists() and output.stat().st_mtime_ns >= newest:
+                    continue
+                publish(source, output, args.soffice)
+            except (OSError, ValueError, subprocess.CalledProcessError) as error:
+                if not args.watch:
+                    raise
+                print(f'{source}: {error}', file=sys.stderr, flush=True)
+        if not args.watch:
+            return
+        time.sleep(2)
+
+
+def publish(source, output, soffice):
     with TemporaryDirectory(prefix='foundationos-publish-') as temp:
         stage = Path(temp)
-        for i, source in enumerate(sources):
-            source = source.resolve(strict=True)
-            if source.suffix.lower() != '.md':
-                parser.error('Expected Markdown source.')
-            folder = stage / str(i)
-            folder.mkdir()
-            docx = folder / (source.stem + '.docx')
-            create_word(source, docx)
-            subprocess.run([args.soffice, '-env:UserInstallation=' + (stage/'profile').as_uri(), '--headless',
-                            '--convert-to', 'pdf', '--outdir', str(folder), str(docx)], check=True)
-            output = source.with_suffix('.pdf')
-            shutil.copyfile(docx.with_suffix('.pdf'), output)
-            print(output)
+        docx = stage / (source.stem + '.docx')
+        create_word(source, docx)
+        subprocess.run([soffice, '-env:UserInstallation=' + (stage/'profile').as_uri(), '--headless',
+                        '--convert-to', 'pdf', '--outdir', str(stage), str(docx)], check=True)
+        with TemporaryDirectory(dir=output.parent) as adjacent:
+            candidate = Path(adjacent) / output.name
+            shutil.copyfile(docx.with_suffix('.pdf'), candidate)
+            os.replace(candidate, output)
+        print(output, flush=True)
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except KeyboardInterrupt:
+        pass

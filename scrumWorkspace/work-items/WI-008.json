@@ -1,0 +1,12 @@
+{
+  "id": "WI-008",
+  "kind": "item",
+  "parent": "S-00-1",
+  "title": "Rebuild the Edge Scrum workspace and development workflows",
+  "acceptance": "A fresh Edge session can query PI-01 sprint 1, create and revise a draft, append a note, link it to a work item, run 0.1 server and browser QA, and publish a PDF using the documented commands.",
+  "status": "active",
+  "revision": 3,
+  "type": "enabler",
+  "priority": 1,
+  "effort": 3
+}
