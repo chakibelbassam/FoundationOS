@@ -1,0 +1,9 @@
+{
+  "name": "foundationos-development",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "scrumWorkSpace": "node Edge/tools/scrumWorkSpace.mjs",
+    "test": "node --test Edge/tools/scrumWorkSpace.test.mjs"
+  }
+}

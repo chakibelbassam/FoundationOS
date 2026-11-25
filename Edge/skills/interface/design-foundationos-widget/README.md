@@ -1,3 +1,3 @@
-# design-foundationos-widget
+# design foundationos widget
 
-Design or revise a FoundationOS abstract component and update interface evidence. See [instructions](SKILL.md).
+Design and verify a reusable widget across folder depth, focus states, input modes and available viewport. [Open the workflow](SKILL.md).
