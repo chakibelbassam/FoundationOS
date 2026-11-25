@@ -3,10 +3,11 @@
   "kind": "item",
   "title": "Verify durable state",
   "acceptance": "Restart retains both profiles and content.",
-  "status": "proposed",
-  "revision": 1,
+  "status": "review",
+  "revision": 2,
   "parent": "S-01-2",
   "type": "task",
   "priority": 1,
-  "effort": 4
+  "effort": 4,
+  "evidence": "Version 0.1 Start.cmd verified on Windows using FoundationOS Server/verify.py. Manual and matching PDF updated."
 }
