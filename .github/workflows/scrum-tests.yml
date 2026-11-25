@@ -1,0 +1,25 @@
+name: Scrum tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - codex/development-workspace
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+      - name: Run the Scrum tool tests
+        run: npm test
+      - name: Validate the Scrum store
+        run: node --input-type=module -e "import('./Edge/tools/scrum-workspace-validate.mjs').then(m => { const r = m.validate(); console.log(JSON.stringify(r, null, 2)); if (!r.ok) process.exit(1); })"

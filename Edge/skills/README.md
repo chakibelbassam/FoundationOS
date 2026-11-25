@@ -3,7 +3,7 @@
 | Workflow | When to use it |
 | --- | --- |
 | [work-in-foundationos](development/work-in-foundationos/SKILL.md) | Orient a new FoundationOS session, reconcile prototype versus version, and resume an item from a nested folder. |
-| [deliver-foundationos-pr](development/deliver-foundationos-pr/SKILL.md) | Turn an agreed FoundationOS change into a reviewable PR with work-item evidence and an explicit base. |
+| [github-development-lifecycle](development/github-development-lifecycle/SKILL.md) | Turn an approved work item into a reviewed PR with explicit base, attribution, before/after explanation and owner-controlled merge. |
 | [triage-foundationos-work](planning/triage-foundationos-work/SKILL.md) | Investigate a reported FoundationOS issue against verified behaviour and propose its work type, severity and priority. |
 | [read-and-plan-sprints](planning/read-and-plan-sprints/SKILL.md) | Answer natural-language PI and sprint questions, propose capacity-aware buckets, and make targeted Scrum updates. |
 | [design-foundationos-widget](interface/design-foundationos-widget/SKILL.md) | Design and verify a reusable widget across folder depth, focus states, input modes and available viewport. |

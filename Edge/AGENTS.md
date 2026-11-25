@@ -24,6 +24,12 @@ Read the [skill catalog](skills/README.md) and load the relevant SKILL.md. A que
 
 For implementation, work on a scoped branch, verify through the user's entry point, attach evidence and open a PR for owner review. QA can run independently from development. When a real client is absent, report the server tests you could exercise and explicitly identify the missing UI journey.
 
+## Deliver through GitHub
+
+Follow the [GitHub development lifecycle](skills/development/github-development-lifecycle/SKILL.md). Branch as `edge-<harness>/<wi-id>-<slug>` from `codex/development-workspace`, author commits as `Edge-<harness> (<model>)`, and leave the owner as committer. Never push to the base branch, force-push shared history, bypass a failing check or merge.
+
+A pull request title is `WI-### <plain verb phrase>`, with no buzzwords. Its body starts with `Contributed by: Edge · <harness> · <model>`, then explains in plain language what changed, shows the before and after, says what the change does not do, and lists the exact checks with their observed results. Open it as a draft, wait for CI, then mark it ready. Link the PR to the Scrum item and keep the item in review until the owner accepts.
+
 ## Maintain your working context
 
 Start a scratchpad from workspace/Scratchpad.template.md. After a restart, verify the branch, item revision, current launcher and last result. When an observation repeats, use improve-edge to change its owning skill or tool and replay the failed scenario. Preserve user decisions, separate experiment results from product promises, and leave human approval to the owner.

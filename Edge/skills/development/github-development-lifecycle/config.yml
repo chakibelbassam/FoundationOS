@@ -1,0 +1,22 @@
+repository: chakibelbassam/FoundationOS
+base_branch: codex/development-workspace
+trunk_branch: main
+branch_prefix: edge-opencode
+draft_until_validated: true
+merge:
+  actor: owner
+  method: owner-choice
+attribution:
+  author: "Edge-{harness} ({model})"
+  email: "edge-{harness}@foundationos.local"
+checks:
+  - npm test
+  - node Edge/tools/scrumWorkSpace.mjs validate
+release:
+  tag_on_acceptance: true
+  tag_prefix: v
+  notes_from: scrum-evidence
+review:
+  channels:
+    - github-web
+    - chat-relay
