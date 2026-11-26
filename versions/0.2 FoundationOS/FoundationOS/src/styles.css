@@ -210,7 +210,6 @@ body {
   position: absolute;
   inset: 0;
   border-radius: var(--fo-radius);
-  overflow: hidden;
   backface-visibility: hidden;
   -webkit-backface-visibility: hidden;
   display: flex;

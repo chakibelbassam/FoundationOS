@@ -65,8 +65,9 @@ export function FolderView() {
   }, [returnPath]);
 
   useEffect(() => {
-    if (!returnPath || state.status !== 'ready') return;
-    if (!items.some((item) => item.path === returnPath)) {
+    if (!returnPath) return;
+    if (state.status !== 'ready' && state.status !== 'empty') return;
+    if (state.status === 'empty' || !items.some((item) => item.path === returnPath)) {
       headingRef.current?.focus();
     }
   }, [returnPath, state.status, items]);
