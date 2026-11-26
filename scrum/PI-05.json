@@ -1,8 +1,0 @@
-{
-  "id": "PI-05",
-  "kind": "pi",
-  "title": "Security and deployment",
-  "acceptance": "Verify backup and restoration, session revocation and origin boundaries. Demonstrate local and authorised remote access when the domain and deployment are approved.",
-  "status": "proposed",
-  "revision": 1
-}

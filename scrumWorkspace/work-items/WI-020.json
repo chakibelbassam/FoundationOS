@@ -1,0 +1,13 @@
+{
+  "id": "WI-020",
+  "kind": "item",
+  "parent": "S-01-8",
+  "title": "Report status and keep logs",
+  "acceptance": "Story: the operator can see what the server is and what it did.\nExpected: GET /status without auth reports version, readiness and schema version, and the server logs sign-ins, sign-outs, revocations, invitations, writes, deletes and refusals as single JSON lines on the console.\nNot expected: a log web view, rotation or remote log shipping.\nDepends on: WI-11 schema version and the routes of S6 and S7.\nVerify: acceptance reads status and observes a log line for each event it drives.",
+  "status": "review",
+  "revision": 6,
+  "type": "task",
+  "priority": 2,
+  "effort": 2,
+  "evidence": "GET /status reports version 0.2, ready and the schema version; JSON log lines cover sign-in, sign-out, revoked, invitation, account-created, write, delete, folder and refusal, asserted by verify.py. PR #6: https://github.com/chakibelbassam/FoundationOS/pull/6."
+}

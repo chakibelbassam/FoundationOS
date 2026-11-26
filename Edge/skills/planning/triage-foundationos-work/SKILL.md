@@ -1,8 +1,12 @@
 ---
 name: triage-foundationos-work
-description: Assess a FoundationOS work item and propose a sized sprint bucket.
+description: Investigate a reported FoundationOS issue against verified behaviour and propose its work type, severity and priority.
 ---
 
 # triage foundationos work
 
-Query PI and sprint records. Identify the observed result, expected result, version and entry point. Compare against verified Manual behaviour. If evidence is missing, record the question and a provisional type. Rate severity only for supported bugs using impact and workarounds. Rank by priority, then fit ready dependencies by effort. Show the proposed bucket for inspection. Save using the current revision.
+Capture the version, entry point, user action, observed result and expected result. Check the versioned Manual and any evidence attached to the item. An observation can substantiate a bug without a full log dump. If the promise exists only in the Vision, examine whether this is a new feature or a change to an existing one.
+
+For a bug, assess who loses what capability, how often, whether work is lost, and whether a practical workaround exists. Separate severity from scheduling priority. For an enabler, name the capability it unlocks. For a QA or research task, state the decision its evidence supports.
+
+Return a supported type, evidence, uncertainty, and one testable acceptance. Use planning/harness-strategy/09-triage-guide.md and 12-effort-rubric.md for the project scales. Split Ef-1 before proposing a sprint. Use the Scrum update tool only when the user requested a change.

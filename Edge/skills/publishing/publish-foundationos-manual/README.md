@@ -1,3 +1,3 @@
-# publish-foundationos-manual
+# publish foundationos manual
 
-Promote verified version behaviour into the FoundationOS Manual and publish matching PDFs. See [instructions](SKILL.md).
+Update verified product behaviour and produce visually checked FoundationOS PDF editions from Markdown. [Open the workflow](SKILL.md).

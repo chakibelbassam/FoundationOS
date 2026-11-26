@@ -1,0 +1,13 @@
+{
+  "id": "WI-018",
+  "kind": "item",
+  "parent": "S-01-8",
+  "title": "Publish the OpenAPI contract",
+  "acceptance": "Story: the 0.2 client and every agent build against a written contract.\nExpected: an openapi.yaml beside the server copy documents every operation, the bearer scheme and the error shape, and CI reads it, calls every documented operation and validates every documented response status.\nNot expected: generated client code or a public developer portal.\nDepends on: the routes from WI-12 to WI-16.\nVerify: the contract suite reads openapi.yaml and exercises every documented operation and response status.",
+  "status": "review",
+  "revision": 8,
+  "type": "enabler",
+  "priority": 2,
+  "effort": 3,
+  "evidence": "openapi.yaml documents all 12 operations, the bearer scheme and the error shape. The 26 November review found the old proof never read the published file; WI-23 adds openapi.test.mjs, which parses openapi.yaml, calls every operation, validates all 40 documented response statuses against their schemas, asserts set equality and PATCH 405, and fails on an undocumented status or a dropped section. CI runs it beside the server suite. Increment PR #6 (merged): https://github.com/chakibelbassam/FoundationOS/pull/6; review fixes and tooling in PR #7: https://github.com/chakibelbassam/FoundationOS/pull/7."
+}

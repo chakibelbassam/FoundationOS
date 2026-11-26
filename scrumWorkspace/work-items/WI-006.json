@@ -1,0 +1,13 @@
+{
+  "id": "WI-006",
+  "kind": "item",
+  "title": "Verify workspace boundaries",
+  "acceptance": "Check other-user requests, traversal and filesystem links through supported server operations.",
+  "status": "review",
+  "revision": 2,
+  "parent": "S-01-4",
+  "type": "task",
+  "priority": 1,
+  "effort": 2,
+  "evidence": "Version 0.1 Start.cmd verified on Windows using FoundationOS Server/verify.py. Manual and matching PDF updated."
+}

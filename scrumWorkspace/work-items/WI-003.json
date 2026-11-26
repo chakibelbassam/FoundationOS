@@ -1,0 +1,13 @@
+{
+  "id": "WI-003",
+  "kind": "item",
+  "title": "Provision user homes",
+  "acceptance": "Two profiles receive distinct identifiers and private directories.",
+  "status": "review",
+  "revision": 2,
+  "parent": "S-01-1",
+  "type": "feature",
+  "priority": 1,
+  "effort": 3,
+  "evidence": "Version 0.1 Start.cmd verified on Windows using FoundationOS Server/verify.py. Manual and matching PDF updated."
+}

@@ -1,0 +1,9 @@
+{
+  "id": "PI-10",
+  "kind": "pi",
+  "title": "Catalog and release",
+  "acceptance": "Publish, review, install and update an app copy. Exercise the v1 journeys on desktop and phone before publishing the verified Manual.",
+  "status": "proposed",
+  "revision": 2,
+  "targetVersion": "1.0"
+}

@@ -1,0 +1,13 @@
+{
+  "id": "WI-016",
+  "kind": "item",
+  "parent": "S-01-7",
+  "title": "Serve hierarchical folder operations",
+  "acceptance": "Story: members organise work in folders rather than one flat list.\nExpected: create a folder, list any folder, read, write and delete files and empty folders by relative path, with parent checks and the 64 KiB text limit kept.\nNot expected: move or rename, binary or multipart uploads, or any sharing between members.\nDepends on: WI-13 sessions; WI-17 proves its boundaries.\nVerify: acceptance builds a nested tree, reads it back and deletes parts of it.",
+  "status": "review",
+  "revision": 8,
+  "type": "feature",
+  "priority": 2,
+  "effort": 4,
+  "evidence": "POST /folder and GET, PUT and DELETE on /files paths create, list, read, write and remove files and empty folders by relative path; the 64 KiB limit answers 413 (node test). The 26 November review found empty folders could not be deleted; WI-23 uses rmdir, returns 200 for an empty folder and keeps 409 for a non-empty one, and verify.py deletes an empty folder through the launcher. Increment PR #6 (merged): https://github.com/chakibelbassam/FoundationOS/pull/6; review fixes and tooling in PR #7: https://github.com/chakibelbassam/FoundationOS/pull/7."
+}

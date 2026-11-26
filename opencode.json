@@ -1,16 +1,24 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "plugins": [
+    "./Edge/plugins/visible-terminal"
+  ],
   "skills": [
     "./Edge/skills"
   ],
   "mcp": {
     "servers": {
-      "foundation-scrum": {
+      "scrumWorkSpace": {
         "type": "local",
         "command": [
           "node",
-          "Edge/tools/scrum.mjs"
+          "--run",
+          "scrumWorkSpace"
         ]
+      },
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp"
       }
     }
   }

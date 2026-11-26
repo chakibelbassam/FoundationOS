@@ -1,3 +1,3 @@
-# triage-foundationos-work
+# triage foundationos work
 
-Assess a FoundationOS work item and propose a sized sprint bucket. See [instructions](SKILL.md).
+Investigate a reported FoundationOS issue against verified behaviour and propose its work type, severity and priority. [Open the workflow](SKILL.md).

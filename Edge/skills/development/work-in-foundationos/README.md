@@ -1,3 +1,3 @@
-# work-in-foundationos
+# work in foundationos
 
-Locate the right FoundationOS version, authority and acceptance journey before changing the product. See [instructions](SKILL.md).
+Orient a new FoundationOS session, reconcile prototype versus version, and resume an item from a nested folder. [Open the workflow](SKILL.md).

@@ -1,0 +1,9 @@
+{
+  "id": "S-01-8",
+  "kind": "sprint",
+  "parent": "PI-01",
+  "title": "Publish contracts and operations",
+  "acceptance": "The OpenAPI contract, uniform errors, status and logging describe and prove the running server.",
+  "status": "ready",
+  "revision": 2
+}

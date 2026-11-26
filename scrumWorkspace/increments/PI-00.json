@@ -1,0 +1,9 @@
+{
+  "id": "PI-00",
+  "kind": "pi",
+  "title": "development setup",
+  "acceptance": "fresh OpenCode can find the Manual and Vision, publish a PDF and submit a review PR",
+  "status": "active",
+  "revision": 2,
+  "targetVersion": "none"
+}

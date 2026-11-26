@@ -1,0 +1,9 @@
+{
+  "id": "PI-04",
+  "kind": "pi",
+  "title": "Everyday navigation",
+  "acceptance": "Enter a folder, inspect an app and return to the same card with focus restored. Test guidance visibility, shared appearance, keyboard and viewport fit.",
+  "status": "proposed",
+  "revision": 2,
+  "targetVersion": "0.4"
+}

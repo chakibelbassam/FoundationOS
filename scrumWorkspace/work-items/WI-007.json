@@ -1,0 +1,13 @@
+{
+  "id": "WI-007",
+  "kind": "item",
+  "title": "Publish the version evidence",
+  "acceptance": "Verify the version launcher, update the Manual and render its PDF.",
+  "status": "review",
+  "revision": 2,
+  "parent": "S-01-4",
+  "type": "task",
+  "priority": 1,
+  "effort": 4,
+  "evidence": "Version 0.1 Start.cmd verified on Windows using FoundationOS Server/verify.py. Manual and matching PDF updated."
+}
