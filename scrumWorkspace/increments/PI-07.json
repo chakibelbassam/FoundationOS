@@ -4,5 +4,6 @@
   "title": "Apps and App Studio",
   "acceptance": "Import Weather, run on an assigned port, expand, return, reopen the running instance and stop. Test the separate standalone widget integration.",
   "status": "proposed",
-  "revision": 1
+  "revision": 2,
+  "targetVersion": "0.7"
 }

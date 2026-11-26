@@ -4,5 +4,6 @@
   "title": "Shared projects",
   "acceptance": "Verify membership, role ceilings, work records, chats, separate worktrees and access after removal with two accounts.",
   "status": "proposed",
-  "revision": 1
+  "revision": 2,
+  "targetVersion": "0.9"
 }

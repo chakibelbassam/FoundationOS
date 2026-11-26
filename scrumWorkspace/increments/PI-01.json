@@ -4,5 +4,7 @@
   "title": "FoundationOS Server",
   "acceptance": "Run the FoundationOS server as a product on one host: a single versioned data store with migrations, a first-run admin, invitations, sessions with revocation, hierarchical private homes scoped to the signed-in member, an OpenAPI contract with endpoint tests, uniform JSON errors, status and logging, ready for backup. The 0.1 loopback fixture is the first accepted slice, and the client 0.2, accounts 0.3, navigation 0.4 and security and deployment 0.5 increments build on this server.",
   "status": "ready",
-  "revision": 3
+  "revision": 5,
+  "targetVersion": "0.2",
+  "evidence": "Retargeted from 0.1 to 0.2 on the owner's 26 November 2026 decision to extend PI-01 (FoundationOS Server). The 0.1 loopback fixture remains the first accepted slice; the 0.2 server copy in versions/0.2 FoundationOS is this increment's target. Plan revision 3 records the scope and the WI-23 review fixes."
 }

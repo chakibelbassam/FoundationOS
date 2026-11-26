@@ -4,5 +4,6 @@
   "title": "Workshops and Tasks",
   "acceptance": "Prove a confined development worker, task notifications, restart, candidate review and safe retry. Check filesystem confinement before command execution.",
   "status": "proposed",
-  "revision": 1
+  "revision": 2,
+  "targetVersion": "0.8"
 }

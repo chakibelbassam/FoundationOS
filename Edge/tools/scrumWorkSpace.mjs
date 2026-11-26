@@ -17,6 +17,7 @@ const properties = {
   kind: { type: 'string', enum: ['pi', 'sprint', 'item'] },
   parent: { type: 'string', description: 'PI ID for a sprint, or sprint ID for a work item' },
   title: { type: 'string' },
+  targetVersion: { type: 'string', description: 'PI product release, such as 0.1, or none for development setup. Sprints and items inherit the PI target.' },
   acceptance: { type: 'string' },
   effort: { type: 'integer', minimum: 2, maximum: 5, description: 'Ef-2 through Ef-5. Split Ef-1.' },
   priority: { type: 'integer', minimum: 1, maximum: 5, description: 'P-1 is highest, P-5 is lowest' },
@@ -185,6 +186,10 @@ function checkSeverity(record, previous) {
 function checkRecord(record, previous) {
   checkFields(record, properties, requiredRecord);
   if (record.kind !== kinds[idPrefix(record.id)]) throw Error('ID and kind disagree');
+  if (record.targetVersion !== undefined && (record.kind !== 'pi' ||
+      !(record.id === 'PI-00' ? record.targetVersion === 'none' : /^\d+\.\d+(?:\.\d+)?$/.test(record.targetVersion)))) {
+    throw Error('Use a release version on product PIs and none on the setup PI');
+  }
   for (const key of ['title', 'acceptance', 'evidence', 'severity']) {
     const refusal = record[key] && markdownRefusal(record[key]);
     if (refusal) throw Error('Invalid Markdown in ' + key + ': ' + refusal);

@@ -1,11 +1,11 @@
 ---
-revision: 2
+revision: 5
 ---
 # PI-01 FoundationOS Server plan
 
 ## Story
 
-One computer hosts FoundationOS. The operator double-clicks the launcher in the version folder. The server finds its shared store, migrates it when needed, and on a truly empty store creates the admin and prints a one-time key in the console. The admin invites members; each member receives a private home and a credential. Members sign in, work with folders and files by relative path, and sign out. Every operation is scoped to the signed-in member, and traversal, links and other homes are refused. The admin can revoke any session. Restarting keeps everything, because accounts and homes live in one store. Backup is stopping the server and copying the store directory. The OpenAPI contract beside the server copy tells the 0.2 client and every agent what the server promises, and CI proves each documented route.
+One computer hosts FoundationOS. The operator double-clicks the launcher in the version folder. The server finds its shared store, migrates it when needed, and on a truly empty store creates the admin and prints a one-time key in the console. The admin invites members; each member receives a private home and a credential. Members sign in, work with folders and files by relative path, and sign out. Every operation is scoped to the signed-in member, and traversal, links and other homes are refused. The admin can revoke any session. Restarting keeps everything, because accounts and homes live in one store. Backup is stopping the server and copying the store directory. The OpenAPI contract beside the server copy tells the 0.2 client and every agent what the server promises, and CI calls every documented operation and validates every documented response status against it.
 
 There is no browser client in this increment. The launcher console, the API and the acceptance script are the interface, on purpose.
 
@@ -26,6 +26,10 @@ Stored record IDs keep the canonical padded form the tool requires: PI-01, S-01-
 | Parallel tooling | The OpenCode configuration, plugins and tooling research from the wiring session are accepted into this increment as WI-22 |
 
 Upgrade rule: each version copy carries every migration up to its release, and only the newest copy migrates the store. An older copy that meets a newer schema refuses to start.
+
+## Acceptance review fixes, 26 November 2026
+
+The owner's independent review held acceptance on three gaps: empty folders could not be deleted, a failed home setup consumed the invitation and stranded the account, and verify.py never read openapi.yaml. WI-23 (Close the server acceptance gaps) fixes them with regression tests for empty-folder deletion, member retry after a failed home setup, first-boot retry, and a contract suite that reads the published file, calls every documented operation and validates every documented response status. The increment stays in review until the owner accepts.
 
 ## The server can do this after this increment
 
@@ -63,17 +67,18 @@ Multi-host and networked databases stay off the roadmap.
 | S6 Identity and sessions | WI-12 to WI-15 | Admin, invitations, sessions, roles |
 | S7 Hierarchical workspaces | WI-16, WI-17 | Folder operations and boundary refusals |
 | S8 Contracts and operations | WI-18 to WI-20 | OpenAPI, uniform errors, status, logging |
-| S9 Acceptance | WI-21 | Verify script, Manual, launcher evidence |
+| S9 Acceptance | WI-21, WI-23 | Verify script, Manual, launcher evidence, review fixes |
 
 S1 to S4 delivered the 0.1 slice and their items are in review.
 
 ## Execution
 
-Proceed sprint by sprint in order. One branch per work item, stacked on the previous item when it depends on it, cut from the staging lane. Every Git and GitHub step runs in the OpenCode terminal tab with the context banner. The first branch commits the planning records and, as WI-22, the OpenCode tooling wiring accepted from the parallel session. The new server copy lives in the versions 0.2 FoundationOS folder and its acceptance runs there; the client work of 0.2 builds against the same copy.
+Proceed sprint by sprint in order. One branch per work item, stacked on the previous item when it depends on it, cut from the staging lane. Every Git and GitHub step runs in the OpenCode terminal tab with the context banner. The first branch commits the planning records and, as WI-22, the OpenCode tooling wiring accepted from the parallel session. PI 1 targets versions/0.2 FoundationOS for the server increment, and the 0.1 loopback fixture remains its first accepted slice. Implement and verify the server through the 0.2 folder and its Start.cmd launcher. PI 2 also targets versions/0.2 FoundationOS, for the client foundation built on the same server. A run against 0.1 is evidence for that slice only.
 
 ## Done when
 
 - The 0.2 server copy passes the extended acceptance: launcher, first-run admin, invitation, sign-in, folder work, isolation, revocation, restart and contract checks.
-- The OpenAPI file documents every route and CI proves each one.
+- The 0.1 loopback fixture still passes its acceptance.
+- The OpenAPI file documents every operation and CI exercises each one and validates each documented response status.
 - The Manual records the verified outcome.
 - Every item carries evidence and the owner accepts.

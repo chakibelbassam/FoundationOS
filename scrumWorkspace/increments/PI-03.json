@@ -4,5 +4,6 @@
   "title": "Accounts and connection",
   "acceptance": "Complete first run, invitation, sign-in and sign-out against the real server. A second account can access only its authorised workspace.",
   "status": "proposed",
-  "revision": 1
+  "revision": 2,
+  "targetVersion": "0.3"
 }

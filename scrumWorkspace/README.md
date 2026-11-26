@@ -37,6 +37,8 @@ The old flat `scrum/*.json` files remain readable as legacy storage. Grouped sto
 
 ## Records
 
+Record the release in each PI's `targetVersion` (for example `0.1`), using `none` for development setup. Sprints and items inherit the target from their parent PI.
+
 | Kind | ID | Parent | Required fields |
 | --- | --- | --- | --- |
 | PI | `PI-00` | none | title, acceptance, status, revision |

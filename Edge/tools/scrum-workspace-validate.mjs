@@ -98,6 +98,13 @@ export function validate() {
       error(file, 'review and done records require evidence');
     }
     const allowed = new Set(['id', 'kind', 'title', 'acceptance', 'status', 'revision', 'evidence']);
+    if (record.kind === 'pi') {
+      allowed.add('targetVersion');
+      if (record.targetVersion !== undefined && (typeof record.targetVersion !== 'string' ||
+          !(record.id === 'PI-00' ? record.targetVersion === 'none' : /^\d+\.\d+(?:\.\d+)?$/.test(record.targetVersion)))) {
+        error(file, 'Invalid PI target version');
+      }
+    }
     if (record.kind === 'sprint') allowed.add('parent');
     if (record.kind === 'item') {
       for (const key of ['parent', 'type', 'priority', 'effort', 'severity']) allowed.add(key);
