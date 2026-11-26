@@ -11,7 +11,8 @@ import type { AppDescriptor, Entry } from '../api/types';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { StatePanel } from '../components/StatePanel';
 import { getLastInput } from '../app/inputMode';
-import { fromState, useReturnFocus, useTakeReturn } from './useRememberReturn';
+import { clearResumeFocus, readResumeFocus, setResumeFocus } from './focusReturn';
+import { fromState } from './useRememberReturn';
 
 type Load =
   | { status: 'loading' }
@@ -46,8 +47,7 @@ export function AppOverview() {
   const readmeRef = useRef<HTMLButtonElement | null>(null);
   const browseRef = useRef<HTMLButtonElement | null>(null);
   const from = fromState(location.state);
-  const remember = useReturnFocus(from);
-  const { returnPath, settled } = useTakeReturn(location.pathname, location.key);
+  const returnPath = readResumeFocus(location.state);
 
   useEffect(() => {
     let cancelled = false;
@@ -88,17 +88,23 @@ export function AppOverview() {
   }, [path, attempt, name]);
 
   useEffect(() => {
-    if (!settled || load.status !== 'ready') return;
-    if (returnPath === `${path}/README.md` && load.hasReadme) {
-      readmeRef.current?.focus();
+    if (load.status !== 'ready') return;
+    if (returnPath === `${path}/README.md`) {
+      if (load.hasReadme) readmeRef.current?.focus();
+      else headingRef.current?.focus();
       return;
     }
     if (returnPath) return;
     if (getLastInput() === 'keyboard') headingRef.current?.focus();
-  }, [settled, load, returnPath, path]);
+  }, [load, returnPath, path]);
+
+  useEffect(() => {
+    if (!returnPath) return;
+    const timer = window.setTimeout(() => clearResumeFocus(), 600);
+    return () => window.clearTimeout(timer);
+  }, [returnPath]);
 
   const back = () => {
-    remember();
     if (from) navigate(-1);
     else navigate(`/folder/${path}`);
   };
@@ -150,7 +156,10 @@ export function AppOverview() {
                 ref={readmeRef}
                 variant="contained"
                 startIcon={<MenuBookIcon />}
-                onClick={() => navigate(`/file/${path}/README.md`, { state: { from: openFrom } })}
+                onClick={() => {
+                  setResumeFocus(`${path}/README.md`);
+                  navigate(`/file/${path}/README.md`, { state: { from: openFrom } });
+                }}
               >
                 Open README
               </Button>
@@ -159,7 +168,10 @@ export function AppOverview() {
               ref={!load.hasReadme ? browseRef : undefined}
               variant={load.hasReadme ? 'outlined' : 'contained'}
               startIcon={<FolderOpenIcon />}
-              onClick={() => navigate(`/folder/${path}`, { state: { from: browseFrom } })}
+              onClick={() => {
+                setResumeFocus(path);
+                navigate(`/folder/${path}`, { state: { from: browseFrom } });
+              }}
             >
               Browse files
             </Button>

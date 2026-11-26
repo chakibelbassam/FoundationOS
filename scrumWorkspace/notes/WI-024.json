@@ -1,0 +1,20 @@
+[
+  {
+    "submitted": {
+      "id": "WI-024",
+      "revision": 4,
+      "requestId": "e79e08cc-8c35-4730-a040-4b892f8594c5",
+      "kind": "progress",
+      "body": "Assumption (Edge judgement, 26 Nov 2026): the prototype source is unavailable in this checkout, so the replay uses the recorded source observations plus the v0.2 candidate and the upstream React Bits TargetCursor description. Verification: the substitute replay sequences in the document were run against the built client (pointer pass, ~1 s dwell, activation, Escape, flip frames, nested Back, arrow boundaries). If the owner supplies the prototype later, re-run the matrix and update the decisions.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "e79e08cc-8c35-4730-a040-4b892f8594c5",
+      "recordId": "WI-024",
+      "at": "2026-11-26T20:22:09.810Z",
+      "kind": "progress",
+      "body": "Assumption (Edge judgement, 26 Nov 2026): the prototype source is unavailable in this checkout, so the replay uses the recorded source observations plus the v0.2 candidate and the upstream React Bits TargetCursor description. Verification: the substitute replay sequences in the document were run against the built client (pointer pass, ~1 s dwell, activation, Escape, flip frames, nested Back, arrow boundaries). If the owner supplies the prototype later, re-run the matrix and update the decisions.",
+      "documentRefs": []
+    }
+  }
+]

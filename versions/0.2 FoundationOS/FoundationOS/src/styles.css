@@ -5,7 +5,7 @@
   --fo-dur-flip: 520ms;
   --fo-dur-route: 200ms;
   --fo-ease-standard: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --fo-ease-flip: cubic-bezier(0.3, 0.8, 0.2, 1);
+  --fo-ease-flip: cubic-bezier(0.45, 0, 0.55, 1);
   --fo-focus: #1b56c4;
   --fo-radius: 16px;
   --fo-shelf-gap: 18px;
@@ -21,6 +21,7 @@
   min-height: 100vh;
   color: var(--fo-text, inherit);
   background: transparent;
+  container-type: inline-size;
 }
 
 .fo-root[data-theme='light'] {
@@ -130,8 +131,15 @@ body {
 
 .fo-username {
   max-width: 180px;
+  min-width: 0;
+}
+
+.fo-username-text {
+  display: block;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* Location + shelf */
@@ -163,9 +171,9 @@ body {
   margin: 0 -4px;
 }
 
-@media (max-width: 560px) {
+@container (max-width: 560px) {
   .fo-shelf { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
-  :root { --fo-card-height: 172px; }
+  .fo-root { --fo-card-height: 172px; }
 }
 
 /* Card */
@@ -214,6 +222,33 @@ body {
 
 .fo-face-back {
   transform: rotateY(180deg) translateZ(0.01px);
+  opacity: 0;
+  transition: opacity 0ms linear 0ms;
+}
+
+/*
+ * Face swap. Chrome does not reliably honour backface-visibility on clipped 3D faces, so
+ * the incoming face is hidden until the turn passes edge-on; that prevents both faces
+ * ghosting through each other. The swap is instant, at the moment the card is thinnest.
+ */
+.fo-card[data-revealed='true'] .fo-face-front {
+  opacity: 0;
+  transition: opacity 0ms linear calc(var(--fo-dur-flip) * 0.5);
+}
+
+.fo-card[data-revealed='true'] .fo-face-back {
+  opacity: 1;
+  transition: opacity 0ms linear calc(var(--fo-dur-flip) * 0.5);
+}
+
+.fo-card[data-revealed='false'] .fo-face-front {
+  opacity: 1;
+  transition: opacity 0ms linear 0ms;
+}
+
+.fo-card[data-revealed='false'] .fo-face-back {
+  opacity: 0;
+  transition: opacity 0ms linear 0ms;
 }
 
 .fo-root[data-surface='glass'] .fo-face,
@@ -228,6 +263,32 @@ body {
 .fo-root[data-theme='dark'][data-surface='glass'] .fo-card-backing {
   background: rgba(22, 32, 52, 0.68);
   border-color: rgba(150, 180, 230, 0.28);
+}
+
+/*
+ * Mid-flip the card must not reveal the page behind it (owner defect: glass flip bleed).
+ * The opaque backing fades in only while the turn is in progress, so the resting card
+ * keeps its glass transparency.
+ */
+.fo-card-backing {
+  transition: background-color var(--fo-dur-face) linear, border-color var(--fo-dur-face) linear;
+}
+
+.fo-card[data-target-lock='true'] .fo-card-backing {
+  background: var(--fo-card-solid);
+  transition: none;
+}
+
+/*
+ * During the turn both faces become opaque and drop the backdrop filter. Chrome can paint
+ * a semi-transparent face's opposite side and the page behind it while a 3D transform is in
+ * flight; opaque faces keep the card solid until the new face is ready. Resting cards keep
+ * their glass treatment.
+ */
+.fo-card[data-target-lock='true'] .fo-face {
+  background: var(--fo-card-solid);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
 }
 
 .fo-card-button {
@@ -433,14 +494,13 @@ body {
 /* Cursor brackets */
 .fo-target {
   position: fixed;
+  left: 0;
+  top: 0;
+  width: 0;
+  height: 0;
   pointer-events: none;
   z-index: 120;
-  transition:
-    left 110ms var(--fo-ease-standard),
-    top 110ms var(--fo-ease-standard),
-    width 110ms var(--fo-ease-standard),
-    height 110ms var(--fo-ease-standard),
-    opacity 110ms linear;
+  transition: opacity 110ms linear;
   opacity: 0;
 }
 
@@ -448,17 +508,20 @@ body {
 
 .fo-target i {
   position: absolute;
+  left: 0;
+  top: 0;
   width: 12px;
   height: 12px;
   border-color: var(--fo-focus);
   border-style: solid;
   filter: drop-shadow(0 0 3px color-mix(in srgb, var(--fo-focus) 40%, transparent));
+  transition: transform 110ms var(--fo-ease-standard);
 }
 
-.fo-target i:nth-child(1) { left: -2px; top: -2px; border-width: 2px 0 0 2px; border-top-left-radius: 3px; }
-.fo-target i:nth-child(2) { right: -2px; top: -2px; border-width: 2px 2px 0 0; border-top-right-radius: 3px; }
-.fo-target i:nth-child(3) { left: -2px; bottom: -2px; border-width: 0 0 2px 2px; border-bottom-left-radius: 3px; }
-.fo-target i:nth-child(4) { right: -2px; bottom: -2px; border-width: 0 2px 2px 0; border-bottom-right-radius: 3px; }
+.fo-target i:nth-child(1) { border-width: 2px 0 0 2px; border-top-left-radius: 3px; }
+.fo-target i:nth-child(2) { border-width: 2px 2px 0 0; border-top-right-radius: 3px; }
+.fo-target i:nth-child(3) { border-width: 0 0 2px 2px; border-bottom-left-radius: 3px; }
+.fo-target i:nth-child(4) { border-width: 0 2px 2px 0; border-bottom-right-radius: 3px; }
 
 /* Panels and states */
 .fo-panel {
@@ -507,10 +570,14 @@ body {
   max-width: 640px;
 }
 
-@media (max-width: 640px) {
+@container (max-width: 640px) {
   .fo-preview-grid { grid-template-columns: minmax(0, 1fr); }
   .fo-clock { display: none; }
   .fo-header { flex-wrap: wrap; }
+  .fo-header .MuiToolbar-root { flex-wrap: wrap; row-gap: 6px; }
+  .fo-header-controls { margin-left: auto; flex-wrap: wrap; justify-content: flex-end; }
+  .fo-username { max-width: 96px; }
+  .fo-settings-nav { flex-wrap: wrap; }
 }
 
 .fo-settings-nav {

@@ -8,7 +8,7 @@ import { api } from '../api/client';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { StatePanel } from '../components/StatePanel';
 import { getLastInput } from '../app/inputMode';
-import { fromState, useReturnFocus, useTakeReturn } from './useRememberReturn';
+import { fromState } from './useRememberReturn';
 
 type Load =
   | { status: 'loading' }
@@ -29,8 +29,6 @@ export function FileReader() {
   const [attempt, setAttempt] = useState(0);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const from = fromState(location.state);
-  const remember = useReturnFocus(from);
-  const { returnPath, settled } = useTakeReturn(location.pathname, location.key);
 
   useEffect(() => {
     let cancelled = false;
@@ -56,12 +54,11 @@ export function FileReader() {
   }, [path, attempt]);
 
   useEffect(() => {
-    if (!settled || load.status !== 'ready' || returnPath) return;
+    if (load.status !== 'ready') return;
     if (getLastInput() === 'keyboard') headingRef.current?.focus();
-  }, [settled, load, returnPath]);
+  }, [load]);
 
   const back = () => {
-    remember();
     if (from) navigate(-1);
     else navigate(`/folder/${parent}`);
   };

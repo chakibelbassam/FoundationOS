@@ -11,7 +11,8 @@ import { useSession } from '../app/SessionContext';
 import type { ShelfEntry } from '../api/types';
 import { useDirectory } from './useDirectory';
 import { useApps } from './useApps';
-import { fromState, useReturnFocus, useTakeReturn } from './useRememberReturn';
+import { clearResumeFocus, readResumeFocus, setResumeFocus } from './focusReturn';
+import { fromState } from './useRememberReturn';
 
 function join(base: string, name: string) {
   return base ? `${base}/${name}` : name;
@@ -34,8 +35,7 @@ export function FolderView() {
   const [priority, setPriority] = useState<string | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const from = fromState(location.state);
-  useReturnFocus(from);
-  const { returnPath, settled } = useTakeReturn(location.pathname, location.key);
+  const returnPath = readResumeFocus(location.state);
 
   const entries = state.status === 'ready' ? state.entries : null;
   const apps = useApps(entries, profile?.id, priority);
@@ -52,13 +52,27 @@ export function FolderView() {
   const title = path ? path.split('/').filter(Boolean).pop() ?? 'Home' : 'Home';
 
   useEffect(() => {
-    if (!settled || returnPath) return;
+    if (returnPath) return;
     if (getLastInput() === 'keyboard') {
       headingRef.current?.focus();
     }
-  }, [settled, returnPath, location.key]);
+  }, [returnPath, location.key]);
+
+  useEffect(() => {
+    if (!returnPath) return;
+    const timer = window.setTimeout(() => clearResumeFocus(), 600);
+    return () => window.clearTimeout(timer);
+  }, [returnPath]);
+
+  useEffect(() => {
+    if (!returnPath || state.status !== 'ready') return;
+    if (!items.some((item) => item.path === returnPath)) {
+      headingRef.current?.focus();
+    }
+  }, [returnPath, state.status, items]);
 
   const open = (kind: 'folder' | 'app' | 'file', target: string) => {
+    setResumeFocus(target);
     const router = kind === 'folder' ? `/folder/${target}` : kind === 'app' ? `/app/${target}` : `/file/${target}`;
     navigate(router, { state: { from: { route: location.pathname, path: target } } });
   };

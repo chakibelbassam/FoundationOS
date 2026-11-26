@@ -25,8 +25,7 @@ function resolveTarget(node: Element | null): Element | null {
 
 export function TargetCursor({ enabled, reducedMotion }: { enabled: boolean; reducedMotion: boolean }) {
   const [rect, setRect] = useState<Rect | null>(null);
-  const [visible, setVisible] = useState(false);
-  const current = useRef<Element | null>(null);
+  const [visible, setVisible] = useState(false);  const current = useRef<Element | null>(null);
   const lastInput = useRef<'pointer' | 'key'>('pointer');
   const fine = useRef(true);
 
@@ -59,8 +58,8 @@ export function TargetCursor({ enabled, reducedMotion }: { enabled: boolean; red
       if (!frame) frame = window.requestAnimationFrame(measure);
     };
 
-    const onPointerMove = (event: PointerEvent) => {
-      if (event.pointerType === 'touch') {
+    const onPointerMove = (event: PointerEvent | MouseEvent) => {
+      if ('pointerType' in event && event.pointerType === 'touch') {
         setVisible(false);
         return;
       }
@@ -97,6 +96,7 @@ export function TargetCursor({ enabled, reducedMotion }: { enabled: boolean; red
     const onResize = () => schedule();
 
     document.addEventListener('pointermove', onPointerMove, { passive: true });
+    document.addEventListener('mousemove', onPointerMove, { passive: true });
     document.addEventListener('pointerleave', onPointerLeave);
     document.addEventListener('keydown', onKeyDown, true);
     document.addEventListener('focusin', onFocusIn, true);
@@ -115,6 +115,7 @@ export function TargetCursor({ enabled, reducedMotion }: { enabled: boolean; red
       if (frame) window.cancelAnimationFrame(frame);
       window.clearInterval(timer);
       document.removeEventListener('pointermove', onPointerMove);
+      document.removeEventListener('mousemove', onPointerMove);
       document.removeEventListener('pointerleave', onPointerLeave);
       document.removeEventListener('keydown', onKeyDown, true);
       document.removeEventListener('focusin', onFocusIn, true);
@@ -125,28 +126,36 @@ export function TargetCursor({ enabled, reducedMotion }: { enabled: boolean; red
 
   if (!enabled) return null;
 
+  const corner = (index: number) => {
+    if (!rect) return undefined;
+    const x = rect.left - 4;
+    const y = rect.top - 4;
+    const w = rect.width + 8;
+    const h = rect.height + 8;
+    const offsets: Array<[number, number]> = [
+      [x, y],
+      [x + w - 12, y],
+      [x, y + h - 12],
+      [x + w - 12, y + h - 12],
+    ];
+    const [cx, cy] = offsets[index];
+    return {
+      transform: `translate3d(${cx}px, ${cy}px, 0)`,
+      transitionDuration: reducedMotion ? '0ms' : undefined,
+    } as const;
+  };
+
   return (
     <div
       className="fo-target"
       data-visible={visible && Boolean(rect)}
       data-reduced={reducedMotion}
       aria-hidden="true"
-      style={
-        rect
-          ? {
-              left: `${rect.left - 4}px`,
-              top: `${rect.top - 4}px`,
-              width: `${rect.width + 8}px`,
-              height: `${rect.height + 8}px`,
-              transitionDuration: reducedMotion ? '0ms' : undefined,
-            }
-          : undefined
-      }
     >
-      <i />
-      <i />
-      <i />
-      <i />
+      <i style={corner(0)} />
+      <i style={corner(1)} />
+      <i style={corner(2)} />
+      <i style={corner(3)} />
     </div>
   );
 }

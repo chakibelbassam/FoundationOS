@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -11,9 +11,8 @@ import { useServer } from '../app/ServerContext';
 import { readHint, useSession } from '../app/SessionContext';
 
 export function ConnectView() {
-  const { status, connect, error, wasReplaced, clearReplaced } = useSession();
+  const { status, connect, error } = useSession();
   const { config, check } = useServer();
-  const navigate = useNavigate();
   const location = useLocation();
   const [token, setToken] = useState('');
   const [localError, setLocalError] = useState<string | null>(null);
@@ -23,13 +22,6 @@ export function ConnectView() {
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
-
-  useEffect(() => {
-    if (wasReplaced) {
-      clearReplaced();
-      navigate('/', { replace: true });
-    }
-  }, [wasReplaced, clearReplaced, navigate]);
 
   const submit = async (event: React.FormEvent) => {
     event.preventDefault();

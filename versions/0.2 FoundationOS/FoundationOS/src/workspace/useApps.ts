@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { api } from '../api/client';
 import type { AppDescriptor, Entry } from '../api/types';
 
@@ -41,6 +41,7 @@ async function probe(memberId: string, path: string): Promise<AppDescriptor | nu
 
 export function useApps(entries: Entry[] | null, memberId: string | undefined, priorityPath?: string | null) {
   const [apps, setApps] = useState<Record<string, AppDescriptor | null>>({});
+  const budget = useRef<{ signature: string; probed: Set<string> }>({ signature: '', probed: new Set() });
 
   const folderPaths = (entries ?? [])
     .filter((entry): entry is Entry & { type: 'folder' } => entry.type === 'folder')
@@ -53,18 +54,24 @@ export function useApps(entries: Entry[] | null, memberId: string | undefined, p
       setApps({});
       return;
     }
+    if (budget.current.signature !== signature) {
+      budget.current = { signature, probed: new Set() };
+    }
     let cancelled = false;
     const folders = entries
       .filter((entry): entry is Entry & { type: 'folder' } => entry.type === 'folder')
       .map((entry) => entry.name);
+
     const chosen: string[] = [];
     if (priorityPath) {
       const name = priorityPath.split('/').pop();
       if (name && folders.includes(name)) chosen.push(name);
     }
-    const limit = Math.max(MAX_PROBES, priorityPath ? MAX_PROBES : 0);
+    // Reserve the last slot of the budget so an explicitly focused or activated item can
+    // still be recognised after the first probes have started.
+    const viewCap = priorityPath ? MAX_PROBES : MAX_PROBES - 1;
     for (const name of folders) {
-      if (chosen.length >= limit) break;
+      if (chosen.length >= viewCap) break;
       if (!chosen.includes(name)) chosen.push(name);
     }
 
@@ -81,6 +88,8 @@ export function useApps(entries: Entry[] | null, memberId: string | undefined, p
         const name = chosen[cursor++];
         const key = `${memberId}:${name}`;
         if (cache.has(key)) continue;
+        if (budget.current.probed.size >= MAX_PROBES) break;
+        budget.current.probed.add(key);
         const descriptor = await probe(memberId, name);
         if (cancelled) return;
         setApps((current) => ({ ...current, [name]: descriptor }));

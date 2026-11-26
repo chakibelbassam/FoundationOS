@@ -226,7 +226,7 @@ export function SettingsView() {
           {saveState === 'saved'
             ? 'Saved for this member.'
             : saveState === 'error'
-              ? 'The change was not saved. Your last saved settings are still in use.'
+              ? 'The change was not saved. Retry, or Cancel to return to your saved settings.'
               : draft && JSON.stringify(draft) === JSON.stringify(DEFAULT_PREFERENCES)
                 ? 'Defaults previewed. Apply to keep them.'
                 : dirty
@@ -234,7 +234,11 @@ export function SettingsView() {
                   : 'Showing your saved settings.'}
         </Typography>
       </div>
-      {saveState === 'error' && saveError ? <Alert severity="error" sx={{ mt: 2 }}>Failed save: {saveError}</Alert> : null}
+      {saveState === 'error' && saveError ? (
+        <Alert severity="error" sx={{ mt: 2 }}>
+          Failed save: {saveError} Your last saved settings are unchanged on disk.
+        </Alert>
+      ) : null}
 
       <div className="fo-about">
         FoundationOS client {config?.clientVersion ?? '0.2'} · server{' '}

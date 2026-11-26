@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -40,6 +40,8 @@ export function Header() {
   const clock = useClock();
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
   const [panelAnchor, setPanelAnchor] = useState<HTMLElement | null>(null);
+  const userRef = useRef<HTMLButtonElement | null>(null);
+  const chipRef = useRef<HTMLButtonElement | null>(null);
 
   const serverOk = config?.check.ok ?? false;
   const state = !serverOk ? 'offline' : profile ? 'connected' : 'reconnect';
@@ -62,10 +64,14 @@ export function Header() {
         <Box className="fo-header-controls">
           <span className="fo-clock" aria-label={`Local time ${clock}`}>{clock}</span>
           <Button
+            ref={chipRef}
             size="small"
             color={state === 'connected' ? 'success' : state === 'reconnect' ? 'warning' : 'error'}
             startIcon={icon}
-            onClick={(event) => setPanelAnchor(event.currentTarget)}
+            onClick={(event) => {
+              event.currentTarget.focus();
+              setPanelAnchor(event.currentTarget);
+            }}
             aria-haspopup="dialog"
             aria-expanded={Boolean(panelAnchor)}
           >
@@ -74,15 +80,19 @@ export function Header() {
           {profile ? (
             <>
               <Button
+                ref={userRef}
                 size="small"
                 startIcon={<PersonIcon fontSize="small" />}
-                onClick={(event) => setMenuAnchor(event.currentTarget)}
+                onClick={(event) => {
+                  event.currentTarget.focus();
+                  setMenuAnchor(event.currentTarget);
+                }}
                 aria-haspopup="menu"
                 aria-expanded={Boolean(menuAnchor)}
                 className="fo-username"
                 title={profile.name}
               >
-                {profile.name}
+                <span className="fo-username-text">{profile.name}</span>
               </Button>
               <Button
                 size="small"
@@ -104,7 +114,10 @@ export function Header() {
       <Menu
         anchorEl={menuAnchor}
         open={Boolean(menuAnchor)}
-        onClose={() => setMenuAnchor(null)}
+        onClose={(_event, reason) => {
+          setMenuAnchor(null);
+          if (reason === 'escapeKeyDown') window.setTimeout(() => userRef.current?.focus(), 0);
+        }}
         MenuListProps={{ 'aria-label': 'Profile menu' }}
         transitionDuration={effective.motion === 'off' ? 0 : 160}
       >
@@ -128,7 +141,10 @@ export function Header() {
       <Popover
         open={Boolean(panelAnchor)}
         anchorEl={panelAnchor}
-        onClose={() => setPanelAnchor(null)}
+        onClose={(_event, reason) => {
+          setPanelAnchor(null);
+          if (reason === 'escapeKeyDown') window.setTimeout(() => chipRef.current?.focus(), 0);
+        }}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transitionDuration={effective.motion === 'off' ? 0 : 160}
       >

@@ -1,6 +1,5 @@
-import { useEffect, useMemo } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';
-import CssBaseline from '@mui/material/CssBaseline';
+import { useEffect, useMemo, useState } from 'react';
+import { Navigate, Route, Routes } from 'react-router-dom';import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, useMediaQuery } from '@mui/material';
 import { buildTheme } from '../theme';
 import { Header } from '../components/Header';
@@ -11,7 +10,7 @@ import { FolderView } from '../workspace/FolderView';
 import { AppOverview } from '../workspace/AppOverview';
 import { SettingsView } from '../settings/SettingsView';
 import { StatePanel } from '../components/StatePanel';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motionIsReduced, usePreferences } from './PreferencesContext';
 import { useSession } from './SessionContext';
 import { installInputTracking } from './inputMode';
@@ -30,9 +29,18 @@ function NotFound() {
   );
 }
 
+function SwitchHome() {
+  const { clearReplaced } = useSession();
+  useEffect(() => {
+    clearReplaced();
+  }, [clearReplaced]);
+  return <Navigate to="/" replace />;
+}
+
 function Protected() {
-  const { profile } = useSession();
+  const { profile, wasReplaced } = useSession();
   if (!profile) return <ConnectView />;
+  if (wasReplaced) return <SwitchHome />;
   return (
     <Routes>
       <Route path="/" element={<FolderView />} />
@@ -46,10 +54,45 @@ function Protected() {
   );
 }
 
+function usePreviewSize(search: string) {
+  const stored = () => {
+    try {
+      const raw = sessionStorage.getItem('foundationos.qa.size');
+      if (!raw) return null;
+      const parsed = JSON.parse(raw) as { w?: number; h?: number };
+      return { w: Number(parsed.w) || null, h: Number(parsed.h) || null };
+    } catch {
+      return null;
+    }
+  };
+  const [size, setSize] = useState<{ w: number | null; h: number | null }>(() => stored() ?? { w: null, h: null });
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    if (!params.has('w')) return;
+    const w = Number(params.get('w'));
+    const h = params.has('h') ? Number(params.get('h')) : null;
+    const next = {
+      w: Number.isFinite(w) && w >= 280 && w <= 900 ? w : null,
+      h: h !== null && Number.isFinite(h) && h >= 400 && h <= 1200 ? h : null,
+    };
+    try {
+      sessionStorage.setItem('foundationos.qa.size', JSON.stringify(next));
+    } catch {
+      /* ignore */
+    }
+    setSize(next);
+  }, [search]);
+  return size;
+}
+
 export function App() {
   const { effective } = usePreferences();
   const { profile } = useSession();
   const { config } = useServer();
+  const location = useLocation();
+  const preview = usePreviewSize(location.search);
+  const previewWidth = preview.w;
+  const previewHeight = preview.h;
   const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
   const dark = effective.theme === 'system' ? prefersDark : effective.theme === 'dark';
   const theme = useMemo(() => buildTheme(effective, prefersDark), [effective, prefersDark]);
@@ -79,6 +122,16 @@ export function App() {
         data-theme={dark ? 'dark' : 'light'}
         data-surface={effective.surface}
         data-density={effective.density}
+        style={
+          previewWidth
+            ? {
+                maxWidth: `${previewWidth}px`,
+                margin: '0 auto',
+                boxShadow: '0 0 0 1px rgba(90, 110, 150, 0.35)',
+                ...(previewHeight ? { height: `${previewHeight}px`, minHeight: `${previewHeight}px`, overflowY: 'auto' as const } : {}),
+              }
+            : undefined
+        }
       >
         <div className="fo-backdrop" aria-hidden="true" />
         <TargetCursor enabled={effective.cursor === 'target'} reducedMotion={reduced} />

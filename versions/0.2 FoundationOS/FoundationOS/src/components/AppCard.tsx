@@ -26,12 +26,14 @@ export function AppCard({ path, name, descriptor, reducedMotion, frontTabIndex =
   const [note, setNote] = useState<string | null>(null);
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const innerRef = useRef<HTMLDivElement | null>(null);
   const frontRef = useRef<HTMLButtonElement | null>(null);
   const runRef = useRef<HTMLButtonElement | null>(null);
   const openRef = useRef<HTMLButtonElement | null>(null);
   const moreRef = useRef<HTMLButtonElement | null>(null);
   const dwellTimer = useRef<number | null>(null);
   const transitionTimer = useRef<number | null>(null);
+  const pendingFocus = useRef<'run' | 'open' | null>(null);
   const unlockAt = useRef(0);
   const lastKeyAt = useRef(0);
 
@@ -54,8 +56,29 @@ export function AppCard({ path, name, descriptor, reducedMotion, frontTabIndex =
       window.clearTimeout(transitionTimer.current);
       transitionTimer.current = null;
     }
-    setTransitioning(false);
   }, []);
+
+  const finishTransition = useCallback(() => {
+    clearTransition();
+    setTransitioning(false);
+    const focus = pendingFocus.current;
+    pendingFocus.current = null;
+    if (focus === 'run') runRef.current?.focus();
+    if (focus === 'open') openRef.current?.focus();
+  }, [clearTransition]);
+
+  const startTransition = useCallback((focus: 'run' | 'open' | null) => {
+    clearTransition();
+    pendingFocus.current = focus;
+    setTransitioning(true);
+    const computed = innerRef.current
+      ? parseFloat(getComputedStyle(innerRef.current).transitionDuration) * 1000
+      : transitionDuration;
+    const wait = reducedMotion ? 30 : Math.max(transitionDuration, Number.isFinite(computed) ? computed : 0) + 120;
+    // The CSS transition end is the normal finish; this fallback covers reduced motion,
+    // a missed event or a background tab.
+    transitionTimer.current = window.setTimeout(() => finishTransition(), wait);
+  }, [clearTransition, finishTransition, reducedMotion, transitionDuration]);
 
   useEffect(() => () => {
     clearDwell();
@@ -74,15 +97,8 @@ export function AppCard({ path, name, descriptor, reducedMotion, frontTabIndex =
     clearDwell();
     unlockAt.current = Date.now() + Math.max(transitionDuration, 260);
     setRevealed(true);
-    setTransitioning(true);
-    clearTransition();
-    transitionTimer.current = window.setTimeout(() => {
-      setTransitioning(false);
-      transitionTimer.current = null;
-      if (source === 'keyboard') runRef.current?.focus();
-      if (source === 'return') openRef.current?.focus();
-    }, transitionDuration);
-  }, [clearDwell, clearTransition, revealed, transitionDuration]);
+    startTransition(source === 'keyboard' ? 'run' : source === 'return' ? 'open' : null);
+  }, [clearDwell, revealed, startTransition, transitionDuration]);
 
   useEffect(() => {
     if (!autoReveal) return;
@@ -92,15 +108,10 @@ export function AppCard({ path, name, descriptor, reducedMotion, frontTabIndex =
 
   const hide = useCallback(() => {
     setRevealed(false);
-    setTransitioning(true);
     setNote(null);
     setMenuAnchor(null);
-    clearTransition();
-    transitionTimer.current = window.setTimeout(() => {
-      setTransitioning(false);
-      transitionTimer.current = null;
-    }, transitionDuration);
-  }, [clearTransition, transitionDuration]);
+    startTransition(null);
+  }, [startTransition]);
 
   const onPointerEnter = (event: React.PointerEvent) => {
     if (event.pointerType === 'touch' || revealed) return;
@@ -152,6 +163,10 @@ export function AppCard({ path, name, descriptor, reducedMotion, frontTabIndex =
     );
   };
 
+  const guardRepeat = (event: React.KeyboardEvent) => {
+    if (event.repeat) event.preventDefault();
+  };
+
   const displayName = descriptor.name || name;
 
   return (
@@ -168,7 +183,13 @@ export function AppCard({ path, name, descriptor, reducedMotion, frontTabIndex =
       onKeyDown={onCardKeyDown}
     >
       <div className="fo-card-backing" aria-hidden="true" />
-      <div className="fo-card-inner">
+      <div
+        className="fo-card-inner"
+        ref={innerRef}
+        onTransitionEnd={(event) => {
+          if (event.propertyName === 'transform') finishTransition();
+        }}
+      >
         <div className="fo-face fo-face-front" aria-hidden={revealed}>
           <button
             ref={frontRef}
@@ -224,6 +245,7 @@ export function AppCard({ path, name, descriptor, reducedMotion, frontTabIndex =
                 data-primary="true"
                 tabIndex={revealed ? 0 : -1}
                 onClick={runAction}
+                onKeyDown={guardRepeat}
               >
                 Run
               </button>
@@ -233,6 +255,7 @@ export function AppCard({ path, name, descriptor, reducedMotion, frontTabIndex =
                 className="fo-card-action"
                 tabIndex={revealed ? 0 : -1}
                 onClick={onOpen}
+                onKeyDown={guardRepeat}
               >
                 Open
               </button>
@@ -244,6 +267,7 @@ export function AppCard({ path, name, descriptor, reducedMotion, frontTabIndex =
                 aria-haspopup="menu"
                 aria-expanded={Boolean(menuAnchor)}
                 onClick={(event) => setMenuAnchor(event.currentTarget)}
+                onKeyDown={guardRepeat}
               >
                 More
               </button>

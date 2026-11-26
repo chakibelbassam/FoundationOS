@@ -6,7 +6,8 @@
   "type": "enabler",
   "priority": 1,
   "effort": 3,
-  "revision": 1,
-  "status": "proposed",
-  "acceptance": "**Story or goal** · Give all client features a version-specific browser entry point.\n\n**Expected behaviour** · Build React, TypeScript, Vite and React Router under the v0.2 client package and serve its built output on an available loopback port.\n\n**Scope boundary** · Own the version launcher, host and shell.\n\n**Previous in delivery queue** · WI-024\n\n**Depends on** · No PI-2 work-item prerequisite.\n\n**Verify** · Launch the build, load a nested route directly and verify an unknown asset returns an asset error.\n\n**Effort basis** · Locality across a small package and launcher."
+  "revision": 4,
+  "status": "review",
+  "acceptance": "**Story or goal** · Give all client features a version-specific browser entry point.\n\n**Expected behaviour** · Build React, TypeScript, Vite and React Router under the v0.2 client package and serve its built output on an available loopback port.\n\n**Scope boundary** · Own the version launcher, host and shell.\n\n**Previous in delivery queue** · WI-024\n\n**Depends on** · No PI-2 work-item prerequisite.\n\n**Verify** · Launch the build, load a nested route directly and verify an unknown asset returns an asset error.\n\n**Effort basis** · Locality across a small package and launcher.",
+  "evidence": "versions/0.2 FoundationOS/FoundationOS builds with `npm run build` (tsc + vite, dist/index.html, 430.64 kB JS). The host serves the build on a free loopback port: launch printed `FoundationOS 0.2 client ready at http://127.0.0.1:55296/` and later 61686. `node --test tests/host.test.mjs` passes 10/10 including direct SPA routes (/app/Weather, /file/Weather/README.md), missing asset 404 `Asset not found`, and `/api` proxy status preservation. Built-in browser loaded /app/Weather directly after reconnect."
 }
