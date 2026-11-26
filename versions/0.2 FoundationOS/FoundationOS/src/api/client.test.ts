@@ -53,4 +53,68 @@ describe('api client', () => {
     fetchMock.mockResolvedValueOnce(new Response('<html>', { status: 200, headers: { 'content-type': 'text/html' } }));
     await expect(api.list('')).rejects.toMatchObject({ failure: { kind: 'invalid' } });
   });
+
+  it('ignores a stale 401 after a member switch and handles the active 401 once', async () => {
+    const { onUnauthorized, abortActiveRequests } = await import('./client');
+    abortActiveRequests();
+    const listener = vi.fn();
+    const unsubscribe = onUnauthorized(listener);
+    try {
+      setToken('token-alice');
+      let resolveStale!: (value: Response) => void;
+      fetchMock.mockImplementationOnce(() => new Promise<Response>((resolve) => {
+        resolveStale = resolve;
+      }));
+      const stale = api.profile();
+      // The member switches before the first request answers.
+      setToken('token-blair');
+      resolveStale(response(401, { error: 'Sign in' }));
+      await expect(stale).rejects.toMatchObject({ failure: { kind: 'unauthorized' } });
+      expect(listener).not.toHaveBeenCalled();
+
+      fetchMock.mockResolvedValueOnce(response(401, { error: 'Sign in' }));
+      await expect(api.profile()).rejects.toMatchObject({ failure: { kind: 'unauthorized' } });
+      expect(listener).toHaveBeenCalledTimes(1);
+    } finally {
+      unsubscribe();
+    }
+  });
+
+  it('aborts in-flight requests on demand without notifying', async () => {
+    const { onUnauthorized, abortActiveRequests } = await import('./client');
+    abortActiveRequests();
+    const listener = vi.fn();
+    const unsubscribe = onUnauthorized(listener);
+    try {
+      setToken('token-alice');
+      fetchMock.mockImplementationOnce(
+        (_url: string, init?: RequestInit) =>
+          new Promise<Response>((_resolve, reject) => {
+            init?.signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+          }),
+      );
+      const pending = api.list('Projects');
+      abortActiveRequests();
+      await expect(pending).rejects.toMatchObject({ failure: { kind: 'aborted' } });
+      expect(listener).not.toHaveBeenCalled();
+    } finally {
+      unsubscribe();
+    }
+  });
+
+  it('honours a caller AbortSignal for directory and file reads', async () => {
+    const { abortActiveRequests } = await import('./client');
+    abortActiveRequests();
+    setToken('token-alice');
+    const controller = new AbortController();
+    fetchMock.mockImplementationOnce(
+      (_url: string, init?: RequestInit) =>
+        new Promise<Response>((_resolve, reject) => {
+          init?.signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+        }),
+    );
+    const pending = api.read('Projects/Weather/README.md', { signal: controller.signal });
+    controller.abort();
+    await expect(pending).rejects.toMatchObject({ failure: { kind: 'aborted' } });
+  });
 });

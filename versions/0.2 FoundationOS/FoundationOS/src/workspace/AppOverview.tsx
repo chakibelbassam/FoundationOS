@@ -11,6 +11,7 @@ import type { AppDescriptor, Entry } from '../api/types';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { StatePanel } from '../components/StatePanel';
 import { getLastInput } from '../app/inputMode';
+import { useSession } from '../app/SessionContext';
 import { clearResumeFocus, readResumeFocus, setResumeFocus } from './focusReturn';
 import { fromState } from './useRememberReturn';
 
@@ -39,6 +40,7 @@ export function AppOverview() {
   const params = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const { profile } = useSession();
   const path = (params['*'] ?? '').replace(/\/+$/, '');
   const name = path.split('/').filter(Boolean).pop() ?? 'App';
   const [load, setLoad] = useState<Load>({ status: 'loading' });
@@ -51,41 +53,46 @@ export function AppOverview() {
 
   useEffect(() => {
     let cancelled = false;
+    const controller = new AbortController();
     setLoad({ status: 'loading' });
     (async () => {
       try {
-        const listing = await api.read(path);
-        if (cancelled) return;
+        const listing = await api.read(path, { signal: controller.signal });
+        if (cancelled || controller.signal.aborted) return;
         let descriptor: AppDescriptor = { name };
         let hasReadme = false;
         try {
-          const manifest = await api.read(`${path}/app.json`);
+          const manifest = await api.read(`${path}/app.json`, { signal: controller.signal });
           if (!Array.isArray(manifest) && typeof manifest.text === 'string') {
             descriptor = parseDescriptor(manifest.text, name);
           }
         } catch {
+          if (controller.signal.aborted) return;
           /* a changed descriptor leaves the folder usable */
         }
         try {
-          const readme = await api.read(`${path}/README.md`);
+          const readme = await api.read(`${path}/README.md`, { signal: controller.signal });
           hasReadme = !Array.isArray(readme) && typeof readme.text === 'string';
         } catch {
+          if (controller.signal.aborted) return;
           hasReadme = false;
         }
-        if (cancelled) return;
+        if (cancelled || controller.signal.aborted) return;
         if (Array.isArray(listing)) setLoad({ status: 'ready', entries: listing, descriptor, hasReadme });
         else setLoad({ status: 'not-found' });
       } catch (error) {
-        if (cancelled) return;
+        if (cancelled || controller.signal.aborted) return;
         const kind = (error as { failure?: { kind?: string } }).failure?.kind;
+        if (kind === 'aborted') return;
         if (kind === 'not-found') setLoad({ status: 'not-found' });
         else setLoad({ status: 'offline', message: 'The app folder could not be read. Check the server and try again.' });
       }
     })();
     return () => {
       cancelled = true;
+      controller.abort();
     };
-  }, [path, attempt, name]);
+  }, [path, attempt, name, profile?.id]);
 
   useEffect(() => {
     if (load.status !== 'ready') return;

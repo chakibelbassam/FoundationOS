@@ -1,0 +1,38 @@
+[
+  {
+    "submitted": {
+      "id": "WI-047",
+      "revision": 2,
+      "requestId": "4cdab456-c477-42d2-82f6-bf2136b4dd67",
+      "kind": "progress",
+      "body": "Sprint-6 delivery starts. Phase A brief in versions/0.2 FoundationOS/agents/muse/WI-045/brief.md.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "4cdab456-c477-42d2-82f6-bf2136b4dd67",
+      "recordId": "WI-047",
+      "at": "2026-11-26T22:38:19.583Z",
+      "kind": "progress",
+      "body": "Sprint-6 delivery starts. Phase A brief in versions/0.2 FoundationOS/agents/muse/WI-045/brief.md.",
+      "documentRefs": []
+    }
+  },
+  {
+    "submitted": {
+      "id": "WI-047",
+      "revision": 3,
+      "requestId": "47c59c3a-ac60-4a2f-8c9e-6ee2e52873da",
+      "kind": "progress",
+      "body": "Muse Spark 1.3 Contributor (xhigh) implementing on PR #9 head 3f928f5.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "47c59c3a-ac60-4a2f-8c9e-6ee2e52873da",
+      "recordId": "WI-047",
+      "at": "2026-11-26T22:38:19.980Z",
+      "kind": "progress",
+      "body": "Muse Spark 1.3 Contributor (xhigh) implementing on PR #9 head 3f928f5.",
+      "documentRefs": []
+    }
+  }
+]

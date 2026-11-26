@@ -31,14 +31,14 @@ export function FolderView() {
   const { profile } = useSession();
   const { effective } = usePreferences();
   const path = (params['*'] ?? '').replace(/\/+$/, '');
-  const { state, reload } = useDirectory(path);
+  const { state, reload } = useDirectory(path, profile?.id);
   const [priority, setPriority] = useState<string | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const from = fromState(location.state);
   const returnPath = readResumeFocus(location.state);
 
   const entries = state.status === 'ready' ? state.entries : null;
-  const apps = useApps(entries, profile?.id, priority);
+  const apps = useApps(entries, profile?.id, path, priority);
 
   const items = useMemo<ShelfEntry[]>(() => {
     if (!entries) return [];

@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { api, onUnauthorized, setToken } from '../api/client';
+import { abortActiveRequests, api, currentGeneration, onUnauthorized, setToken } from '../api/client';
 import type { Profile } from '../api/types';
 
 const HINT_KEY = 'foundationos.v0.2.member';
@@ -53,11 +53,17 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   const connect = useCallback(async (token: string) => {
     const trimmed = token.trim();
     if (!trimmed) return { ok: false as const, error: 'Enter an existing member session token.' };
+    // A new connection cancels anything the previous member still had in
+    // flight, so a late 401 or listing cannot clear or overwrite this session.
+    abortActiveRequests();
     setStatus('connecting');
     setError(null);
     setToken(trimmed);
+    const ticket = currentGeneration();
     try {
       const next = await api.profile();
+      // A newer connect or a disconnect supersedes this attempt.
+      if (ticket !== currentGeneration()) return { ok: false as const, error: 'Superseded by a newer connection.' };
       tokenRef.current = trimmed;
       setProfile(next);
       setStatus('ready');
@@ -66,6 +72,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
       rememberMember(next);
       return { ok: true as const, profile: next };
     } catch (failure) {
+      if (ticket !== currentGeneration()) return { ok: false as const, error: 'Superseded by a newer connection.' };
+      if (failure && typeof failure === 'object' && 'failure' in failure) {
+        const kind = (failure as { failure: { kind: string } }).failure.kind;
+        if (kind === 'aborted') return { ok: false as const, error: 'Superseded by a newer connection.' };
+      }
       setToken(null);
       tokenRef.current = null;
       setProfile(null);
@@ -82,6 +93,7 @@ export function SessionProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const disconnect = useCallback(() => {
+    abortActiveRequests();
     tokenRef.current = null;
     setToken(null);
     setProfile(null);

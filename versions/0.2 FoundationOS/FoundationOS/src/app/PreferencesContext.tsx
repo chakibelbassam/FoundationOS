@@ -1,4 +1,4 @@
-import { createContext, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
 import { loadPreferences, savePreferences } from '../api/client';
 import type { Preferences } from '../api/types';
 import { useSession } from '../app/SessionContext';
@@ -42,8 +42,10 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(false);
   const [saveState, setSaveState] = useState<'idle' | 'saving' | 'saved' | 'error'>('idle');
   const [saveError, setSaveError] = useState<string | null>(null);
+  const memberRef = useRef<string | undefined>(profile?.id);
 
   useEffect(() => {
+    memberRef.current = profile?.id;
     setDraftState(null);
     setSaveState('idle');
     setSaveError(null);
@@ -51,21 +53,28 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
       setApplied(DEFAULT_PREFERENCES);
       return;
     }
+    const memberId = profile.id;
+    const controller = new AbortController();
     let cancelled = false;
     setLoading(true);
-    loadPreferences(profile.id)
+    loadPreferences({ signal: controller.signal })
       .then((stored) => {
-        if (cancelled) return;
+        if (cancelled || memberRef.current !== memberId) return;
         setApplied(stored ? { ...DEFAULT_PREFERENCES, ...stored } : DEFAULT_PREFERENCES);
       })
-      .catch(() => {
+      .catch((error) => {
+        if (cancelled || memberRef.current !== memberId) return;
+        if (error && typeof error === 'object' && 'failure' in error) {
+          if ((error as { failure: { kind: string } }).failure.kind === 'aborted') return;
+        }
         if (!cancelled) setApplied(DEFAULT_PREFERENCES);
       })
       .finally(() => {
-        if (!cancelled) setLoading(false);
+        if (!cancelled && memberRef.current === memberId) setLoading(false);
       });
     return () => {
       cancelled = true;
+      controller.abort();
     };
   }, [profile]);
 
@@ -83,16 +92,23 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
 
   const apply = useCallback(async () => {
     if (!profile) return false;
+    const memberId = profile.id;
     const next = draft ?? applied;
     setSaveState('saving');
     setSaveError(null);
     try {
-      const saved = await savePreferences(profile.id, next);
+      const saved = await savePreferences(next);
+      // A member switch during the save must not apply stale results.
+      if (memberRef.current !== memberId) return false;
       setApplied({ ...DEFAULT_PREFERENCES, ...saved });
       setDraftState(null);
       setSaveState('saved');
       return true;
     } catch (error) {
+      if (memberRef.current !== memberId) return false;
+      if (error && typeof error === 'object' && 'failure' in error) {
+        if ((error as { failure: { kind: string } }).failure.kind === 'aborted') return false;
+      }
       setSaveState('error');
       setSaveError(error instanceof Error ? error.message : 'The settings could not be saved.');
       return false;

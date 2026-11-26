@@ -85,12 +85,15 @@ export function AppCard({ path, name, descriptor, reducedMotion, frontTabIndex =
     clearTransition();
   }, [clearDwell, clearTransition]);
 
+  // A pending dwell is cancelled by a scroll of the page or any nested
+  // scrolling surface. The listener stays mounted while the card is closed:
+  // scroll events do not bubble, but a capturing window listener still sees
+  // scrolls from nested surfaces during the dwell window.
   useEffect(() => {
-    if (!revealed) return;
     const onScroll = () => clearDwell();
     window.addEventListener('scroll', onScroll, { capture: true, passive: true });
     return () => window.removeEventListener('scroll', onScroll, true);
-  }, [revealed, clearDwell]);
+  }, [clearDwell]);
 
   const reveal = useCallback((source: 'pointer' | 'keyboard' | 'return') => {
     if (revealed) return;

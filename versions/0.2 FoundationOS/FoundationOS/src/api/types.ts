@@ -64,6 +64,7 @@ export interface Preferences {
 export type ApiFailure =
   | { kind: 'unauthorized' }
   | { kind: 'not-found' }
+  | { kind: 'aborted' }
   | { kind: 'offline'; message: string }
   | { kind: 'invalid'; message: string }
   | { kind: 'server'; status: number; message: string };

@@ -28,6 +28,10 @@ const EXPECTED_SERVER_VERSION = '0.1';
 const PROBE_TIMEOUT_MS = 3000;
 const PROXY_TIMEOUT_MS = 10000;
 const PREFS_FILE = 'preferences.json';
+const PREFS_LOCK = 'preferences.lock';
+const PREFS_LOCK_RETRIES = 40;
+const PREFS_LOCK_DELAY_MS = 50;
+const PREFS_LOCK_STALE_MS = 5000;
 const UUID_RE = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/;
 
 // Allowed preference values. Keys are the setting names; values are the
@@ -368,6 +372,88 @@ function prefsPath() {
   return path.join(DATA_DIR, PREFS_FILE);
 }
 
+function prefsLockDir() {
+  return path.join(DATA_DIR, PREFS_LOCK);
+}
+
+function bearerToken(req) {
+  const raw = typeof req.headers?.authorization === 'string' ? req.headers.authorization : '';
+  const match = /^Bearer\s+(.+)$/i.exec(raw.trim());
+  const token = match ? match[1].trim() : '';
+  return token || null;
+}
+
+// Identity comes from the v0.1 server, never from the request body. Returns
+// { memberId } for a verified session, { unauthorized: true } for a missing,
+// invalid or expired token, or { failed: true } when the server cannot answer.
+async function resolveMemberId(token) {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), PROBE_TIMEOUT_MS);
+  try {
+    const response = await fetch(`${SERVER_ROOT}/profile`, {
+      headers: { authorization: `Bearer ${token}`, accept: 'application/json' },
+      signal: controller.signal,
+    });
+    if (!response.ok) return { unauthorized: true };
+    let data = null;
+    try {
+      data = await response.json();
+    } catch {
+      return { unauthorized: true };
+    }
+    if (typeof data?.id !== 'string' || !UUID_RE.test(data.id)) return { unauthorized: true };
+    return { memberId: data.id };
+  } catch {
+    return { failed: true };
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Cross-process mutual exclusion for the read-merge-write in
+// handlePrefsSave. mkdir is atomic, so only one host holds the lock; stale
+// locks (crashed holder) time out while short waits cover a live holder.
+async function acquirePrefsLock() {
+  try {
+    await mkdir(DATA_DIR, { recursive: true });
+  } catch {
+    // The write below reports the failure; the lock simply cannot be taken.
+  }
+  const lockDir = prefsLockDir();
+  for (let attempt = 0; attempt < PREFS_LOCK_RETRIES; attempt += 1) {
+    try {
+      await mkdir(lockDir);
+      return true;
+    } catch (error) {
+      if (error?.code !== 'EEXIST') return false;
+      try {
+        const info = await stat(lockDir);
+        if (Date.now() - info.mtimeMs > PREFS_LOCK_STALE_MS) {
+          await rm(lockDir, { recursive: true, force: true });
+          continue;
+        }
+      } catch {
+        // Lock vanished between calls; retry immediately.
+        continue;
+      }
+      await sleep(PREFS_LOCK_DELAY_MS);
+    }
+  }
+  return false;
+}
+
+async function releasePrefsLock() {
+  try {
+    await rm(prefsLockDir(), { recursive: true, force: true });
+  } catch {
+    // Best effort: a stale timeout cleans up a crashed holder.
+  }
+}
+
 async function readPrefsMap() {
   let text;
   try {
@@ -410,16 +496,28 @@ function checkPreferences(preferences) {
 }
 
 async function handlePrefsLoad(req, res) {
-  let input;
-  try {
-    input = JSON.parse((await readBody(req, 65536)).toString('utf8'));
-  } catch {
-    sendJson(res, 400, { error: 'Request must be JSON' });
+  const token = bearerToken(req);
+  if (!token) {
+    sendJson(res, 401, { error: 'Sign in' });
     return;
   }
-  const memberId = input?.memberId;
-  if (typeof memberId !== 'string' || !UUID_RE.test(memberId)) {
-    sendJson(res, 400, { error: 'memberId must be a UUID' });
+  const resolved = await resolveMemberId(token);
+  if (resolved.failed) {
+    sendJson(res, 502, { error: 'Server unreachable' });
+    return;
+  }
+  if (resolved.unauthorized || !resolved.memberId) {
+    sendJson(res, 401, { error: 'Invalid or expired session' });
+    return;
+  }
+  // The body memberId is ignored: identity always comes from the session
+  // token via GET /profile. A body may still be present; it just needs to be
+  // valid JSON when non-empty.
+  try {
+    const text = (await readBody(req, 65536)).toString('utf8');
+    if (text.trim()) JSON.parse(text);
+  } catch {
+    sendJson(res, 400, { error: 'Request must be JSON' });
     return;
   }
   let map;
@@ -429,21 +527,32 @@ async function handlePrefsLoad(req, res) {
     sendJson(res, 500, { error: 'The settings could not be loaded.' });
     return;
   }
-  const stored = Object.prototype.hasOwnProperty.call(map, memberId) ? map[memberId] : null;
+  const stored = Object.prototype.hasOwnProperty.call(map, resolved.memberId) ? map[resolved.memberId] : null;
   sendJson(res, 200, { preferences: stored === undefined ? null : stored });
 }
 
 async function handlePrefsSave(req, res) {
-  let input;
-  try {
-    input = JSON.parse((await readBody(req, 65536)).toString('utf8'));
-  } catch {
-    sendJson(res, 400, { error: 'Request must be JSON' });
+  const token = bearerToken(req);
+  if (!token) {
+    sendJson(res, 401, { error: 'Sign in' });
     return;
   }
-  const memberId = input?.memberId;
-  if (typeof memberId !== 'string' || !UUID_RE.test(memberId)) {
-    sendJson(res, 400, { error: 'memberId must be a UUID' });
+  const resolved = await resolveMemberId(token);
+  if (resolved.failed) {
+    sendJson(res, 502, { error: 'Server unreachable' });
+    return;
+  }
+  if (resolved.unauthorized || !resolved.memberId) {
+    sendJson(res, 401, { error: 'Invalid or expired session' });
+    return;
+  }
+  const memberId = resolved.memberId;
+  let input;
+  try {
+    const text = (await readBody(req, 65536)).toString('utf8');
+    input = text.trim() ? JSON.parse(text) : {};
+  } catch {
+    sendJson(res, 400, { error: 'Request must be JSON' });
     return;
   }
   const problem = checkPreferences(input?.preferences);
@@ -451,23 +560,33 @@ async function handlePrefsSave(req, res) {
     sendJson(res, 400, { error: problem });
     return;
   }
-  // Validation passed without touching the file; now load, update and store
-  // atomically so a failed write keeps the last good file.
-  let map;
-  try {
-    map = await readPrefsMap();
-  } catch {
+  // Validation passed without touching the file; now lock, load, update and
+  // store atomically so two hosts saving different members both persist, and
+  // a failed write keeps the last good file.
+  const locked = await acquirePrefsLock();
+  if (!locked) {
     sendJson(res, 500, { error: 'The settings could not be saved.' });
     return;
   }
-  map[memberId] = input.preferences;
   try {
-    await writePrefsMap(map);
-  } catch {
-    sendJson(res, 500, { error: 'The settings could not be saved.' });
-    return;
+    let map;
+    try {
+      map = await readPrefsMap();
+    } catch {
+      sendJson(res, 500, { error: 'The settings could not be saved.' });
+      return;
+    }
+    map[memberId] = input.preferences;
+    try {
+      await writePrefsMap(map);
+    } catch {
+      sendJson(res, 500, { error: 'The settings could not be saved.' });
+      return;
+    }
+    sendJson(res, 200, { preferences: input.preferences });
+  } finally {
+    await releasePrefsLock();
   }
-  sendJson(res, 200, { preferences: input.preferences });
 }
 
 async function handle(req, res) {

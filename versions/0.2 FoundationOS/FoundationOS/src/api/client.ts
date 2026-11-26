@@ -1,10 +1,28 @@
 import type { ApiFailure, ClientConfig, Entry, Preferences, Profile, ServerCheck } from './types';
 
 let sessionToken: string | null = null;
+let generation = 0;
 const unauthorizedListeners = new Set<() => void>();
+const activeControllers = new Set<AbortController>();
 
 export function setToken(token: string | null) {
   sessionToken = token;
+  generation += 1;
+}
+
+export function currentGeneration() {
+  return generation;
+}
+
+export function abortActiveRequests() {
+  for (const controller of activeControllers) {
+    try {
+      controller.abort();
+    } catch {
+      /* ignore */
+    }
+  }
+  activeControllers.clear();
 }
 
 export function onUnauthorized(listener: () => void) {
@@ -24,18 +42,55 @@ export class ApiError extends Error {
   }
 }
 
-async function request<T>(path: string, init: RequestInit = {}, expect: 'json' | 'text' = 'json'): Promise<T> {
+function isAbortError(error: unknown) {
+  return (
+    (error instanceof DOMException && error.name === 'AbortError') ||
+    (typeof error === 'object' &&
+      error !== null &&
+      'name' in error &&
+      (error as { name?: unknown }).name === 'AbortError')
+  );
+}
+
+interface RequestOptions {
+  signal?: AbortSignal | null;
+}
+
+async function request<T>(path: string, init: RequestInit = {}, expect: 'json' | 'text' = 'json', options: RequestOptions = {}): Promise<T> {
+  // Capture the token and generation for this request. A 401 only ends the
+  // session when it belongs to the still-active token: a late 401 from the
+  // previous member's request after a switch must not clear the new session.
+  const requestToken = sessionToken;
+  const requestGeneration = generation;
+  const controller = new AbortController();
+  activeControllers.add(controller);
+  const onExternalAbort = () => controller.abort();
+  if (options.signal) {
+    if (options.signal.aborted) controller.abort();
+    else options.signal.addEventListener('abort', onExternalAbort, { once: true });
+  }
   const headers = new Headers(init.headers);
-  if (sessionToken) headers.set('authorization', `Bearer ${sessionToken}`);
+  if (requestToken) headers.set('authorization', `Bearer ${requestToken}`);
   headers.set('accept', 'application/json');
   let response: Response;
   try {
-    response = await fetch(`/api${path}`, { ...init, headers });
+    response = await fetch(`/api${path}`, { ...init, headers, signal: controller.signal });
   } catch (error) {
+    if (controller.signal.aborted || isAbortError(error)) {
+      throw new ApiError({ kind: 'aborted' });
+    }
     throw new ApiError({ kind: 'offline', message: (error as Error).message || 'Server unreachable' });
+  } finally {
+    activeControllers.delete(controller);
+    options.signal?.removeEventListener('abort', onExternalAbort);
+  }
+  if (controller.signal.aborted || options.signal?.aborted) {
+    throw new ApiError({ kind: 'aborted' });
   }
   if (response.status === 401) {
-    notifyUnauthorized();
+    if (requestToken !== null && requestGeneration === generation && requestToken === sessionToken) {
+      notifyUnauthorized();
+    }
     throw new ApiError({ kind: 'unauthorized' });
   }
   if (response.status === 404) throw new ApiError({ kind: 'not-found' });
@@ -65,35 +120,45 @@ export function filesPath(path: string) {
 }
 
 export const api = {
-  config: () => request<ClientConfig>('/client-config'),
-  profile: () => request<Profile>('/profile'),
-  list: (path: string) => request<Entry[] | { text: string }>(filesPath(path)),
-  read: (path: string) => request<{ text: string } | Entry[]>(filesPath(path)),
+  config: (options?: RequestOptions) => request<ClientConfig>('/client-config', {}, 'json', options),
+  profile: (options?: RequestOptions) => request<Profile>('/profile', {}, 'json', options),
+  list: (path: string, options?: RequestOptions) => request<Entry[] | { text: string }>(filesPath(path), {}, 'json', options),
+  read: (path: string, options?: RequestOptions) => request<{ text: string } | Entry[]>(filesPath(path), {}, 'json', options),
 };
 
-export async function checkServer(): Promise<ClientConfig> {
-  return request<ClientConfig>('/client-config');
+export async function checkServer(options?: RequestOptions): Promise<ClientConfig> {
+  return request<ClientConfig>('/client-config', {}, 'json', options);
 }
 
-export async function getServerCheck(): Promise<ServerCheck> {
-  const config = await checkServer();
+export async function getServerCheck(options?: RequestOptions): Promise<ServerCheck> {
+  const config = await checkServer(options);
   return config.check;
 }
 
-export async function loadPreferences(memberId: string): Promise<Preferences | null> {
-  const result = await request<{ preferences: Preferences | null }>('/preferences/load', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ memberId }),
-  });
+export async function loadPreferences(options?: RequestOptions): Promise<Preferences | null> {
+  const result = await request<{ preferences: Preferences | null }>(
+    '/preferences/load',
+    {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({}),
+    },
+    'json',
+    options,
+  );
   return result.preferences;
 }
 
-export async function savePreferences(memberId: string, preferences: Preferences): Promise<Preferences> {
-  const result = await request<{ preferences: Preferences }>('/preferences/save', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ memberId, preferences }),
-  });
+export async function savePreferences(preferences: Preferences, options?: RequestOptions): Promise<Preferences> {
+  const result = await request<{ preferences: Preferences }>(
+    '/preferences/save',
+    {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ preferences }),
+    },
+    'json',
+    options,
+  );
   return result.preferences;
 }

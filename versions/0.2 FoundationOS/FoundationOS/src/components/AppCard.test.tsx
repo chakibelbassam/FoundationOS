@@ -80,6 +80,38 @@ describe('app card reveal', () => {
     expect(fireEvent.keyDown(run, { key: 'Enter', repeat: true })).toBe(false);
   });
 
+  it('cancels a pending hover dwell when the page or a nested surface scrolls', () => {
+    renderCard();
+    const front = screen.getByRole('button', { name: /Weather, app/i });
+    fireEvent.pointerEnter(front, { pointerType: 'mouse' });
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
+    fireEvent.scroll(window);
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(document.querySelector('[data-revealed="true"]')).toBeNull();
+
+    // A nested scrolling surface cancels the next dwell the same way.
+    fireEvent.pointerEnter(front, { pointerType: 'mouse' });
+    act(() => {
+      vi.advanceTimersByTime(500);
+    });
+    fireEvent.scroll(document.body);
+    act(() => {
+      vi.advanceTimersByTime(1000);
+    });
+    expect(document.querySelector('[data-revealed="true"]')).toBeNull();
+
+    // A fresh hover after the scroll reveals normally.
+    fireEvent.pointerEnter(front, { pointerType: 'mouse' });
+    act(() => {
+      vi.advanceTimersByTime(1100);
+    });
+    expect(document.querySelector('[data-revealed="true"]')).not.toBeNull();
+  });
+
   it('requires a second activation before Run explains the runtime limitation', () => {
     renderCard();
     const front = screen.getByRole('button', { name: /Weather, app/i });

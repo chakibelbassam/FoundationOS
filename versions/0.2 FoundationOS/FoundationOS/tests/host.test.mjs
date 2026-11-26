@@ -17,15 +17,32 @@ const HERE = path.dirname(fileURLToPath(import.meta.url));
 const SERVE = path.join(HERE, '..', 'host', 'serve.mjs');
 const MEMBER = '123e4567-e89b-12d3-a456-426614174000';
 const OTHER_MEMBER = '223e4567-e89b-12d3-a456-426614174001';
+const ALICE_TOKEN = 'alice-session-token';
+const BLAIR_TOKEN = 'blair-session-token';
+const EXPIRED_TOKEN = 'expired-session-token';
 const GOOD_PREFS = { theme: 'dark', surface: 'glass', density: 'compact', motion: 'off', cursor: 'target' };
+const BLAIR_PREFS = { theme: 'light', surface: 'solid', density: 'comfortable', motion: 'on', cursor: 'system' };
 const INDEX_MARKER = 'host-test-index-0.2';
 
 function startStub({ version = '0.1', status = 'ready', schema = 2, files = [{ name: 'a.txt', type: 'file' }] } = {}) {
+  const tokens = { [ALICE_TOKEN]: MEMBER, [BLAIR_TOKEN]: OTHER_MEMBER };
   const server = http.createServer((req, res) => {
     const url = new URL(req.url || '/', 'http://127.0.0.1');
     if (url.pathname === '/status' && req.method === 'GET') {
       res.writeHead(200, { 'content-type': 'application/json' });
       res.end(JSON.stringify({ version, status, schema }));
+      return;
+    }
+    if (url.pathname === '/profile' && req.method === 'GET') {
+      const match = /^Bearer\s+(.+)$/i.exec(String(req.headers.authorization || '').trim());
+      const memberId = match ? tokens[match[1].trim()] : undefined;
+      if (!memberId) {
+        res.writeHead(401, { 'content-type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Sign in' }));
+        return;
+      }
+      res.writeHead(200, { 'content-type': 'application/json' });
+      res.end(JSON.stringify({ id: memberId, name: memberId === MEMBER ? 'alice' : 'blair', role: 'member' }));
       return;
     }
     if (url.pathname === '/files' && req.method === 'GET') {
@@ -201,41 +218,98 @@ test('v0.2 host serves the build, proxies the server and stores preferences', as
     });
 
     await t.test('preferences save/load roundtrip', async () => {
-      const saved = await postJson(`${mainUrl}preferences/save`, { memberId: MEMBER, preferences: GOOD_PREFS });
+      const saved = await postJson(`${mainUrl}preferences/save`, { preferences: GOOD_PREFS }, { authorization: `Bearer ${ALICE_TOKEN}` });
       assert.equal(saved.status, 200);
       assert.deepEqual(saved.body, { preferences: GOOD_PREFS });
-      const loaded = await postJson(`${mainUrl}preferences/load`, { memberId: MEMBER });
+      const loaded = await postJson(`${mainUrl}preferences/load`, {}, { authorization: `Bearer ${ALICE_TOKEN}` });
       assert.equal(loaded.status, 200);
       assert.deepEqual(loaded.body, { preferences: GOOD_PREFS });
-      const unknown = await postJson(`${mainUrl}preferences/load`, { memberId: OTHER_MEMBER });
+      // The /api alias answers the same verified identity.
+      const aliased = await postJson(`${mainUrl}api/preferences/load`, {}, { authorization: `Bearer ${ALICE_TOKEN}` });
+      assert.equal(aliased.status, 200);
+      assert.deepEqual(aliased.body, { preferences: GOOD_PREFS });
+      const unknown = await postJson(`${mainUrl}preferences/load`, {}, { authorization: `Bearer ${BLAIR_TOKEN}` });
       assert.equal(unknown.status, 200);
       assert.deepEqual(unknown.body, { preferences: null });
+    });
+
+    await t.test('preferences require a verified session token', async () => {
+      const missing = await postJson(`${mainUrl}preferences/load`, {});
+      assert.equal(missing.status, 401);
+      assert.ok(typeof missing.body?.error === 'string' && missing.body.error.length > 0);
+      const missingSave = await postJson(`${mainUrl}preferences/save`, { preferences: GOOD_PREFS });
+      assert.equal(missingSave.status, 401);
+      for (const token of [EXPIRED_TOKEN, 'not-a-token']) {
+        const invalid = await postJson(`${mainUrl}preferences/load`, {}, { authorization: `Bearer ${token}` });
+        assert.equal(invalid.status, 401, token);
+        const invalidSave = await postJson(
+          `${mainUrl}preferences/save`,
+          { preferences: GOOD_PREFS },
+          { authorization: `Bearer ${token}` },
+        );
+        assert.equal(invalidSave.status, 401, token);
+      }
+    });
+
+    await t.test('a spoofed memberId in the body is ignored', async () => {
+      const spoofed = await postJson(
+        `${mainUrl}preferences/save`,
+        { memberId: OTHER_MEMBER, preferences: GOOD_PREFS },
+        { authorization: `Bearer ${ALICE_TOKEN}` },
+      );
+      assert.equal(spoofed.status, 200);
+      const owner = await postJson(`${mainUrl}preferences/load`, { memberId: OTHER_MEMBER }, { authorization: `Bearer ${ALICE_TOKEN}` });
+      assert.deepEqual(owner.body, { preferences: GOOD_PREFS });
+      const victim = await postJson(`${mainUrl}preferences/load`, {}, { authorization: `Bearer ${BLAIR_TOKEN}` });
+      assert.deepEqual(victim.body, { preferences: null });
+    });
+
+    await t.test('concurrent saves from two hosts preserve both members', async () => {
+      const peer = track(startHost({
+        serverUrl: `http://127.0.0.1:${stubPort(readyStub)}`,
+        dataDir,
+        buildDir,
+      }));
+      const peerUrl = await peer.ready;
+      const [savedAlice, savedBlair] = await Promise.all([
+        postJson(`${mainUrl}preferences/save`, { preferences: GOOD_PREFS }, { authorization: `Bearer ${ALICE_TOKEN}` }),
+        postJson(`${peerUrl}preferences/save`, { preferences: BLAIR_PREFS }, { authorization: `Bearer ${BLAIR_TOKEN}` }),
+      ]);
+      assert.equal(savedAlice.status, 200);
+      assert.equal(savedBlair.status, 200);
+      const loadedAlice = await postJson(`${mainUrl}preferences/load`, {}, { authorization: `Bearer ${ALICE_TOKEN}` });
+      const loadedBlair = await postJson(`${mainUrl}preferences/load`, {}, { authorization: `Bearer ${BLAIR_TOKEN}` });
+      assert.deepEqual(loadedAlice.body, { preferences: GOOD_PREFS });
+      assert.deepEqual(loadedBlair.body, { preferences: BLAIR_PREFS });
     });
 
     await t.test('invalid preference is rejected 400 without touching the file', async () => {
       const before = await readFile(path.join(dataDir, 'preferences.json'), 'utf8');
       for (const preferences of [{ theme: 'Neon' }, { bogus: 'x' }, { motion: 'sometimes' }]) {
-        const rejected = await postJson(`${mainUrl}preferences/save`, { memberId: MEMBER, preferences });
+        const rejected = await postJson(
+          `${mainUrl}preferences/save`,
+          { preferences },
+          { authorization: `Bearer ${ALICE_TOKEN}` },
+        );
         assert.equal(rejected.status, 400, JSON.stringify(preferences));
         assert.ok(typeof rejected.body?.error === 'string' && rejected.body.error.length > 0);
       }
-      const rejectedId = await postJson(`${mainUrl}preferences/save`, { memberId: 'not-a-uuid', preferences: GOOD_PREFS });
-      assert.equal(rejectedId.status, 400);
+      const malformed = await postJson(`${mainUrl}preferences/save`, { preferences: GOOD_PREFS });
+      assert.equal(malformed.status, 401);
       assert.equal(await readFile(path.join(dataDir, 'preferences.json'), 'utf8'), before);
-      const loaded = await postJson(`${mainUrl}preferences/load`, { memberId: MEMBER });
+      const loaded = await postJson(`${mainUrl}preferences/load`, {}, { authorization: `Bearer ${ALICE_TOKEN}` });
       assert.deepEqual(loaded.body, { preferences: GOOD_PREFS });
     });
 
     await t.test('a failed write keeps the previous file', async () => {
       const before = await readFile(path.join(dataDir, 'preferences.json'), 'utf8');
       const failed = await postJson(`${badDirUrl}preferences/save`, {
-        memberId: MEMBER,
         preferences: { ...GOOD_PREFS, theme: 'light' },
-      });
+      }, { authorization: `Bearer ${ALICE_TOKEN}` });
       assert.equal(failed.status, 500);
       assert.ok(typeof failed.body?.error === 'string' && failed.body.error.length > 0);
       assert.equal(await readFile(path.join(dataDir, 'preferences.json'), 'utf8'), before);
-      const loaded = await postJson(`${mainUrl}preferences/load`, { memberId: MEMBER });
+      const loaded = await postJson(`${mainUrl}preferences/load`, {}, { authorization: `Bearer ${ALICE_TOKEN}` });
       assert.deepEqual(loaded.body, { preferences: GOOD_PREFS });
     });
   } finally {

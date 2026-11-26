@@ -8,6 +8,7 @@ import { api } from '../api/client';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { StatePanel } from '../components/StatePanel';
 import { getLastInput } from '../app/inputMode';
+import { useSession } from '../app/SessionContext';
 import { fromState } from './useRememberReturn';
 
 type Load =
@@ -22,6 +23,7 @@ export function FileReader() {
   const params = useParams();
   const location = useLocation();
   const navigate = useNavigate();
+  const { profile } = useSession();
   const path = (params['*'] ?? '').replace(/\/+$/, '');
   const name = path.split('/').filter(Boolean).pop() ?? 'File';
   const parent = path.split('/').slice(0, -1).join('/');
@@ -32,17 +34,19 @@ export function FileReader() {
 
   useEffect(() => {
     let cancelled = false;
+    const controller = new AbortController();
     setLoad({ status: 'loading' });
     (async () => {
       try {
-        const result = await api.read(path);
-        if (cancelled) return;
+        const result = await api.read(path, { signal: controller.signal });
+        if (cancelled || controller.signal.aborted) return;
         if (Array.isArray(result)) setLoad({ status: 'folder' });
         else if (typeof result.text === 'string') setLoad({ status: 'ready', text: result.text });
         else setLoad({ status: 'unavailable', message: 'This file does not contain readable text.' });
       } catch (error) {
-        if (cancelled) return;
+        if (cancelled || controller.signal.aborted) return;
         const kind = (error as { failure?: { kind?: string } }).failure?.kind;
+        if (kind === 'aborted') return;
         if (kind === 'not-found') setLoad({ status: 'not-found' });
         else if (kind === 'invalid') setLoad({ status: 'unavailable', message: 'This file is not readable text in v0.2.' });
         else setLoad({ status: 'offline' });
@@ -50,8 +54,9 @@ export function FileReader() {
     })();
     return () => {
       cancelled = true;
+      controller.abort();
     };
-  }, [path, attempt]);
+  }, [path, attempt, profile?.id]);
 
   useEffect(() => {
     if (load.status !== 'ready') return;

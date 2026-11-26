@@ -10,7 +10,7 @@ export type DirectoryState =
   | { status: 'offline'; message: string }
   | { status: 'invalid'; message: string };
 
-export function useDirectory(path: string) {
+export function useDirectory(path: string, memberId?: string) {
   const [state, setState] = useState<DirectoryState>({ status: 'loading' });
   const [attempt, setAttempt] = useState(0);
   const requestRef = useRef(0);
@@ -21,16 +21,17 @@ export function useDirectory(path: string) {
     setState({ status: 'loading' });
     (async () => {
       try {
-        const result = await api.list(path);
-        if (ticket !== requestRef.current) return;
+        const result = await api.list(path, { signal: controller.signal });
+        if (ticket !== requestRef.current || controller.signal.aborted) return;
         if (Array.isArray(result)) {
           setState(result.length ? { status: 'ready', entries: result } : { status: 'empty' });
         } else {
           setState({ status: 'invalid', message: 'This location is a file, not a folder.' });
         }
       } catch (error) {
-        if (ticket !== requestRef.current) return;
+        if (ticket !== requestRef.current || controller.signal.aborted) return;
         if (error instanceof ApiError) {
+          if (error.failure.kind === 'aborted') return;
           if (error.failure.kind === 'not-found') setState({ status: 'not-found' });
           else if (error.failure.kind === 'offline') setState({ status: 'offline', message: error.failure.message });
           else if (error.failure.kind === 'unauthorized') setState({ status: 'offline', message: 'Session expired' });
@@ -43,7 +44,7 @@ export function useDirectory(path: string) {
     return () => {
       controller.abort();
     };
-  }, [path, attempt]);
+  }, [path, attempt, memberId]);
 
   const reload = useCallback(() => setAttempt((value) => value + 1), []);
   return { state, reload };
