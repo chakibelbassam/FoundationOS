@@ -1,0 +1,9 @@
+{
+  "id": "S-01-7",
+  "kind": "sprint",
+  "parent": "PI-01",
+  "title": "Serve hierarchical workspaces",
+  "acceptance": "Members work with folders and files by relative path inside their home, and the 0.1 boundary refusals still hold.",
+  "status": "ready",
+  "revision": 2
+}

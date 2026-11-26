@@ -23,3 +23,5 @@ jobs:
         run: npm test
       - name: Validate the Scrum store
         run: node --input-type=module -e "import('./Edge/tools/scrum-workspace-validate.mjs').then(m => { const r = m.validate(); console.log(JSON.stringify(r, null, 2)); if (!r.ok) process.exit(1); })"
+      - name: Run the FoundationOS 0.2 server tests
+        run: node --test "versions/0.2 FoundationOS/FoundationOS Server/server.test.mjs"

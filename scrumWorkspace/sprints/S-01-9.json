@@ -1,0 +1,9 @@
+{
+  "id": "S-01-9",
+  "kind": "sprint",
+  "parent": "PI-01",
+  "title": "Accept the server increment",
+  "acceptance": "The extended acceptance script, Manual and launcher evidence accept the increment.",
+  "status": "ready",
+  "revision": 2
+}

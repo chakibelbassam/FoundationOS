@@ -1,0 +1,10 @@
+{
+  "name": "edge-visible-terminal",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Edge tools that drive the OpenCode Desktop terminal tab, plus guardrails for git and GitHub.",
+  "exports": {
+    ".": "./server.ts"
+  }
+}

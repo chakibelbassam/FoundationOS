@@ -1,0 +1,9 @@
+{
+  "id": "S-01-6",
+  "kind": "sprint",
+  "parent": "PI-01",
+  "title": "Establish identity and sessions",
+  "acceptance": "Create the admin on first run, invite a member, sign sessions in and out, and revoke on demand.",
+  "status": "ready",
+  "revision": 2
+}

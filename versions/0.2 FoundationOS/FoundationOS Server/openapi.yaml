@@ -1,0 +1,493 @@
+openapi: 3.1.0
+info:
+  title: FoundationOS Server
+  version: '0.2'
+  description: Single-process operator server. Sign in with an account key, work
+    in your own home with folders and files, and sign out. Every failure answers
+    with the error shape. Every route answers 405 with that shape when the method
+    is wrong.
+servers:
+  - url: http://127.0.0.1:{port}
+    variables:
+      port:
+        default: '0'
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: Account key for POST /sessions and invitations for POST /accounts;
+        session token everywhere else.
+  schemas:
+    Error:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: string
+      description: Uniform failure shape. Codes: 400 invalid input, 401 sign-in required,
+        403 forbidden, 404 unknown, 405 wrong method, 409 conflict, 413 too large.
+    Status:
+      type: object
+      required: [version, status, schema]
+      properties:
+        version:
+          const: '0.2'
+        status:
+          const: ready
+        schema:
+          type: integer
+          description: Schema version recorded in the shared store.
+    Session:
+      type: object
+      required: [id, token]
+      properties:
+        id:
+          type: string
+          format: uuid
+        token:
+          type: string
+          description: One-time session token. Keep it private.
+    Invitation:
+      type: object
+      required: [id, token]
+      properties:
+        id:
+          type: string
+          format: uuid
+        token:
+          type: string
+          description: One-time invitation token. Keep it private.
+    Account:
+      type: object
+      required: [id, name, key]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        key:
+          type: string
+          description: One-time account key. Keep it private.
+    Profile:
+      type: object
+      required: [id, name, role]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [admin, member]
+    AccountInfo:
+      type: object
+      required: [id, name, role, created_at]
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+          enum: [admin, member]
+        created_at:
+          type: string
+          format: date-time
+    Entry:
+      type: object
+      required: [name, type]
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum: [file, folder]
+    FileText:
+      type: object
+      required: [text]
+      properties:
+        text:
+          type: string
+    PathResult:
+      type: object
+      required: [path]
+      properties:
+        path:
+          type: string
+paths:
+  /status:
+    get:
+      summary: Report version, readiness and schema.
+      security: []
+      responses:
+        '200':
+          description: Ready.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Status'
+  /sessions:
+    post:
+      summary: Exchange an account key for a session.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Signed in.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Session'
+        '401':
+          description: Sign-in required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /sessions/{id}:
+    delete:
+      summary: Revoke a session. Owners revoke their own; admins may revoke any.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+            format: uuid
+      responses:
+        '200':
+          description: Revoked.
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [id]
+                properties:
+                  id:
+                    type: string
+        '401':
+          description: Sign-in required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Forbidden.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Unknown session.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /invitations:
+    post:
+      summary: Mint a one-time invitation. Admins only.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Invitation minted.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Invitation'
+        '401':
+          description: Sign-in required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Admins only.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /accounts:
+    get:
+      summary: List accounts without secret material. Admins only.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Accounts.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AccountInfo'
+        '401':
+          description: Sign-in required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Admins only.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      summary: Create a member account with a private home from a one-time invitation.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [name]
+              properties:
+                name:
+                  type: string
+                  pattern: ^[a-z][a-z0-9_-]{1,38}$
+      responses:
+        '200':
+          description: Member created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Account'
+        '400':
+          description: Invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Unknown invitation.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '403':
+          description: Invitation already used.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Name already taken.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /profile:
+    get:
+      summary: Return the caller's identity.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Identity.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: Sign-in required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /files:
+    get:
+      summary: List the folders and files at the root of your home.
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Root entries.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Entry'
+        '401':
+          description: Sign-in required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /files/{path}:
+    get:
+      summary: Read a file as text or list a folder.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+          description: Relative path of at most 16 valid segments and 240 characters.
+      responses:
+        '200':
+          description: File text or folder entries.
+          content:
+            application/json:
+              schema:
+                oneOf:
+                  - $ref: '#/components/schemas/FileText'
+                  - type: array
+                    items:
+                      $ref: '#/components/schemas/Entry'
+        '401':
+          description: Sign-in required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Unknown path, or a traversal, link or junction refusal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      summary: Write up to 64 KiB of UTF-8 text. Parents must exist.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              maxLength: 65536
+      responses:
+        '200':
+          description: Written.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PathResult'
+        '400':
+          description: Text must be UTF-8.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Sign-in required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Unknown path, or a traversal, link or junction refusal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: A folder exists at that path.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '413':
+          description: Text file exceeds 64 KiB.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      summary: Remove a file or an empty folder.
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: path
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Removed.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PathResult'
+        '401':
+          description: Sign-in required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Unknown path, or a traversal, link or junction refusal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Folder is not empty.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+  /folder:
+    post:
+      summary: Create one folder. Parents must exist.
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [path]
+              properties:
+                path:
+                  type: string
+      responses:
+        '200':
+          description: Folder created.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PathResult'
+        '400':
+          description: Invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: Sign-in required.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Unknown path, or a traversal, link or junction refusal.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '409':
+          description: Already exists.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'

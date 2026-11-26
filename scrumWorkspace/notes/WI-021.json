@@ -1,0 +1,24 @@
+[
+  {
+    "submitted": {
+      "id": "WI-021",
+      "revision": 5,
+      "requestId": "b7e2c4d6-1a3f-4b8c-9d0e-2f4a6c8e0b1d",
+      "kind": "progress",
+      "body": "Independent QA on GLM 5.3-Flash passed: 10/10 node tests, verify.py passed, 36/36 manual API steps, route contract 1:1, docs matched observed behaviour. Fixed after review: the openapi server URL no longer embeds /status, 405 responses are documented, the path guards are deduplicated, and the invitation claim is atomic. Final rerun passed.",
+      "documentRefs": [
+        "PI-01/server-increment-plan.md"
+      ]
+    },
+    "note": {
+      "id": "b7e2c4d6-1a3f-4b8c-9d0e-2f4a6c8e0b1d",
+      "recordId": "WI-021",
+      "at": "2026-11-26T01:03:18.300Z",
+      "kind": "progress",
+      "body": "Independent QA on GLM 5.3-Flash passed: 10/10 node tests, verify.py passed, 36/36 manual API steps, route contract 1:1, docs matched observed behaviour. Fixed after review: the openapi server URL no longer embeds /status, 405 responses are documented, the path guards are deduplicated, and the invitation claim is atomic. Final rerun passed.",
+      "documentRefs": [
+        "PI-01/server-increment-plan.md"
+      ]
+    }
+  }
+]

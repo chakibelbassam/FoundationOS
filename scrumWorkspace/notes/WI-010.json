@@ -1,0 +1,24 @@
+[
+  {
+    "submitted": {
+      "id": "WI-010",
+      "revision": 1,
+      "requestId": "f4c1a2b3-d5e6-47f8-9a0b-1c2d3e4f5a6b",
+      "kind": "decision",
+      "body": "Planned the server increment with the owner: extend PI-01 into FoundationOS Server, one shared store with cumulative migrations, first-run admin, invitations, sessions with revocation, admin and member roles, hierarchical homes, OpenAPI-first contracts, folder-plus-launcher packaging. Deferred scope stays in the roadmap, not the sprint. Full plan in PI-01/server-increment-plan.md.",
+      "documentRefs": [
+        "PI-01/server-increment-plan.md"
+      ]
+    },
+    "note": {
+      "id": "f4c1a2b3-d5e6-47f8-9a0b-1c2d3e4f5a6b",
+      "recordId": "WI-010",
+      "at": "2026-11-26T00:16:45.437Z",
+      "kind": "decision",
+      "body": "Planned the server increment with the owner: extend PI-01 into FoundationOS Server, one shared store with cumulative migrations, first-run admin, invitations, sessions with revocation, admin and member roles, hierarchical homes, OpenAPI-first contracts, folder-plus-launcher packaging. Deferred scope stays in the roadmap, not the sprint. Full plan in PI-01/server-increment-plan.md.",
+      "documentRefs": [
+        "PI-01/server-increment-plan.md"
+      ]
+    }
+  }
+]
