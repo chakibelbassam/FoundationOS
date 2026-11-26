@@ -31,13 +31,12 @@ Input: mouse and keyboard through the in-app browser; the stylus, controller and
 
 ## Visual and responsive evidence
 
-- Desktop, 390 px and 320 × 600: `09-390-home.jpg`, `10-390-overview.jpg`, `11-320-long-name.jpg`, `12-320-home.jpg`.
-- The narrow layouts were produced by the built client's `?w=390` and `?w=320&h=600` preview, which constrains the app container and switches the container queries. They were not captured on a physical phone; touch scrolling and a real visual viewport were not exercised.
-- 320 px: no horizontal overflow (`scrollWidth = clientWidth = 320`), header controls wrap, the long username truncates with the full value in its title and menu.
+- `08-missing-file.jpg` — a deleted text file shows “This file is not available”. v0.2 cannot reach a non-text or oversized state because the v0.1 API stores only UTF-8 text up to 64 KiB (recorded in the assumptions).
+- `09-390-home.jpg`, `10-390-overview.jpg`, `11-320-long-name.jpg`, `12-320-home.jpg` — narrow layouts. They were produced by the built client's `?w=390` and `?w=320&h=600` preview, which constrains the app container and switches the container queries; they were not captured on a physical phone, so touch scrolling and a real visual viewport were not exercised. At 320 px `scrollWidth = clientWidth = 320`, the header wraps, the long username truncates with the full value in its title and menu, and the card actions stay inside the card.
 
 ## Turn frames
 
-`05-turn-front-25.jpg`, `06-turn-edge-50.jpg`, `07-turn-back-70.jpg` are real transition frames paused through the Web Animations API at 25%, 51% and 69% of a 1600 ms turn. The card stays opaque, only one face is readable at a time, the page never shows through the card, and the three neighbouring cards keep identical geometry.
+`05-turn-front-25.jpg`, `06-turn-edge-50.jpg`, `07-turn-back-70.jpg` are real transition frames paused through the Web Animations API at 25%, 51% and 69% of a turn that was **deliberately slowed to 1600 ms** for capture by overriding `--fo-dur-flip`; the shipped turn is 520 ms. The card stays opaque, only one face is readable at a time, the page never shows through the card, and the three neighbouring cards keep identical geometry.
 
 ## Final candidate run
 

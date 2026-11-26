@@ -17,7 +17,7 @@ Candidate `b8459c6`. Tokens are recorded in the [component inventory](../../../.
 The tab was focused before measuring, so requestAnimationFrame ran at the display rate.
 
 - Idle: 38 frames in 600 ms, average 16.7 ms, maximum 17.1 ms.
-- During a full turn: 56 frames in 900 ms, average 16.7 ms, maximum 17.0 ms, **0 frames over 20 ms** (~60 fps).
+- During a full turn and its settle: 56 frames in a 900 ms sample, average 16.7 ms, maximum 17.0 ms, **0 frames over 20 ms** (~60 fps). The 900 ms window is deliberately longer than the 520 ms turn so the settle is included.
 - Layout shift (`PerformanceObserver('layout-shift')`, recent input excluded): **0.000**; the cursor overlay was changed to transform-only movement after an earlier run showed 0.005 from its fixed box.
 - Neighbour geometry unchanged before and after the turn.
 
@@ -27,4 +27,4 @@ Motion **Off** produced the `fo-motion-reduced` root class, 1 ms transitions and
 
 ## Not measured
 
-The display refresh and compositor of this machine only; no low-end device or phone was available. Frame pacing was sampled in JavaScript, not with a system-level profiler.
+The display refresh and compositor of this machine only; no low-end device or phone was available. Frame pacing was sampled in JavaScript, not with a system-level profiler. **Text jitter** during the turn was not measured: the paused frames show no wrapping, size change or reflow, and no per-frame video was captured, so the "no text jitter" part of the acceptance remains evidence-limited.

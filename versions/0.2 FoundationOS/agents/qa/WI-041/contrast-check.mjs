@@ -50,16 +50,17 @@ const light = {
   textPrimary: hex('#0f1b2d'), textSecondary: hex('#42536b'),
   focus: hex('#1b56c4'), onFocus: hex('#ffffff'),
   page: hex('#eef2f8'), cardSolid: hex('#ffffff'),
-  solidBorder: rgba(15, 27, 45, 0.14),
-  glassBg: rgba(255, 255, 255, 0.62), glassBorder: rgba(255, 255, 255, 0.65),
+  // Retest: --fo-border and --fo-glass-border are now solid #5f7088 in both themes
+  solidBorder: hex('#5f7088'),
+  glassBg: rgba(255, 255, 255, 0.62), glassBorder: hex('#5f7088'),
   success: hex('#12674a'),
 };
 const dark = {
   textPrimary: hex('#e8eefc'), textSecondary: hex('#a9b8d6'),
   focus: hex('#9dc2ff'), onFocus: hex('#06101f'),
   page: hex('#0b1220'), cardSolid: hex('#141d2e'),
-  solidBorder: rgba(150, 180, 230, 0.22),
-  glassBg: rgba(22, 32, 52, 0.68), glassBorder: rgba(150, 180, 230, 0.28),
+  solidBorder: hex('#5f7088'),
+  glassBg: rgba(22, 32, 52, 0.68), glassBorder: hex('#5f7088'),
   success: hex('#7ee2b8'),
 };
 
@@ -140,11 +141,19 @@ function report(theme, name) {
   add('Solid', 'Card brief (opacity .80) on card', dim(0.80), theme.cardSolid, '');
   add('Solid', 'Card kind (opacity .68) on card', dim(0.68), theme.cardSolid, '');
   add('Solid', 'Card hint (opacity .66) on card', dim(0.66), theme.cardSolid, '');
-  add('Solid', 'Clock (opacity .78) on header', over([...theme.textPrimary.slice(0, 3), 0.78], over(rgba(238, 242, 248, 0.78), theme.page)),
-    over(rgba(238, 242, 248, 0.78), theme.page), '78% header fill over plain page');
+  const headerFill = over(rgba(...theme.page.slice(0, 3), 0.78), theme.page); // color-mix 78% header-bg over page
+  add('Solid', 'Clock (opacity .78) on header', over([...theme.textPrimary.slice(0, 3), 0.78], headerFill),
+    headerFill, '78% header fill over plain page');
   const dimGlass = over([...theme.textPrimary.slice(0, 3), 0.66], glass);
   add('Glass', `Card hint (opacity .66) on glass (${worstPageName})`, dimGlass, glass, 'lowest-opacity text on worst glass');
-  add('Solid', 'Connected chip text on header', theme.success, over(rgba(238, 242, 248, 0.78), theme.page), 'success.main on header fill');
+  add('Solid', 'Connected chip text on header', theme.success, headerFill, 'success.main on header fill');
+  // Retest: secondary action / Settings option borders now use the solid --fo-border token
+  add('Solid', 'Secondary action border (--fo-border) vs card', theme.solidBorder, theme.cardSolid, 'Open/More + Settings pills');
+  // card fill vs page (is the boundary carried by the fill alone?)
+  add('Solid', 'Card fill vs page', theme.cardSolid, theme.page, 'no border, fill only');
+  // hover border: color-mix(focus 34%, --fo-border) — kept visible above the base border?
+  const hoverBorder = over(rgba(...theme.focus.slice(0, 3), 0.34), theme.solidBorder);
+  add('Solid', 'Hover border mix (34% accent + border) vs card', hoverBorder, theme.cardSolid, '');
 
   console.log(`\n===== ${name.toUpperCase()} THEME =====`);
   console.log(`worst glass region: ${worstPageName} (${css(region)})`);
@@ -162,4 +171,36 @@ const D = report(dark, 'dark');
 for (const [nm, th] of [['light', light], ['dark', dark]]) {
   const stacked = glassCard(th, pageRegion(th, Object.values(tints)), true);
   console.log(`\nBOUND ${nm}: primary text on stacked-tint glass = ${ratio(th.textPrimary.slice(0, 3), stacked).toFixed(2)}, secondary = ${ratio(th.textSecondary.slice(0, 3), stacked).toFixed(2)}, accent = ${ratio(th.focus.slice(0, 3), stacked).toFixed(2)}, glass border vs card = ${ratio(over(th.glassBorder, stacked).slice(0, 3), stacked).toFixed(2)}`);
+}
+
+// ---- Retest: physical analysis of the solid #5f7088 border over glass fills ----
+// The full-centre tint alphas are unreachable under cards (blue centre sits at -10% height,
+// off-screen; ~alpha .06 under the first card row at 1232x871). Here: ratio as a function
+// of a SINGLE tint at alpha a, with and without the dot grid, and the alpha that lands
+// the ratio exactly on 3.0.
+function borderOverGlass(theme, tintsOn, withDots) {
+  let page = theme.page;
+  for (const t of tintsOn) page = over(t, page);
+  if (withDots) page = over(dots, page);
+  const fill = glassCard(theme, page, true); // saturate(1.35) applied as shipped
+  return ratio(theme.solidBorder.slice(0, 3), fill);
+}
+console.log('\n===== RETEST: border #5f7088 over glass fill vs tint alpha =====');
+for (const [nm, th, tint] of [
+  ['light', light, tints.blue], ['dark', dark, tints.blue],
+]) {
+  for (const dotsOn of [false, true]) {
+    const line = [0, 0.06, 0.084, 0.17, 0.22].map((a) => {
+      const r = borderOverGlass(th, [rgba(...tint.slice(0, 3), a)], dotsOn);
+      return `a=${a.toFixed(3)}:${r.toFixed(2)}${r >= 3 ? '' : ' ✘'}`;
+    }).join('  ');
+    console.log(`${nm}${dotsOn ? '+dots' : '     '} ${line}`);
+  }
+  // solve alpha for ratio exactly 3.0 (with dots, saturate applied)
+  let lo = 0, hi = 0.22;
+  for (let i = 0; i < 40; i++) {
+    const mid = (lo + hi) / 2;
+    if (borderOverGlass(th, [rgba(...tint.slice(0, 3), mid)], true) >= 3) lo = mid; else hi = mid;
+  }
+  console.log(`${nm}: ratio hits 3.00 at tint alpha ≈ ${lo.toFixed(3)} (dots on); max on-screen alpha under a card row ≈ 0.06–0.09`);
 }

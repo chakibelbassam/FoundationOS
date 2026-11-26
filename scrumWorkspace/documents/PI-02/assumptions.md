@@ -59,6 +59,20 @@ These are Edge's judgement calls where the plan and owner decisions left a rever
 ## 8. Motion measurements are machine-local
 
 - **Question.** Does 60 fps hold beyond this machine?
-- **Chosen answer.** Report the focused-tab measurement (16.7 ms average, 0 frames over 20 ms, layout shift 0) as evidence from this machine only.
+- **Chosen answer.** Report the focused-tab measurement (16.7 ms average, 0 frames over 20 ms, layout shift 0) as evidence from this machine only. Text jitter during the turn is not claimed: the paused frames show no wrap, size change or reflow, but no per-frame video was captured.
 - **Why.** No low-end device was available.
 - **Verify / reverse.** Repeat the frame sample on the target hardware; the method is in `qa/sprint-3/WI-044/`.
+
+## 9. Non-text and oversized files cannot occur
+
+- **Question.** The owner decision asks for an unavailable state with type and size for non-text or oversized files.
+- **Chosen answer.** The client shows its unavailable state if a read returns no text, but v0.2 cannot reach it through v0.1: the server stores and returns only UTF-8 text up to 64 KiB. No size is exposed by `GET /files`, so a type-and-size panel would need a contract change.
+- **Why.** Keep the v0.1 contract unchanged, as the plan requires.
+- **Verify / reverse.** Writing a binary or larger body through `PUT /files/{path}` fails at the server; adding the state needs a server capability in a later increment.
+
+## 10. Interface boundaries use a solid ink colour
+
+- **Question.** How are card and action boundaries kept visible over Solid and Glass?
+- **Chosen answer.** `--fo-border` and `--fo-glass-border` are a solid `#5f7088` in both themes instead of low-alpha mixes, so the boundary reaches 3.2–5.1:1 against the page, card and glass fills. Folder and app graphics stay as accent tints because their labels carry identification (recorded as a Sev-4 visual observation for the owner).
+- **Why.** Independent review found the old alpha borders at 1.1–2.3:1, below the owner's 3:1 interface bar.
+- **Verify / reverse.** Recompute with `versions/0.2 FoundationOS/agents/qa/WI-041/contrast-check.mjs`; the retest numbers are in `qa/sprint-5/WI-042/`.
