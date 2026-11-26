@@ -5,9 +5,9 @@
   "title": "Record the Edge tooling wiring",
   "acceptance": "Story: the parallel session wired OpenCode to the Edge tools, and that work belongs with the increment.\nExpected: the OpenCode configuration, plugins, terminal tool changes and tooling research are committed on the increment branch and referenced in its pull request.\nNot expected: further tooling features; this records what already exists.\nDepends on: nothing.\nVerify: the pull request contains the files and names WI-22.",
   "status": "review",
-  "revision": 7,
+  "revision": 8,
   "type": "enabler",
   "priority": 3,
   "effort": 2,
-  "evidence": "The OpenCode configuration, plugins, terminal tool changes and tooling research are committed on the increment branch and listed in its pull request. The same lane records each PI's targetVersion in scrumWorkSpace, validates it, and documents orienting to the target folder before selecting a product version; the Edge orientation rule points at it. PR #6: https://github.com/chakibelbassam/FoundationOS/pull/6."
+  "evidence": "The OpenCode configuration, plugins, terminal tool changes and tooling research are committed on the increment branch and listed in its pull request. The same lane records each PI's targetVersion in scrumWorkSpace, validates it, and documents orienting to the target folder before selecting a product version; the Edge orientation rule points at it. Tooling PR #7: https://github.com/chakibelbassam/FoundationOS/pull/7; the increment itself merged in PR #6."
 }

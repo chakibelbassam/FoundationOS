@@ -5,9 +5,9 @@
   "title": "Accept the server increment",
   "acceptance": "Story: the increment ends with evidence, not claims.\nExpected: the extended verify script passes launcher, first-run admin, invitation, sign-in, folder work, isolation, revocation, restart and contract checks, and the Manual records the verified outcome with its PDF republished.\nNot expected: client journeys or remote deployment; those belong to later increments.\nDepends on: every item of S5 to S8.\nVerify: running the acceptance end to end from a clean shell.",
   "status": "review",
-  "revision": 7,
+  "revision": 8,
   "type": "task",
   "priority": 1,
   "effort": 3,
-  "evidence": "Full acceptance re-run on 26 November 2026 after the WI-23 review fixes: node server and contract tests 14/14 (12 operations, 40 documented responses), 0.2 verify.py passed launcher through restart including the empty-folder delete, 0.1 verify.py passed, npm test 12/12, and validate reports ok with 44 records. Independent QA on GLM 5.3-Flash returned PASS with three low non-blocking notes. The Manual already records the verified behaviour. PR #6: https://github.com/chakibelbassam/FoundationOS/pull/6."
+  "evidence": "Full acceptance re-run on 26 November 2026 after the WI-23 review fixes: node server and contract tests 14/14 (12 operations, 40 documented responses), 0.2 verify.py passed launcher through restart including the empty-folder delete, 0.1 verify.py passed, npm test 12/12, and validate reports ok with 44 records. Independent QA on GLM 5.3-Flash returned PASS with three low non-blocking notes. The Manual already records the verified behaviour. Increment PR #6 (merged): https://github.com/chakibelbassam/FoundationOS/pull/6; review fixes and tooling in PR #7: https://github.com/chakibelbassam/FoundationOS/pull/7."
 }
