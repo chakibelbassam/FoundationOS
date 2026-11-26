@@ -4,6 +4,7 @@ let sessionToken: string | null = null;
 let generation = 0;
 const unauthorizedListeners = new Set<() => void>();
 const activeControllers = new Set<AbortController>();
+const reachListeners = new Set<() => void>();
 
 export function setToken(token: string | null) {
   sessionToken = token;
@@ -28,6 +29,27 @@ export function abortActiveRequests() {
 export function onUnauthorized(listener: () => void) {
   unauthorizedListeners.add(listener);
   return () => unauthorizedListeners.delete(listener);
+}
+
+// Fires after any successful (2xx) API response. The server chip uses it to
+// recheck immediately when traffic already proves the server is reachable,
+// instead of waiting for the next poll.
+export function onServerReachable(listener: () => void) {
+  reachListeners.add(listener);
+  return () => {
+    reachListeners.delete(listener);
+  };
+}
+
+function notifyReachable() {
+  if (reachListeners.size === 0) return;
+  for (const listener of reachListeners) {
+    try {
+      listener();
+    } catch {
+      /* a listener must never break the request */
+    }
+  }
 }
 
 function notifyUnauthorized() {
@@ -105,12 +127,18 @@ async function request<T>(path: string, init: RequestInit = {}, expect: 'json' |
     }
     throw new ApiError({ kind: 'server', status: response.status, message });
   }
-  if (expect === 'text') return (await response.text()) as T;
+  if (expect === 'text') {
+    const text = (await response.text()) as T;
+    notifyReachable();
+    return text;
+  }
   const type = response.headers.get('content-type') ?? '';
   if (!type.includes('json')) {
     throw new ApiError({ kind: 'invalid', message: 'The server returned an unreadable response.' });
   }
-  return (await response.json()) as T;
+  const payload = (await response.json()) as T;
+  notifyReachable();
+  return payload;
 }
 
 export function filesPath(path: string) {

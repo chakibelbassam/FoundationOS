@@ -12,6 +12,7 @@ Use `%TEMP%\wi050-qa\` only; never the owner's installation or another agent's p
 
 Drive the **OpenCode built-in browser only** (`browser.*`). Do not launch Chrome. Do not count Edge's or the tester's browser runs as yours.
 
+- **Access check first.** Call `browser.tabs.list`. If the tool is absent, record the browser pass as **BLOCKED** with the exact error and the upstream limitation (child sessions do not receive the desktop attachment), do not substitute another browser, and complete every non-browser check you can. Edge keeps WI-050 open until real interactive passes exist.
 - Desktop: the tab at the launcher-printed URL.
 - Actual narrow viewports: `<launcher URL>/qa/viewport.html?w=390&h=600&url=/` and `...?w=320&h=600&url=/`; inspect the iframe through `browser.frames` and record `innerWidth`/`innerHeight`.
 

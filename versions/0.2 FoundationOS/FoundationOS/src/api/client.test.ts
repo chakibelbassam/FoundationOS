@@ -117,4 +117,22 @@ describe('api client', () => {
     controller.abort();
     await expect(pending).rejects.toMatchObject({ failure: { kind: 'aborted' } });
   });
+
+  it('notifies server-reachable listeners on success but not on failure', async () => {
+    const { abortActiveRequests, onServerReachable } = await import('./client');
+    abortActiveRequests();
+    setToken('token-alice');
+    const listener = vi.fn();
+    const unsubscribe = onServerReachable(listener);
+    try {
+      fetchMock.mockResolvedValueOnce(response(200, [{ name: 'Weather', type: 'folder' }]));
+      await api.list('');
+      expect(listener).toHaveBeenCalledTimes(1);
+      fetchMock.mockResolvedValueOnce(response(502, { error: 'Server unreachable' }));
+      await expect(api.list('')).rejects.toMatchObject({ failure: { kind: 'offline' } });
+      expect(listener).toHaveBeenCalledTimes(1);
+    } finally {
+      unsubscribe();
+    }
+  });
 });

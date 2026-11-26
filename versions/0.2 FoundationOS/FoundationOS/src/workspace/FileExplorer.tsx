@@ -12,7 +12,9 @@ import { usePreferences } from '../app/PreferencesContext';
 import { getLastInput } from '../app/inputMode';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { StatePanel } from '../components/StatePanel';
-import { explorerMenuOptions, fromSvarId, toSvarEntries, toSvarId } from './svarIds';
+import { buildRouteData, loadExplorerFolder } from './explorerData';
+import type { SvarEntry } from './explorerData';
+import { explorerMenuOptions, fromSvarId, toSvarId } from './svarIds';
 import { fromState } from './useRememberReturn';
 
 // Unsupported even via menu or keyboard: intercepted in init so nothing runs.
@@ -38,10 +40,23 @@ export function FileExplorer() {
   const svarId = toSvarId(path);
   const [attempt, setAttempt] = useState(0);
   const [loadError, setLoadError] = useState<LoadError>(null);
+  // The current route folder's entries, passed as the store's `data` prop.
+  // Identity changes only when the fetched content changes: this is the
+  // deterministic first render. (An inline `data={[]}` got a fresh identity
+  // on every parent re-render, and this build re-inits the store from `data`
+  // on each change — which wiped every provided listing back to "My files".)
+  const [routeData, setRouteData] = useState<SvarEntry[]>([]);
   const apiRef = useRef<IApi | null>(null);
   const memberRef = useRef(memberId);
   const pathRef = useRef(path);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
+  // Subfolder requests already fed to the store, plus in-flight loads, so a
+  // repeated store request for the same folder never fetches twice. The route
+  // folder itself always flows through `routeData`, never `provide-data`
+  // (feeding both would duplicate its rows in the store).
+  const providedRef = useRef<Set<string>>(new Set());
+  const inflightRef = useRef<Set<string>>(new Set());
+  const routeInflightRef = useRef<Set<string>>(new Set());
   memberRef.current = memberId;
   pathRef.current = path;
 
@@ -62,41 +77,71 @@ export function FileExplorer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const fetchRoute = useCallback(async () => {
+    const requestMember = memberRef.current;
+    const requestPath = pathRef.current;
+    if (!requestMember) return;
+    const scope = `${requestMember}:${requestPath}`;
+    if (routeInflightRef.current.has(scope)) return;
+    routeInflightRef.current.add(scope);
+    try {
+      const result = await api.list(requestPath);
+      if (memberRef.current !== requestMember || pathRef.current !== requestPath) return;
+      if (!Array.isArray(result)) {
+        setRouteData([]);
+        setLoadError(null);
+        return;
+      }
+      const mapped = buildRouteData(requestPath, result);
+      // The panel path node must exist in the tree: the root is built in,
+      // deeper folders ride with their ancestor chain plus children.
+      setRouteData(mapped);
+      setLoadError(null);
+    } catch (error) {
+      if (memberRef.current !== requestMember || pathRef.current !== requestPath) return;
+      if (error instanceof ApiError && (error.failure.kind === 'aborted' || error.failure.kind === 'unauthorized')) {
+        return;
+      }
+      setRouteData([]);
+      setLoadError({
+        kind: error instanceof ApiError && error.failure.kind === 'not-found' ? 'not-found' : 'offline',
+      });
+    } finally {
+      routeInflightRef.current.delete(scope);
+    }
+  }, []);
+
+  const fetchRouteRef = useRef(fetchRoute);
+  fetchRouteRef.current = fetchRoute;
+
   const loadData = useCallback(async (event: { id: string }) => {
     const requestMember = memberRef.current;
     if (!requestMember) return;
-    const requestPath = fromSvarId(event.id);
     const targetId = event.id;
+    const requestPath = fromSvarId(targetId);
+    // The route folder always flows through the `data` prop: a store request
+    // for it just refetches the route (breadcrumb refresh), never provides.
+    if (requestPath === pathRef.current) {
+      void fetchRouteRef.current();
+      return;
+    }
+    const scope = `${requestMember}:${targetId}`;
+    if (providedRef.current.has(scope) || inflightRef.current.has(scope)) return;
+    inflightRef.current.add(scope);
     try {
-      const result = await api.list(requestPath);
+      const result = await loadExplorerFolder({
+        svarId: targetId,
+        memberPath: requestPath,
+        list: (folder) => api.list(folder),
+        provide: (id, data) => apiRef.current?.exec('provide-data', { id, data }),
+      });
       // A member switch during the fetch must not render stale data.
       if (memberRef.current !== requestMember) return;
-      if (!Array.isArray(result)) {
-        await apiRef.current?.exec('provide-data', { id: targetId, data: [] });
-        return;
-      }
-      await apiRef.current?.exec('provide-data', {
-        id: targetId,
-        data: toSvarEntries(requestPath, result),
-      });
-      if (pathRef.current === requestPath) setLoadError(null);
-    } catch (error) {
-      if (memberRef.current !== requestMember) return;
-      if (error instanceof ApiError && error.failure.kind === 'aborted') return;
-      // An expired session is handled globally (Connect view takes over).
-      if (error instanceof ApiError && error.failure.kind === 'unauthorized') return;
-      // Unblock the tree with an empty listing; the banner below carries the
-      // visible error and the retry, never a silent empty folder.
-      try {
-        await apiRef.current?.exec('provide-data', { id: targetId, data: [] });
-      } catch {
-        /* the banner still explains the failure */
-      }
-      if (pathRef.current === requestPath) {
-        setLoadError({
-          kind: error instanceof ApiError && error.failure.kind === 'not-found' ? 'not-found' : 'offline',
-        });
-      }
+      if (result.status === 'ok') providedRef.current.add(scope);
+      // Subfolders render inside their own panels; the banner stays reserved
+      // for the route folder.
+    } finally {
+      inflightRef.current.delete(scope);
     }
   }, []);
 
@@ -109,6 +154,9 @@ export function FileExplorer() {
         /* an unknown action name simply has nothing to intercept */
       }
     }
+    // No data load here: the route effect below fetches the folder into the
+    // `data` prop, which is the store's deterministic first-render channel.
+    // (Providing from init raced the store setup and was silently dropped.)
   }, []);
 
   const handleSetPath = useCallback(
@@ -130,6 +178,13 @@ export function FileExplorer() {
     },
     [navigate],
   );
+
+  // Route changes (deep link, Back, in-explorer navigation) re-fetch the
+  // folder into the `data` prop; retry bumps `attempt` and remounts.
+  useEffect(() => {
+    setRouteData([]);
+    void fetchRoute();
+  }, [path, memberId, attempt, fetchRoute]);
 
   // The panels identity only changes with the route, so in-explorer
   // navigation is never reset by a re-render.
@@ -202,7 +257,8 @@ export function FileExplorer() {
         <Theme fonts={false}>
           <Filemanager
             key={`${memberId ?? 'none'}:${attempt}`}
-            data={[]}
+            data={routeData}
+            mode="table"
             panels={panels}
             readonly
             icons="simple"

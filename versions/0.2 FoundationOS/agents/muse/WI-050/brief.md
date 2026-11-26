@@ -33,6 +33,7 @@ Use `%TEMP%\wi050-tester\` for everything. Never use `%LOCALAPPDATA%\FoundationO
 ## Browser rules (OpenCode built-in browser only)
 
 - Drive the **built-in browser** (`browser.tabs.open`, `snapshot`, `click`, `fill`, `press`, `evaluate`, `screenshot`, `wait`). Do not launch Chrome or another browser. Do not count another agent's run as yours.
+- **Access check first.** Call `browser.tabs.list`. If the tool is absent (`Unknown tool 'browser.tabs.list'`), the desktop browser attachment is not available to child sessions in this OpenCode build (upstream limitation: subagents inherit the grant but not the attachment). In that case record the browser pass as **BLOCKED** with the exact error and the upstream reference, do not substitute another browser, and complete every non-browser check you can. Edge keeps WI-050 open until real interactive passes exist.
 - Desktop: use the tab opened at the launcher URL.
 - Real narrow viewports: open `<launcher URL>/qa/viewport.html?w=390&h=600&url=/` and `...?w=320&h=600&url=/`. The app runs in an iframe whose layout viewport is exactly that size; confirm `innerWidth`/`innerHeight` inside the frame with `evaluate` and a frame id from `browser.frames`. Interact inside the frame using its refs.
 - Record the actual viewport, browser, input method and candidate SHA for every scenario, plus a screenshot in your folder.

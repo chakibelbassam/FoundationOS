@@ -33,11 +33,19 @@ v0.2 uses one active member and an existing session token held in memory only. R
 
 `node scripts/session.mjs --server <address>` reads an account key without echo, prints only the session id and token, and writes nothing. `--key-stdin` reads one line for scripted runs. Account keys, invitation tokens and session tokens never belong in this repository, notes, logs, screenshots or preferences. Revoke a leaked session with `DELETE /sessions/{id}`.
 
+## Workspace
+
+- **Home** is a four-tile Magic Bento: File Explorer, Projects (pinned folders), Recent apps (apps whose overview you opened) and Activity (idle until a real source exists). Up to three rows show on each tile; **Show all** opens the full list.
+- **File Explorer** at `/files` and `/files/<path>` uses SVAR File Manager in read-only mode with per-folder lazy loading, loaded-directory search and sorting, deep links and Back. Download and editing operations are removed from menus and intercepted. Files open the text reader at `/file/<path>`.
+- **Projects** are folders you pin from the File Explorer header; **Recent apps** are recorded only when an app overview is deliberately opened. Both are per-member and stored with the other preferences.
+- **Apps** at `/apps` lists recognised apps from the root folders and pinned projects and states that scope; it is not a workspace-wide search.
+- **Appearance** offers Standard, Topography, Magic Rings, Lightfall and Ghost Fibers with live preview. Topography is the default when no background is saved. Motion Off, Follow-system reduced motion or unavailable graphics fall back to a static, readable background; only the selected effect is mounted.
+
 ## Defaults and storage
 
-Theme **System** · Surface **Glass** · Density **Comfortable** · Motion **On** · Cursor **Target**.
+Theme **System** · Surface **Glass** · Density **Comfortable** · Motion **On** · Cursor **Target** · Background **Topography**.
 
-Each is a per-member choice. The host validates and stores all five atomically in `%LOCALAPPDATA%\FoundationOS\client\preferences.json`, keyed by the member id returned from `/profile`. Before connection the client uses the defaults. A failed write returns an error, leaves the file untouched and the client keeps the last saved values. Motion stays on when Windows requests reduced motion unless the member chooses **Off** or **Follow system**.
+Each is a per-member choice. The host validates and stores them atomically in `%LOCALAPPDATA%\FoundationOS\client\preferences.json`, keyed by the member id returned from the v0.1 `/profile` behind the caller's token. Pinned projects and recent apps are stored in the same file. Before connection the client uses the defaults. A failed write returns an error, leaves the file untouched and the client keeps the last saved values. Motion stays on when Windows requests reduced motion unless the member chooses **Off** or **Follow system**.
 
 **Reset preferences:** stop the client, delete `%LOCALAPPDATA%\FoundationOS\client\preferences.json` (or point `--data-dir` at a new directory), and relaunch. The server store is separate and is not affected; delete the store only when you intend to lose accounts and files.
 
@@ -46,6 +54,8 @@ Each is a per-member choice. The host validates and stores all five atomically i
 Use disposable stores through `FOUNDATIONOS_DATA` and `--data-dir`, never a real installation.
 
 - `node tests/fixtures/seed.mjs --server <address> --admin-key <key> --out <outside the repo>` creates `alice` and `blair` with distinguishable homes, a Weather app folder and README, a malformed descriptor, an empty folder and a long name. `--large` adds 200 entries with 40 folders for the descriptor budget.
+- `node tests/fixtures/seed-sprint6.mjs --server <address> --member alice|blair` adds the nested Weather folders (Projects/Weather, Archive/Weather, and Journal/Weather for Blair) plus second project folders used by the Bento and explorer tests. Set `FOUNDATIONOS_SESSION` to that member's session token.
+- `public/qa/viewport.html?w=390&h=600&url=/` (served by the built host) renders the client in an iframe with that exact layout viewport for real-width visual checks.
 - The seeder writes member session tokens to the output file; keep it under `Edge/workspace` or outside the repository and delete it after QA.
 - `node --test tests/host.test.mjs` and `node --test tests/fixtures/seed.test.mjs` exercise the host and the fixtures without a browser.
 
@@ -53,18 +63,20 @@ Use disposable stores through `FOUNDATIONOS_DATA` and `--data-dir`, never a real
 
 | Command (from `FoundationOS/`) | What it checks |
 | --- | --- |
-| `npm test` | Client unit and component tests (API mapping, return-focus state, defaults, card reveal) |
+| `npm test` | Client unit and component tests (API/session mapping, return focus, preferences and defaults, card reveal, SVAR id mapping and explorer data, inventory, backgrounds) |
 | `npm run build` | TypeScript and the Vite production build |
-| `node --test tests/host.test.mjs` | SPA routes, asset 404, API proxy, readiness and version checks, preferences validation and atomic write |
+| `node --test tests/host.test.mjs tests/launcher.test.mjs` | SPA routes, asset 404, API proxy, readiness and version checks, token-bound preferences with concurrent writes, and the Windows launcher |
 | `node --test tests/fixtures/seed.test.mjs` | Seeder round trip against a disposable v0.1 store |
 
 ## Known limitations
 
 - A fresh build is required after code changes; the host serves `dist/` and reports `Build missing` otherwise.
-- The client accepts a session token, not an account key. Account sign-in, invitations and account switching belong to later increments.
+- The client accepts a session token, not an account key. Account onboarding and real sign-in belong to v0.3.
 - Running an app is not implemented; **Run** explains the limitation and points to **Open**.
-- Binary or oversized files have no reader and no download in v0.2.
-- The 390 px and 320 × 600 layouts were verified inside a width-constrained preview of the built client, not on a physical phone or with a touch screen. Stylus hover and controller input were not available as hardware; keyboard proves the directional model.
+- The file explorer is read-only: download, upload, rename, delete, copy and move are removed and intercepted. Binary or oversized files have no reader and no download.
+- SVAR's card view has no thumbnail content because only names and types are available from v0.1; the explorer opens in table view. Some SVAR toolbar controls are library-internal and may not expose accessible names; record them as a library limitation rather than a product decision.
+- Activity stays idle because no activity source is connected yet.
+- The 390 px and 320 × 600 layouts are checked through `public/qa/viewport.html`, which gives the client a real layout viewport of that size in the built-in browser. They were not tested on a physical phone or with a touch screen; stylus and controller hardware were unavailable.
 - The Target Cursor brackets are visual only and never receive input.
 
 ## Evidence

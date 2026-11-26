@@ -46,6 +46,17 @@ Motion is a deliverable. Tokens live in `src/styles.css` and are consumed by the
 
 Raw screenshots and the frame sample are in `versions/0.2 FoundationOS/qa/`.
 
+## Sprint-6 workspace components
+
+Sprint-6 replaces the shelf Home with a Bento workspace and a real explorer. The official React Bits sources are vendored under `versions/0.2 FoundationOS/FoundationOS/src/vendor/reactbits/` with their MIT + Commons Clause licence notice.
+
+| Component | Where it appears | Behaviour and focus | Narrow / reduced motion | Evidence |
+| --- | --- | --- | --- | --- |
+| **Magic Bento Home** (`src/workspace/HomeView.tsx`, vendored `MagicBento`) | `/` | Four tiles: File Explorer 2×2 upper left, Projects upper right, Recent apps lower left, Activity 2×2 lower right. Each row is one button with normal tab order; Back restores the source tile. | Stacks to one column with compact auto-height tiles; spotlight/intro respects reduced motion. | `qa/sprint-6/`, `qa/release/` |
+| **File Explorer** (`src/workspace/FileExplorer.tsx`, SVAR File Manager 2.6) | `/files`, `/files/*` | Read-only tree and table, lazy per-folder loading, loaded-directory search and sort, deep links, Back, pin/unpin control for the current folder. Unsupported actions are absent and intercepted. Known library limitation: SVAR exposes no labels for its toolbar buttons (view-mode switch, search clear, preview toggle), so those icon-only buttons carry no accessible name; the table view is the default and all folder/file actions have labelled controls elsewhere. | Single pane below 640 px; dark/light theme follows the member. | `qa/sprint-6/WI-051/` |
+| **Pinned projects and recent apps** (`PreferencesContext`) | Home, `/projects`, `/apps` | Pinned member-relative folders (cap 8); recent apps recorded only on a deliberate overview open (cap 8); per-member persistence with immediate save and visible failure. | Lists stack; each row is one activation target. | `qa/sprint-6/WI-052/` |
+| **Background host** (`src/app/BackgroundHost.tsx`, vendored Topography, Magic Rings, Lightfall, Ghost Fibers) | Full-window layer behind the workspace | Standard, Topography (default), Magic Rings, Lightfall, Ghost Fibers; only the selected effect mounts; static fallback for Motion Off, Follow-system reduce or init failure; scrim preserves text contrast; effect released on switch. | No effect under reduced motion; canvases are pointer-events none and aria-hidden. | `qa/sprint-6/WI-053/` |
+
 ## V0.2 evidence links
 
 - Weather journey and action face: `versions/0.2 FoundationOS/qa/release/`
