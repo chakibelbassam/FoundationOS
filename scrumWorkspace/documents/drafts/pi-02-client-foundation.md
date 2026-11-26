@@ -1,9 +1,11 @@
 ---
-revision: 8
+revision: 9
 ---
 # PI-2 (Client foundation) · v0.2 brainstorming
 
 **Recorded decision.** v0.2 supports one active profile and durable per-member settings across restarts and port changes. Earlier alternatives below document the design discussion. See the [increment plan and ordered sprint buckets](../PI-02/client-increment-plan.md).
+
+**Further decisions (26 November 2026).** Settings default to System theme, Glass surface, Comfortable density, motion on and Target cursor; motion stays on when Windows requests reduced motion unless the member chooses Off or Follow system. WI-044 defines and verifies the motion system before flip polish. Only Sev-1 blocks the release. QA evidence lives under `versions/0.2 FoundationOS/qa/`, contributor artifacts under `agents/`, and QA stores are disposable via `FOUNDATIONOS_DATA`. See [owner decisions](../PI-02/owner-decisions.md).
 
 [PI-2 (Client foundation) increment plan](../PI-02/client-increment-plan.md)
 
@@ -76,12 +78,12 @@ Propose three Settings pages: **Profile** for account details, **Appearance** fo
 
 The [header, Settings and prototype review](pi-02-header-settings-review.md) contains the defect replay matrix, the proposed card interaction, essential component checks and the v0.1 account capability map. v0.1 can read the active identity, issue sessions, invite and enroll members, list accounts for admins, and revoke a known session. Account removal and Friends require additional capabilities. Keep the current draft's existing-session connection flow while deciding whether to include a profile switcher.
 
-## Questions for later synthesis
+## Questions and their state
 
-1. Agree the first customization controls and whether preferences survive a full client restart.
-2. Decide whether v0.2 needs switching between existing profiles or a single active profile, and review when the invitation UI should ship.
-3. How much descriptor discovery is affordable in a large home?
-4. Which prototype behaviours survive the interaction replay, and which issues block v0.2?
-5. Does the five-sprint scope leave enough time for QA once the first runnable slice reveals the actual adoption cost?
+1. ~~First customization controls and restart persistence~~ — decided: System theme, Glass surface, Comfortable density, motion on and Target cursor, stored per member and kept across a full restart.
+2. ~~Profile switching and invitations~~ — decided: one active profile in v0.2; switching means reconnecting with another token. Invitations stay in the v0.3 accounts journey.
+3. Descriptor discovery — a fixed budget is recorded: visible folders only, at most 12 per view, 3 concurrent, session cache, activated item first. Sprint-1 measures the 200-entry/40-folder fixture.
+4. Prototype replay — Sprint-1 records reuse, adapt or replace for each interaction.
+5. Capacity — checkpoint after WI-027. WI-044 adds motion scope to Sprint-3.
 
-The PI stays proposed while these questions are explored. Use this draft for subsequent decisions and the later feasibility review.
+The PI stays proposed until the owner activates it. Edge owns the Scrum transitions with evidence.

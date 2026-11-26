@@ -3,7 +3,7 @@
   "kind": "sprint",
   "parent": "PI-02",
   "title": "Recognize an app and inspect its files",
-  "acceptance": "Complete Weather → reveal actions → Open → README → refresh → reconnect → Back. Preserve navigation during delayed metadata and card animation.",
+  "acceptance": "Complete Weather → reveal actions → Open → README → refresh → reconnect → Back. Preserve navigation during delayed metadata and card animation. Judge the card transition against the recorded motion timings and WI-044.",
   "status": "proposed",
-  "revision": 1
+  "revision": 2
 }

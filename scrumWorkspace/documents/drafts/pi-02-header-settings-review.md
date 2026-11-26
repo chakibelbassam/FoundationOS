@@ -1,9 +1,11 @@
 ---
-revision: 3
+revision: 4
 ---
 # PI-2 (Client foundation) · Header, Settings and prototype review
 
 **Recorded decision.** v0.2 supports one active profile and durable per-member settings across restarts and port changes. Earlier alternatives below document the design discussion. See the [increment plan and ordered sprint buckets](../PI-02/client-increment-plan.md).
+
+**Settings defaults (26 Nov 2026).** System theme, Glass surface, Comfortable density, motion on and Target cursor. Motion stays on when Windows requests reduced motion unless the member chooses Off or Follow system.
 
 The owner wants the prototype's ability to try and compare interface choices in v0.2. Keep a persistent header with the username, server connection control and local time. Put account details in Settings and connection details in the header. The names and contents of the three Settings pages below are proposals. Use a compact About link or footer in Settings for version details.
 
@@ -50,12 +52,12 @@ Use Sprint-1 for the prototype replay, Sprint-3 for app card actions and the ove
 | Page | Candidate v0.2 contents |
 |---|---|
 | **Profile** | Current username and role from the API, with a connection prompt when identity is unavailable. The username menu provides a direct route here. |
-| **Appearance** | Try a supported theme and a solid or glass surface treatment. Compare each on a sample app card and folder against the same background. Use readable contrast and a stable card surface throughout the test. |
-| **Workspace** | Try card density and motion. Follow the system's reduced-motion preference. Give the preview the same cards and focus treatment as Home so an experiment predicts the real result. |
+| **Appearance** | Default System theme and Glass surface. Compare Solid and Glass on a sample app card and folder against the same background. Use readable contrast and a stable card surface throughout the test. |
+| **Workspace** | Default Comfortable density and motion on. Try Compact, Off and Follow system. Give the preview the same cards and focus treatment as Home so an experiment predicts the real result. |
 
 Reuse the parts of the prototype settings that make judgement easy, including live preview and a clear way to revert. Propose **Apply**, **Reset to defaults** and an easy way back to the workspace. Keep example cards free of personal data. Use MUI or React Bits controls and Material Icons, with ordinary labels and keyboard behaviour.
 
-There are two useful levels of persistence. A tab-scoped preview can survive refresh at the same client address with browser session storage for nonsecret preferences. A small client-managed preferences file could carry choices across launches independently of the assigned port, adding file ownership, defaults, migration and reset work. The v0.1 API has no preferences operation. Propose tab-scoped customization for the first slice and ask whether durable local preferences are essential for v0.2.
+Persistence is decided. The client host stores validated preferences per member in the current Windows user's application-data directory, independently of the assigned port, and writes them atomically. The v0.1 API has no preferences operation. A data-directory override keeps QA and failed-write tests away from the owner's settings.
 
 ### What the running v0.1 server supports
 
@@ -73,10 +75,10 @@ The v0.1 OpenAPI suite ran against an isolated temporary store and passed, exerc
 
 ### Decisions before breaking down work
 
-1. Agree whether **Connect another profile** means switching between existing sessions in v0.2 or preparing the menu for the v0.3 accounts flow. Decide separately when **Invite member** becomes a user journey.
-2. Agree whether appearance choices should survive a full launcher restart. For a trial-and-review workflow, identify the first controls worth comparing and pick one useful default for each.
+1. Decided: v0.2 uses one active profile; switching means reconnecting with another token. Invitations stay in the v0.3 accounts journey.
+2. Decided: appearance choices survive a full launcher restart, stored per member. Defaults are System theme, Glass surface, Comfortable density, motion on and Target cursor.
 3. Replay the reported widget issues and decide which prototype components to adapt or replace. Verify solid and glass variants early enough to protect the QA sprint.
 4. Agree the arrow model with a short route through the actual layout, including narrow screens, edge cards and returning from a folder. Add controller support only if it becomes a release requirement.
-5. Verify that the three Settings pages and the persistent header fit the five-sprint scope after the first live slice. Prioritize an end-to-end file read, predictable navigation and customization preview before adding more controls.
+5. Check capacity after WI-027. WI-044 adds the motion work; prioritize the end-to-end file read, predictable navigation and the customization preview.
 
 Design sources: [v0.1 API contract](../../../versions/0.1%20FoundationOS/FoundationOS%20Server/openapi.yaml), [roadmap](../../../planning/Roadmap.md), [W3C menu button example](https://www.w3.org/WAI/ARIA/apg/patterns/menu-button/examples/menu-button-links/), [W3C disclosure pattern](https://www.w3.org/WAI/ARIA/apg/patterns/disclosure/), [W3C reflow guidance](https://www.w3.org/WAI/WCAG22/Understanding/reflow.html).

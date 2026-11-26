@@ -1,0 +1,62 @@
+[
+  {
+    "submitted": {
+      "id": "PI-02",
+      "revision": 5,
+      "requestId": "0f6c2d7a-4b8e-4f5a-9c31-7a2e6b8d4c10",
+      "kind": "decision",
+      "body": "**Owner decisions recorded 26 November 2026.** Settings default to System theme, Glass surface, Comfortable density, motion on and Target cursor. Motion stays on when Windows requests reduced motion unless the member chooses Off or Follow system. WI-044 is added to Sprint-3 between WI-034 and WI-035 for the motion token table and timings. Only Sev-1 blocks the release; a failed PI acceptance criterion counts as Sev-1. Edge owns the Scrum lifecycle and may resequence or move proposed work with a recorded reason. Session tokens stay in memory; account keys, invitation tokens and tokens stay out of the repository, notes, logs and screenshots. QA uses disposable stores via FOUNDATIONOS_DATA and a client data-directory override. Evidence lives under `versions/0.2 FoundationOS/qa/`; contributor artifacts under `agents/{role}/{WI-ID}/`.",
+      "documentRefs": [
+        "PI-02/client-increment-plan.md",
+        "PI-02/owner-decisions.md"
+      ]
+    },
+    "note": {
+      "id": "0f6c2d7a-4b8e-4f5a-9c31-7a2e6b8d4c10",
+      "recordId": "PI-02",
+      "at": "2026-11-26T19:59:30.321Z",
+      "kind": "decision",
+      "body": "**Owner decisions recorded 26 November 2026.** Settings default to System theme, Glass surface, Comfortable density, motion on and Target cursor. Motion stays on when Windows requests reduced motion unless the member chooses Off or Follow system. WI-044 is added to Sprint-3 between WI-034 and WI-035 for the motion token table and timings. Only Sev-1 blocks the release; a failed PI acceptance criterion counts as Sev-1. Edge owns the Scrum lifecycle and may resequence or move proposed work with a recorded reason. Session tokens stay in memory; account keys, invitation tokens and tokens stay out of the repository, notes, logs and screenshots. QA uses disposable stores via FOUNDATIONOS_DATA and a client data-directory override. Evidence lives under `versions/0.2 FoundationOS/qa/`; contributor artifacts under `agents/{role}/{WI-ID}/`.",
+      "documentRefs": [
+        "PI-02/client-increment-plan.md",
+        "PI-02/owner-decisions.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-02",
+      "revision": 6,
+      "requestId": "2c48940a-33ff-4a1d-9e74-38a70a983a6b",
+      "kind": "progress",
+      "body": "26 Nov 2026. Edge (OpenCode, DeepSeek V4.1 Flash) takes the PI from proposed to ready under the owner decision that Edge owns Scrum transitions. Plan revision 3, 21 items, target v0.2 against the released v0.1 server.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "2c48940a-33ff-4a1d-9e74-38a70a983a6b",
+      "recordId": "PI-02",
+      "at": "2026-11-26T20:05:16.161Z",
+      "kind": "progress",
+      "body": "26 Nov 2026. Edge (OpenCode, DeepSeek V4.1 Flash) takes the PI from proposed to ready under the owner decision that Edge owns Scrum transitions. Plan revision 3, 21 items, target v0.2 against the released v0.1 server.",
+      "documentRefs": []
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-02",
+      "revision": 7,
+      "requestId": "31956ff1-dcb1-4780-8a49-011761bf7c17",
+      "kind": "progress",
+      "body": "Delivery starts. Sprinter order 1 to 5 per plan revision 3. Owner decisions adopted: System theme, Glass surface, Comfortable density, motion on, Target cursor; Sev-1 only blocks; descriptor budget 12 per view, 3 concurrent.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "31956ff1-dcb1-4780-8a49-011761bf7c17",
+      "recordId": "PI-02",
+      "at": "2026-11-26T20:05:19.282Z",
+      "kind": "progress",
+      "body": "Delivery starts. Sprinter order 1 to 5 per plan revision 3. Owner decisions adopted: System theme, Glass surface, Comfortable density, motion on, Target cursor; Sev-1 only blocks; descriptor budget 12 per view, 3 concurrent.",
+      "documentRefs": []
+    }
+  }
+]

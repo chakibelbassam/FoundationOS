@@ -1,11 +1,13 @@
 ---
-revision: 2
+revision: 3
 ---
 # 📦 PI-2 (Client foundation) · v0.2 increment plan
 
 **Target v0.2 · 💭 Proposed**  
 **Product folder** · `versions/0.2 FoundationOS/`  
 **Dependency** · the independently launched v0.1 FoundationOS Server from 📦 PI-1 (FoundationOS Server).
+
+**Owner decisions (26 Nov 2026)** · System theme, Glass surface, Comfortable density, motion on, Target cursor. Edge owns the Scrum transitions and may reorganise proposed work. Sev-1 only blocks. See [owner decisions](owner-decisions.md).
 
 ## Release outcome
 
@@ -43,9 +45,9 @@ Use the React Bits corner brackets to show the actionable target. The OneDrive s
 |---|---|
 | 🏁 Sprint-1 (Prove the client and inspect the prototype) | Start the separate launchers and read a real private file in the built client. Record the existing card, folder, arrow and cursor behaviours. Identify which cursor paths handle mouse, pen and focus. Measure descriptor reads in a representative large home. |
 | 🏁 Sprint-2 (Browse a private home) | Connect, verify identity and server state, browse nested folders and return to the same widget. Demonstrate the focus rules with the system cursor and Target Cursor on the shelf. Exercise empty, loading, unreachable and revoked-session paths. |
-| 🏁 Sprint-3 (Recognize an app and inspect its files) | Complete the Weather → action face → Open → README → reconnect → Back journey. Check Run feedback, More, malformed descriptors, delayed metadata and a removed return target. Record a flip and lock-on transition with both pointer and keyboard. |
+| 🏁 Sprint-3 (Recognize an app and inspect its files) | Complete the Weather → action face → Open → README → reconnect → Back journey. Check Run feedback, More, malformed descriptors, delayed metadata and a removed return target. Record a flip and lock-on transition with both pointer and keyboard. Judge the motion timings against WI-044. |
 | 🏁 Sprint-4 (Refine and document the workspace) | Review the three Settings pages, header menus and customization preview. Compare cursor, motion, density and Solid/Glass treatments using the same cards as Home. Check pen hover/contact where hardware is available. Apply different settings for two members and verify persistence across a full restart. Record component usage, chosen defaults, launcher steps and known device gaps. |
-| 🏁 Sprint-5 (Fix visual defects and verify the release) | Independent QA through the release launcher on desktop, 390 px and 320 × 600. Test two member homes, revocation, reconnect, stale content and distinct saved preferences after a different-port restart. Replay quick inputs, long labels, mid-flip layers, reduced motion, focus, arrow boundaries and cursor targeting. Fix and retest defects. Attach results and remaining limitations for owner acceptance. |
+| 🏁 Sprint-5 (Fix visual defects and verify the release) | Independent QA through the release launcher on desktop, 390 px and 320 × 600. Test two member homes, revocation, reconnect, stale content and distinct saved preferences after a different-port restart. Replay quick inputs, long labels, mid-flip layers, reduced motion, focus, arrow boundaries and cursor targeting. Fix and retest Sev-1 defects; record the rest. Attach results and remaining limitations for owner acceptance. |
 
 ## Organisation and release review
 
@@ -59,13 +61,13 @@ The version root owns the launcher and brief. The React + TypeScript + Vite pack
 
 ## Recorded sprint buckets
 
-Delivery follows the listed IDs. Each record names its technical prerequisites separately from its previous item in the delivery queue. All 20 items begin proposed. Each sprint inherits v0.2 from this PI.
+Delivery follows the listed IDs. Each record names its technical prerequisites separately from its previous item in the delivery queue. All 21 items begin proposed. Each sprint inherits v0.2 from this PI.
 
 | Sprint | Work items in delivery order |
 |---|---|
 | [🏁 Sprint-1 (Prove the client and inspect the prototype)](../../sprints/S-02-1.json) | [WorkItem-24 (Reproduce the prototype interactions)](../../work-items/WI-024.json) → [WorkItem-25 (Build and serve the versioned client)](../../work-items/WI-025.json) → [WorkItem-26 (Connect the launcher to the v0.1 server)](../../work-items/WI-026.json) → [WorkItem-27 (Read one private file through the built client)](../../work-items/WI-027.json) |
 | [🏁 Sprint-2 (Browse a private home)](../../sprints/S-02-2.json) | [WorkItem-28 (Restore the current route after reconnect)](../../work-items/WI-028.json) → [WorkItem-29 (Browse Home and nested folders)](../../work-items/WI-029.json) → [WorkItem-30 (Make shelf navigation and cursor targets predictable)](../../work-items/WI-030.json) → [WorkItem-31 (Show the active member and server in the header)](../../work-items/WI-031.json) |
-| [🏁 Sprint-3 (Recognize an app and inspect its files)](../../sprints/S-02-3.json) | [WorkItem-32 (Recognize apps without disturbing the shelf)](../../work-items/WI-032.json) → [WorkItem-33 (Open the app overview and text reader)](../../work-items/WI-033.json) → [WorkItem-34 (Reveal and operate the app card actions)](../../work-items/WI-034.json) → [WorkItem-35 (Polish the flip and cursor handoff)](../../work-items/WI-035.json) |
+| [🏁 Sprint-3 (Recognize an app and inspect its files)](../../sprints/S-02-3.json) | [WorkItem-32 (Recognize apps without disturbing the shelf)](../../work-items/WI-032.json) → [WorkItem-33 (Open the app overview and text reader)](../../work-items/WI-033.json) → [WorkItem-34 (Reveal and operate the app card actions)](../../work-items/WI-034.json) → [WorkItem-44 (Define and verify the motion system)](../../work-items/WI-044.json) → [WorkItem-35 (Polish the flip and cursor handoff)](../../work-items/WI-035.json) |
 | [🏁 Sprint-4 (Refine and document the workspace)](../../sprints/S-02-4.json) | [WorkItem-36 (Persist workspace preferences per member)](../../work-items/WI-036.json) → [WorkItem-37 (Preview and apply settings on real widgets)](../../work-items/WI-037.json) → [WorkItem-38 (Refine cursor behaviour across inputs and pages)](../../work-items/WI-038.json) → [WorkItem-39 (Document the launcher and adopted components)](../../work-items/WI-039.json) |
 | [🏁 Sprint-5 (Fix visual defects and verify the release)](../../sprints/S-02-5.json) | [WorkItem-40 (Run independent release-journey QA)](../../work-items/WI-040.json) → [WorkItem-41 (Review visual and input behaviour independently)](../../work-items/WI-041.json) → [WorkItem-42 (Resolve release-blocking findings)](../../work-items/WI-042.json) → [WorkItem-43 (Assemble the v0.2 acceptance evidence)](../../work-items/WI-043.json) |
 

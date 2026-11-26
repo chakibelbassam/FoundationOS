@@ -1,9 +1,11 @@
 ---
-revision: 4
+revision: 5
 ---
 # PI-2 (Client foundation) · Workspace interaction design
 
 **Recorded decision.** v0.2 supports one active profile and durable per-member settings across restarts and port changes. Earlier alternatives below document the design discussion. See the [increment plan and ordered sprint buckets](../PI-02/client-increment-plan.md).
+
+**Settings defaults (26 Nov 2026).** System theme, Glass surface, Comfortable density, motion on and Target cursor. Motion stays on when Windows requests reduced motion unless the member chooses Off or Follow system.
 
 Fifty questions and working answers for the v0.2 design discussion. The launcher and reconnect decisions are recorded in the [PI draft](pi-02-client-foundation.md). The interface answers below are proposals for review. Prototype observations come from source inspection. Sprint replay is where we verify behaviour and component reuse.
 
@@ -62,12 +64,12 @@ The [header, Settings and prototype review](pi-02-header-settings-review.md) rec
 40. **Why include Settings in a client foundation release?** Let the owner try a small set of real interface controls, compare the results on representative widgets, and decide what to keep.
 41. **Where is Settings and how do I leave it?** A labelled gear in the shell opens Settings. The three proposed routes are Profile, Appearance and Workspace. Back returns to the previous view and restores focus when the gear initiated the visit.
 42. **Where does Connection live?** In the header, beside username and local time. Open the connection control for the selected server, version, recovery and a fresh status check.
-43. **What does Profile show?** Show the current username and role from the server. The header menu marks the active profile and links to the Settings page. Whether to switch existing profiles in v0.2 is an owner decision.
+43. **What does Profile show?** Show the current username and role from the server. The header menu marks the active profile and links to the Settings page. v0.2 uses one active profile; switching means reconnecting with another member's token, and a refresh returns to Connect.
 44. **How should a user recover if the server address changes?** Show the configured address in the header panel. First try the current address. If it has changed, explain how to relaunch the client with the new server address.
 45. **What belongs under About?** Use a compact Settings link or footer with the client version and server version when reachable. Connection diagnostics stay in the header.
-46. **Which appearance and workspace controls earn a place first?** Propose a theme sample and solid or glass surface in Appearance, and density and motion in Workspace. Follow the system's reduced-motion preference.
-47. **How do preferences persist when local ports change?** Tab-scoped preview can survive a reload at the running client address. Keeping preferences through full restarts would require client-owned persistence or a future preferences API. This is an open choice.
-48. **Should Settings use immediate changes or Save and Cancel?** Preview changes live against sample cards. Provide Apply and Reset to defaults, with the wording and storage lifetime decided together. Read-only Profile details require no save step.
+46. **Which appearance and workspace controls earn a place first?** A theme sample and Solid or Glass surface in Appearance, and density and motion in Workspace. Defaults are System theme, Glass surface, Comfortable density, motion on and Target cursor. Motion stays on when Windows requests reduced motion unless the member chooses Off or Follow system.
+47. **How do preferences persist when local ports change?** Tab-scoped preview can survive a reload at the running client address. The client host stores validated preferences atomically per member in the current Windows user's application-data directory. They survive a full restart and a different port. A data-directory override keeps QA isolated.
+48. **Should Settings use immediate changes or Save and Cancel?** Preview changes live against sample cards. Provide Apply, Cancel and Reset to defaults. The storage lifetime is decided: durable per member. Read-only Profile details require no save step.
 49. **How do users get added or removed?** Connect another profile means using an existing identity. Admin invitations and member enrollment are separate v0.1 API operations. Removing a profile from the picker, revoking a session and deleting an account have different effects. See the follow-up review for the contract table.
 50. **What does Settings look and feel like on keyboard and phone?** Use three reachable sections, labelled controls and a single-column page on narrow screens. Preview the real controls and keep focus visible below the header.
 

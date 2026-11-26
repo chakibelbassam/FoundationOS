@@ -2,8 +2,8 @@
   "id": "PI-02",
   "kind": "pi",
   "title": "Client foundation",
-  "acceptance": "Start the v0.2 client against the v0.1 server. Connect to a private home, inspect Weather, refresh and reconnect to its README, then return with focus restored. Verify app and folder widgets, Target Cursor, Settings previews, loading, empty and recovery states through the release launcher. Use one active profile. Under the same Windows login, save different settings for two members, restart the client on a different port and verify that each member recovers their own settings.",
-  "status": "proposed",
-  "revision": 4,
+  "acceptance": "Start the v0.2 client against the v0.1 server. Connect to a private home, inspect Weather, refresh and reconnect to its README, then return with focus restored. Verify app and folder widgets, Target Cursor, Settings previews, loading, empty and recovery states through the release launcher. Use one active profile and the recorded defaults: System theme, Glass surface, Comfortable density, motion on and Target cursor. Under the same Windows login, save different settings for two members, restart the client on a different port and verify that each member recovers their own settings.",
+  "status": "active",
+  "revision": 7,
   "targetVersion": "0.2"
 }

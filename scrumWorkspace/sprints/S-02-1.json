@@ -4,6 +4,6 @@
   "parent": "PI-02",
   "title": "Prove the client and inspect the prototype",
   "acceptance": "Start both launchers separately, read a real private file in the built browser client, and show which prototype interactions to adapt or replace.",
-  "status": "proposed",
-  "revision": 1
+  "status": "active",
+  "revision": 3
 }
