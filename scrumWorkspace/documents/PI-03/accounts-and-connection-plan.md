@@ -1,5 +1,5 @@
 ---
-revision: 1
+revision: 2
 ---
 # 📦 PI-3 (Accounts and connection) · v0.3 increment plan
 
@@ -28,16 +28,33 @@ A member joins the selected local server with a pasteable code. A proposed invit
 | --- | --- |
 | Refresh or fully close and reopen the browser | In the same browser profile, with both local processes running and a valid session, reopen Home or the authorized private page without entering the password. Check the session before rendering private content. A temporary outage preserves the requested route and offers Retry. Expiry or revocation clears private state and opens Sign in. |
 | **Sign out** | End the current session, including tabs that share it. Other independent sessions keep working. If the server cannot confirm the request, clear local access and explain that server revocation is unconfirmed. |
-| **Sign out of all sessions** | In **Settings → Account**, an owner or member can end every session for their own account on this server. Confirm that this includes the current browser. Cancel preserves all sessions. On success, the server revokes every existing session for that account, the initiating browser returns to Sign in, and other sessions lose access on their next protected request or reopen. Other members stay signed in. Files, preferences and the password are preserved. |
+| **Sign out of all sessions** | In **Settings → Profile → Account**, an owner or member can end every session for their own account on this server. Confirm that this includes the current browser. Cancel preserves all sessions. On success, the server revokes every existing session for that account, the initiating browser returns to Sign in, and other sessions lose access on their next protected request or reopen. Other members stay signed in. Files, preferences and the password are preserved. |
 | Connection breaks during global sign-out | Clear local access after confirmation of intent. Report that the server result is unconfirmed. Give the user a way to sign in again and retry once connected. Show success only after server confirmation. A repeated request must leave the account in a consistent state. |
 
 The server owns credential verification, session expiry and revocation. The proposed design uses an expiring, persistent HttpOnly cookie containing an opaque session identifier. The client host holds the paired server credential. Prove isolation between local installations, including when ports change, since a cookie alone does not isolate ports. Validate cookie settings for the supported transport and protect state-changing requests against cross-site submission. Store passwords as salted, slow hashes and keep secrets out of URLs, browser-accessible storage, logs and QA artifacts. [Session guidance](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html) · [Cookie port scope](https://www.rfc-editor.org/rfc/rfc6265.html#section-8.5)
+
+## Profile settings
+
+The account menu opens **Settings → Profile** for the signed-in user. Show the current username, role and picture together. Group the introduction, optional unverified email and picture under **Profile details**. Group username, password and session controls under **Account**. Put **Delete my account** in a separate section with the consequences visible before confirmation. Owner-only invitation and member-reset controls stay in **Settings → Accounts**.
+
+| Action | What the user can rely on |
+| --- | --- |
+| Change username | Editing shows whether the name appears available. Save makes the authoritative uniqueness check using the signup rules. On conflict, keep the input and suggest choosing another name. After success the new name appears in the header, signs in and works in recovery. The account ID, role, sessions, files and preferences stay attached to the same person. A reused name never inherits another person’s data. |
+| Change password | From Account, confirm the current password, enter the new one and sign back in. Follow the password-change and revocation journey below. |
+| Edit introduction or email | Show a labelled plain-text introduction with a visible length limit and a separate optional unverified email. Save, Cancel and clearing a field are explicit. Restore saved values after reopening. The v0.3 surfaces for profile details are the member’s own settings and signed-in header. |
+| Change picture | Select a local picture, preview it, then Save, Cancel, replace or remove it. Use initials when no picture is available. Read and write the image under the authenticated account ID. Check actual image type, byte size and decoded dimensions on the server. Keep the previous picture if saving fails. |
+| Delete my account | Confirm the signed-in identity with the current password and explain which data goes offline, the recovery deadline and how to contact the operator. Immediately close account access and revoke its sessions and credentials on success. Keep the private Home offline for 30 days from confirmed closure. Show the exact deadline. Return to Sign in. A new account reusing that username cannot claim it. |
+| Recover or expire a Home | Proposed procedure: a local authorized operator verifies the former member’s identity, selects the retained account by stable ID and restores it with fresh credentials before the deadline. Handle a reallocated username without overwriting a live account. At the 30-day deadline recovery ends, including while the server is stopped. On its next cleanup run permanently remove only the identified member’s retained data. Persist enough state to resume interrupted cleanup. Document which profile data and preferences follow this policy and how separately managed backups behave. |
+
+Protect the sole owner from self-deletion so an initialized installation retains a recovery authority. Explain this restriction on the Profile page. Ownership transfer is a possible follow-up. Inspect the v0.1 account record, ID-based Home and its profile.json together when migrating or renaming. Include client-host preferences and cached private views in closure and restoration tests.
+
+**Component choices.** Reuse the client’s MUI v6 dependency. Compose Avatar with an accessible upload Button for the picture, multiline TextField with helper text for the introduction and username feedback, and a confirmation Dialog for deletion. Show Cancel first and restore focus when it closes. Use Material Icons with accessible action labels. [Avatar and fallback](https://v6.mui.com/material-ui/react-avatar/) · [File upload Button](https://v6.mui.com/material-ui/react-button/#file-upload) · [TextField](https://v6.mui.com/material-ui/react-text-field/) · [Dialog](https://v6.mui.com/material-ui/react-dialog/)
 
 ## Changing or recovering a password
 
 | Person and starting point | Journey and result |
 | --- | --- |
-| Signed-in user knows the password | Settings → Account asks for the current and new passwords. After a successful change, revoke prior sessions and sign in again. |
+| Signed-in user knows the password | Settings → Profile → Account asks for the current and new passwords. After a successful change, revoke prior sessions and sign in again. |
 | Owner has the saved recovery code | At Sign in → Need help signing in?, select owner recovery, confirm the server, enter the username and code, and choose a new password. Consume the code, revoke active sessions and outstanding recovery credentials, then sign in and save the replacement code. |
 | Owner lost the password and recovery code | On the server machine, the authorized operating-system user stops the server and opens local **Recover owner** maintenance. Confirm the installation, store and existing owner username. Enter the new password in a hidden field. Commit under exclusive access, revoke that owner’s sessions and recovery credentials, issue a fresh recovery code and record the event without secrets. Restart and sign in to the same Home. Failure before commit preserves the previous state. This control is available only from local maintenance. |
 | Member forgot the password | The sign-in help page identifies the server and directs the member to its owner. After checking identity out of band, the owner issues a one-use reset code for that member in Settings → Accounts and shares it privately. The member enters the code and a new password. Consume the code, revoke the member’s prior sessions, and sign in to the same workspace. The owner can revoke or replace an unused code. |
@@ -50,11 +67,7 @@ Use the official MUI v6 Sign-in and Sign-up templates as the basis for one Found
 
 ## Delivery order
 
-1. Run the accepted v0.2 workspace and v0.1 server through their launchers with disposable accounts. Record the version pair, routes, storage, launch steps and existing defects. Decide the migration and session policies below before changes depend on them.
-2. Establish the v0.3 contract and implement first-owner setup, legacy enrollment and a complete password sign-in to a private file. Exercise first run and upgrade separately.
-3. Complete remembered sessions, authorized route restoration, single-session and all-session sign-out. Verify revocation with independent browser profiles and a second member.
-4. Deliver invitation management, password change and both owner and member recovery routes. Check concurrent submissions, single-use codes and interrupted operations on the real store.
-5. Polish the account forms and review the code paths that now own sessions, API forwarding, route guards and storage. Remove superseded token-entry UI once the credential flows work. Document the supported version pair, launch commands, data locations, upgrade and recovery. Run independent browser QA and retest fixes on the final candidate. [Client and server working guide](../../../Procedures/working-on-client-and-server.md)
+Follow the [six ordered sprint buckets](sprint-buckets.md). Each work item records the outcome, its prerequisites, queue position and the evidence needed to close it. Start from the accepted v0.2 baseline and deliver the v0.3 pair under its own version folder. [Client and server working guide](../../../Procedures/working-on-client-and-server.md)
 
 ## Release acceptance and evidence
 
@@ -66,6 +79,7 @@ Use the built v0.3 pair, real Windows launchers and disposable stores. Record ca
 | Remembered sign-in | Refresh and full browser close/reopen restore the authorized page with a valid session. An expired or revoked session prompts for credentials. Offline retry and denied or missing deep links give the user a safe next action. |
 | Session boundaries | Sign the same account into browser profiles A and B, and a different member into C. Ordinary sign-out in A leaves B and C working. Sign back into A, cancel global sign-out, then confirm it. A returns to Sign in. B loses protected access on its next request and on reopen. C can still open a private file. The original user can sign back in with the same password and find the same files and settings. Exercise a dropped confirmation response. |
 | Invitations and recovery | Verify successful redemption, name collision, repeated redemption, expiry and revocation. Exercise password change, member reset, owner code reset and local maintenance recovery. Prior sessions lose access and replacement credentials reach the same private home. |
+| Profile and account closure | Rename, change password, edit the introduction, replace and remove a picture. Verify name collisions and persistence on reopen. Close a disposable member, prove old sessions and a reused username cannot reach its Home, recover before 30 days, then test expiry and cleanup on a separate fixture. The sole owner and another member retain access. |
 | Workspace regression and polish | With two members, check Home, Projects, Apps, SVAR File Explorer, file reader, Back and appearance. Switch accounts with a request in flight. Check the account forms with keyboard, autofill, slow responses, narrow layouts and reduced motion. Attach independent browser evidence from the final candidate along with automated results and outstanding limitations. |
 
 ## Decisions to settle before implementation

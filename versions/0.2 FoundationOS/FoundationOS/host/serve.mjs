@@ -45,7 +45,23 @@ const PREFERENCE_SETS = {
   density: ['comfortable', 'compact'],
   motion: ['on', 'off', 'system', 'follow system'],
   cursor: ['system', 'target'],
+  background: ['standard', 'topography', 'magic-rings', 'lightfall', 'ghost-fibers'],
 };
+
+// Pinned projects and recent apps are member-relative folder paths stored per
+// member: short, slash-separated, never escaping the member root.
+const PREFS_PATH_LIST_KEYS = ['projects', 'recentApps'];
+const MAX_PATH_LIST_ENTRIES = 8;
+const MAX_PATH_LIST_LENGTH = 200;
+
+function isMemberPath(value) {
+  if (typeof value !== 'string') return false;
+  if (value.length === 0 || value.length > MAX_PATH_LIST_LENGTH) return false;
+  if (value.startsWith('/') || value.endsWith('/') || value.includes('\\')) return false;
+  if (/(^|\/)\.\.(\/|$)/.test(value)) return false;
+  if (/[\0-\x1f\x7f]/.test(value)) return false;
+  return value.split('/').every((part) => part.trim().length > 0);
+}
 
 // Client route namespaces whose deep links may contain dots (for example
 // /file/Weather/README.md). A missing path under one of these is an SPA
@@ -486,6 +502,12 @@ function checkPreferences(preferences) {
     return 'preferences must be an object';
   }
   for (const [key, value] of Object.entries(preferences)) {
+    if (PREFS_PATH_LIST_KEYS.includes(key)) {
+      if (!Array.isArray(value)) return `Invalid value for "${key}"`;
+      if (value.length > MAX_PATH_LIST_ENTRIES) return `Invalid value for "${key}"`;
+      if (!value.every(isMemberPath)) return `Invalid value for "${key}"`;
+      continue;
+    }
     const allowed = PREFERENCE_SETS[key];
     if (!allowed) return `Unknown preference "${key}"`;
     if (typeof value !== 'string' || !allowed.includes(value.toLowerCase())) {

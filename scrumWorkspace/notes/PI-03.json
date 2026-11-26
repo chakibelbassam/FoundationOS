@@ -110,5 +110,29 @@
         "drafts/pi-03-accounts-and-connection.md"
       ]
     }
+  },
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 4,
+      "requestId": "a4ee1c88-9063-406b-babb-680e7ecb98dd",
+      "kind": "decision",
+      "body": "The owner added username availability and rename, password change, biography, profile picture and self-deletion to Profile. On member deletion, keep the private Home offline for 30 days ahead of permanent cleanup. The plan proposes last-owner protection and local operator-assisted recovery. Six ordered sprints cover the complete local v0.3 increment, with separate tester and QA passes.",
+      "documentRefs": [
+        "PI-03/accounts-and-connection-plan.md",
+        "PI-03/sprint-buckets.md"
+      ]
+    },
+    "note": {
+      "id": "a4ee1c88-9063-406b-babb-680e7ecb98dd",
+      "recordId": "PI-03",
+      "at": "2026-11-26T23:10:46.081Z",
+      "kind": "decision",
+      "body": "The owner added username availability and rename, password change, biography, profile picture and self-deletion to Profile. On member deletion, keep the private Home offline for 30 days ahead of permanent cleanup. The plan proposes last-owner protection and local operator-assisted recovery. Six ordered sprints cover the complete local v0.3 increment, with separate tester and QA passes.",
+      "documentRefs": [
+        "PI-03/accounts-and-connection-plan.md",
+        "PI-03/sprint-buckets.md"
+      ]
+    }
   }
 ]

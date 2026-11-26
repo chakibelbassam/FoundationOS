@@ -283,6 +283,47 @@ test('v0.2 host serves the build, proxies the server and stores preferences', as
       assert.deepEqual(loadedBlair.body, { preferences: BLAIR_PREFS });
     });
 
+    await t.test('new workspace keys roundtrip and stay optional', async () => {
+      const extended = {
+        ...BLAIR_PREFS,
+        background: 'lightfall',
+        projects: ['Projects/alpha'],
+        recentApps: ['Weather', 'Projects/alpha'],
+      };
+      const saved = await postJson(`${mainUrl}preferences/save`, { preferences: extended }, { authorization: `Bearer ${BLAIR_TOKEN}` });
+      assert.equal(saved.status, 200);
+      assert.deepEqual(saved.body, { preferences: extended });
+      const loaded = await postJson(`${mainUrl}api/preferences/load`, {}, { authorization: `Bearer ${BLAIR_TOKEN}` });
+      assert.equal(loaded.status, 200);
+      assert.deepEqual(loaded.body, { preferences: extended });
+      // An older five-key file stays valid; missing keys are simply absent.
+      const legacy = await postJson(`${mainUrl}preferences/save`, { preferences: BLAIR_PREFS }, { authorization: `Bearer ${BLAIR_TOKEN}` });
+      assert.equal(legacy.status, 200);
+      const reloaded = await postJson(`${mainUrl}preferences/load`, {}, { authorization: `Bearer ${BLAIR_TOKEN}` });
+      assert.deepEqual(reloaded.body, { preferences: BLAIR_PREFS });
+    });
+
+    await t.test('invalid workspace values are rejected 400', async () => {
+      const many = Array.from({ length: 9 }, (_, index) => `Folder ${index}`);
+      for (const preferences of [
+        { ...BLAIR_PREFS, background: 'Neon' },
+        { ...BLAIR_PREFS, projects: many },
+        { ...BLAIR_PREFS, projects: ['../escape'] },
+        { ...BLAIR_PREFS, projects: ['/absolute'] },
+        { ...BLAIR_PREFS, projects: 'Projects' },
+        { ...BLAIR_PREFS, recentApps: ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i'] },
+        { ...BLAIR_PREFS, recentApps: ['ok', '../nope'] },
+      ]) {
+        const rejected = await postJson(
+          `${mainUrl}preferences/save`,
+          { preferences },
+          { authorization: `Bearer ${BLAIR_TOKEN}` },
+        );
+        assert.equal(rejected.status, 400, JSON.stringify(preferences));
+        assert.ok(typeof rejected.body?.error === 'string' && rejected.body.error.length > 0);
+      }
+    });
+
     await t.test('invalid preference is rejected 400 without touching the file', async () => {
       const before = await readFile(path.join(dataDir, 'preferences.json'), 'utf8');
       for (const preferences of [{ theme: 'Neon' }, { bogus: 'x' }, { motion: 'sometimes' }]) {

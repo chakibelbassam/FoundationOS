@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useMediaQuery } from '@mui/material';
 import { Filemanager, Willow, WillowDark } from '@svar-ui/react-filemanager';
@@ -31,7 +32,7 @@ export function FileExplorer() {
   const location = useLocation();
   const navigate = useNavigate();
   const { profile } = useSession();
-  const { effective } = usePreferences();
+  const { effective, saveError, saveState, toggleProject } = usePreferences();
   const memberId = profile?.id;
   const path = (params['*'] ?? '').replace(/\/+$/, '');
   const svarId = toSvarId(path);
@@ -135,6 +136,13 @@ export function FileExplorer() {
   const panels = useMemo(() => [{ path: svarId }], [svarId]);
   const from = fromState(location.state);
   const title = path ? path.split('/').filter(Boolean).pop() ?? 'Files' : 'Files';
+  const isPinned = path !== '' && (effective.projects ?? []).includes(path);
+  const pinning = saveState === 'saving';
+
+  const onTogglePin = () => {
+    if (!path) return;
+    void toggleProject(path);
+  };
 
   return (
     <div className="fo-route">
@@ -145,6 +153,25 @@ export function FileExplorer() {
       <Typography variant="body2" className="fo-page-subtitle" color="text.secondary">
         {path ? 'Folder in your private home.' : 'Your private home.'}
       </Typography>
+
+      {path ? (
+        <div className="fo-explorer-actions">
+          <Button
+            variant={isPinned ? 'outlined' : 'contained'}
+            size="small"
+            disabled={pinning}
+            onClick={onTogglePin}
+            aria-pressed={isPinned}
+          >
+            {isPinned ? 'Unpin' : 'Pin as project'}
+          </Button>
+          {saveState === 'error' && saveError ? (
+            <Typography variant="body2" color="error" role="status">
+              {saveError}
+            </Typography>
+          ) : null}
+        </div>
+      ) : null}
 
       {loadError ? (
         <div style={{ marginBottom: 12 }}>

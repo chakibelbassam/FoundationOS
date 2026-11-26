@@ -52,15 +52,18 @@ export const UNSUPPORTED_MENU_IDS: ReadonlySet<string> = new Set([
 
 // Filter the default menu factory: unsupported operations disappear from the
 // body and item menus while any future supported items (preview, info) pass
-// through. Returns false when nothing remains, which suppresses the menu.
-export function explorerMenuOptions(mode: TContextMenuType): IFileMenuOption[] | false {
+// through. Always returns an array: this build's AddNew toolbar calls `.map`
+// on the "add" menu without checking for `false`, so returning `false` when
+// nothing remains unmounts the whole app. An empty array suppresses the menu
+// safely instead.
+export function explorerMenuOptions(mode: TContextMenuType): IFileMenuOption[] {
   let options: IFileMenuOption[] | false;
   try {
     options = getMenuOptions(mode);
   } catch {
-    return false;
+    return [];
   }
-  if (!Array.isArray(options)) return false;
+  if (!Array.isArray(options)) return [];
   const kept = options.filter((option) => {
     if (!option || typeof option !== 'object') return false;
     if (option.comp === 'separator') return true;
@@ -78,5 +81,5 @@ export function explorerMenuOptions(mode: TContextMenuType): IFileMenuOption[] |
   while (trimmed.length > 0 && trimmed[trimmed.length - 1].comp === 'separator') {
     trimmed.pop();
   }
-  return trimmed.length > 0 ? trimmed : false;
+  return trimmed;
 }

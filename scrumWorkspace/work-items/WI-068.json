@@ -1,0 +1,12 @@
+{
+  "id": "WI-068",
+  "kind": "item",
+  "parent": "S-03-4",
+  "title": "Recover the owner using the saved code",
+  "type": "feature",
+  "priority": 1,
+  "effort": 3,
+  "acceptance": "**Expected behaviour** · Accept the existing owner username, recovery code and a new password. Consume the code and offer a replacement after verified sign-in.\n\n**Verify** · Exercise successful reset, replay of the consumed code and failed recovery. The owner keeps the same Home and old sessions lose access.\n\n**Delivery dependencies** · WI-059, WI-064\n\n**Queue** · Follows WI-067 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+  "status": "proposed",
+  "revision": 1
+}

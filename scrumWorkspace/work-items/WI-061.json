@@ -1,0 +1,12 @@
+{
+  "id": "WI-061",
+  "kind": "item",
+  "parent": "S-03-2",
+  "title": "Sign in and open a private file",
+  "type": "feature",
+  "priority": 1,
+  "effort": 4,
+  "acceptance": "**Expected behaviour** · Verify credentials on the paired local server, create a revocable session and open the signed-in Home. Use salted slow password hashes, generic invalid-credential feedback and rate limits.\n\n**Verify** · Sign in through the launcher, open a private file, check wrong credentials, weak passwords, offline and incompatible-server states. Confirm secrets stay out of URLs, browser-accessible storage and evidence.\n\n**Delivery dependencies** · WI-058, WI-059, WI-060\n\n**Queue** · Follows WI-060 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+  "status": "proposed",
+  "revision": 1
+}

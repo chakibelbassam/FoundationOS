@@ -53,12 +53,17 @@ export type DensityChoice = 'comfortable' | 'compact';
 export type MotionChoice = 'on' | 'off' | 'system';
 export type CursorChoice = 'system' | 'target';
 
+export type BackgroundChoice = 'standard' | 'topography' | 'magic-rings' | 'lightfall' | 'ghost-fibers';
+
 export interface Preferences {
   theme: ThemeChoice;
   surface: SurfaceChoice;
   density: DensityChoice;
   motion: MotionChoice;
   cursor: CursorChoice;
+  background: BackgroundChoice;
+  projects: string[];
+  recentApps: string[];
 }
 
 export type ApiFailure =

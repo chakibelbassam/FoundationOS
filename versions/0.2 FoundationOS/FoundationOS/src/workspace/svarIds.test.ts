@@ -60,8 +60,14 @@ describe('explorer menu filter', () => {
 
   it('drops the download affordance from the file menu in particular', () => {
     const options = explorerMenuOptions('file');
-    expect(options === false || (Array.isArray(options) && options.every((o) => String(o.id) !== 'download'))).toBe(
-      true,
-    );
+    expect(Array.isArray(options)).toBe(true);
+    expect(options.some((option) => String(option.id) === 'download')).toBe(false);
+  });
+
+  it('always returns an array, never false: the AddNew toolbar calls .map on it', () => {
+    for (const mode of modes) {
+      const options = explorerMenuOptions(mode);
+      expect(Array.isArray(options), `mode ${mode}`).toBe(true);
+    }
   });
 });

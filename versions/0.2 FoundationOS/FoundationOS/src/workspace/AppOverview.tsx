@@ -11,6 +11,7 @@ import type { AppDescriptor, Entry } from '../api/types';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { StatePanel } from '../components/StatePanel';
 import { getLastInput } from '../app/inputMode';
+import { usePreferences } from '../app/PreferencesContext';
 import { useSession } from '../app/SessionContext';
 import { clearResumeFocus, readResumeFocus, setResumeFocus } from './focusReturn';
 import { fromState } from './useRememberReturn';
@@ -41,10 +42,12 @@ export function AppOverview() {
   const location = useLocation();
   const navigate = useNavigate();
   const { profile } = useSession();
+  const { recordRecentApp } = usePreferences();
   const path = (params['*'] ?? '').replace(/\/+$/, '');
   const name = path.split('/').filter(Boolean).pop() ?? 'App';
   const [load, setLoad] = useState<Load>({ status: 'loading' });
   const [attempt, setAttempt] = useState(0);
+  const recordedRef = useRef<string | null>(null);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
   const readmeRef = useRef<HTMLButtonElement | null>(null);
   const browseRef = useRef<HTMLButtonElement | null>(null);
@@ -93,6 +96,16 @@ export function AppOverview() {
       controller.abort();
     };
   }, [path, attempt, name, profile?.id]);
+
+  useEffect(() => {
+    if (load.status !== 'ready') return;
+    // A deliberate overview open records recency: newest first, de-duplicated,
+    // capped. Back-navigation remounts are absorbed by the same rule.
+    if (recordedRef.current !== path) {
+      recordedRef.current = path;
+      void recordRecentApp(path);
+    }
+  }, [load, path, recordRecentApp]);
 
   useEffect(() => {
     if (load.status !== 'ready') return;

@@ -1,0 +1,12 @@
+{
+  "id": "WI-076",
+  "kind": "item",
+  "parent": "S-03-6",
+  "title": "Document launch, upgrade and account operations",
+  "type": "task",
+  "priority": 1,
+  "effort": 2,
+  "acceptance": "**Expected behaviour** · Write an operator and member guide based on the built candidate, including local pairing, stores, invite, recovery, profile edits, session policies, retained Home handling and rollback.\n\n**Verify** · Follow the Windows instructions from a cold start using disposable stores. Match behaviour to the selected version and redact all credentials.\n\n**Delivery dependencies** · WI-075\n\n**Queue** · Follows WI-075 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+  "status": "proposed",
+  "revision": 1
+}

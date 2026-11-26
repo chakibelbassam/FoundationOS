@@ -168,6 +168,22 @@ export function SettingsView() {
             onChange={updateDraft}
             describe={(value) => (value === 'solid' ? 'Solid' : 'Glass')}
           />
+          <Options
+            label="Background"
+            preference="background"
+            values={['standard', 'topography', 'magic-rings', 'lightfall', 'ghost-fibers']}
+            onChange={updateDraft}
+            describe={(value) =>
+              value === 'standard'
+                ? 'Standard'
+                : value === 'topography'
+                  ? 'Topography'
+                  : value === 'magic-rings'
+                    ? 'Magic Rings'
+                    : value === 'lightfall'
+                      ? 'Lightfall'
+                      : 'Ghost Fibers'}
+          />
           <Preview />
         </section>
       ) : (

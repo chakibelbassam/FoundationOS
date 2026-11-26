@@ -1,0 +1,9 @@
+{
+  "id": "S-03-6",
+  "kind": "sprint",
+  "parent": "PI-03",
+  "title": "Polish the experience and verify the release",
+  "acceptance": "Deliver a reproducible final candidate with polished account and profile screens, documented operations and two independent browser reports with fixes retested.",
+  "revision": 1,
+  "status": "proposed"
+}

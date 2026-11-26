@@ -1,22 +1,36 @@
-import { useEffect, useMemo, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
 import { Navigate, Route, Routes } from 'react-router-dom';import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, useMediaQuery } from '@mui/material';
 import { buildTheme } from '../theme';
 import { Header } from '../components/Header';
 import { TargetCursor } from '../components/TargetCursor';
+import { StatePanel } from '../components/StatePanel';
 import { ConnectView } from '../connect/ConnectView';
 import { FileReader } from '../workspace/FileReader';
-import { FileExplorer } from '../workspace/FileExplorer';
 import { FolderView } from '../workspace/FolderView';
 import { AppOverview } from '../workspace/AppOverview';
+import { ProjectsView } from '../workspace/ProjectsView';
+import { AppsView } from '../workspace/AppsView';
 import { SettingsView } from '../settings/SettingsView';
-import { StatePanel } from '../components/StatePanel';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motionIsReduced, usePreferences } from './PreferencesContext';
 import { useSession } from './SessionContext';
 import { installInputTracking } from './inputMode';
 import { clearDescriptorCache } from '../workspace/useApps';
+import { clearInventoryCache } from '../workspace/useAppInventory';
+import { BackgroundHost } from './BackgroundHost';
 import { useServer } from './ServerContext';
+
+// Heavy views load on demand so the first paint stays a single small chunk:
+// the SVAR explorer, the Magic Bento home and the WebGL backgrounds.
+const HomeView = lazy(() => import('../workspace/HomeView').then((module) => ({ default: module.HomeView })));
+const FileExplorer = lazy(() =>
+  import('../workspace/FileExplorer').then((module) => ({ default: module.FileExplorer })),
+);
+
+function RouteFallback() {
+  return <StatePanel title="Loading view" busy />;
+}
 
 function NotFound() {
   const navigate = useNavigate();
@@ -44,10 +58,33 @@ function Protected() {
   if (wasReplaced) return <SwitchHome />;
   return (
     <Routes>
-      <Route path="/" element={<FolderView />} />
+      <Route
+        path="/"
+        element={
+          <Suspense fallback={<RouteFallback />}>
+            <HomeView />
+          </Suspense>
+        }
+      />
       <Route path="/folder/*" element={<FolderView />} />
-      <Route path="/files" element={<FileExplorer />} />
-      <Route path="/files/*" element={<FileExplorer />} />
+      <Route
+        path="/files"
+        element={
+          <Suspense fallback={<RouteFallback />}>
+            <FileExplorer />
+          </Suspense>
+        }
+      />
+      <Route
+        path="/files/*"
+        element={
+          <Suspense fallback={<RouteFallback />}>
+            <FileExplorer />
+          </Suspense>
+        }
+      />
+      <Route path="/projects" element={<ProjectsView />} />
+      <Route path="/apps" element={<AppsView />} />
       <Route path="/app/*" element={<AppOverview />} />
       <Route path="/file/*" element={<FileReader />} />
       <Route path="/settings/:page" element={<SettingsView />} />
@@ -107,6 +144,7 @@ export function App() {
 
   useEffect(() => {
     clearDescriptorCache();
+    clearInventoryCache();
   }, [profile?.id]);
 
   useEffect(() => {
@@ -136,7 +174,12 @@ export function App() {
             : undefined
         }
       >
-        <div className="fo-backdrop" aria-hidden="true" />
+        <div className="fo-backdrop" aria-hidden="true">
+          <Suspense fallback={null}>
+            <BackgroundHost background={effective.background} reducedMotion={reduced} dark={dark} />
+          </Suspense>
+          <div className="fo-backdrop-scrim" aria-hidden="true" />
+        </div>
         <TargetCursor enabled={effective.cursor === 'target'} reducedMotion={reduced} />
         <Header />
         <main className="fo-shell" id="main">
