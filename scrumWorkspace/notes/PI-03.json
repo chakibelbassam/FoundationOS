@@ -1,0 +1,68 @@
+[
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 2,
+      "requestId": "833443a6-f716-4180-886c-a6ebd1fec87b",
+      "kind": "decision",
+      "body": "The owner chose username and password as the v0.3 sign-in experience. The linked draft proposes fresh setup and existing-account upgrade, sign-in and session behaviour, server invitations and recovery. Recovery fallback and session policy remain open.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    },
+    "note": {
+      "id": "833443a6-f716-4180-886c-a6ebd1fec87b",
+      "recordId": "PI-03",
+      "at": "2026-11-26T22:39:53.525Z",
+      "kind": "decision",
+      "body": "The owner chose username and password as the v0.3 sign-in experience. The linked draft proposes fresh setup and existing-account upgrade, sign-in and session behaviour, server invitations and recovery. Recovery fallback and session policy remain open.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 2,
+      "requestId": "fa25a74e-19ec-49a5-9e97-d8228e7d2e66",
+      "kind": "decision",
+      "body": "The owner approved first-run administrator setup by QR, optional email at signup, and local server-machine recovery if the owner loses both password and recovery code. The draft proposes keeping PI-3 local with a contained phone setup trial. Public access remains the v0.5 roadmap slice, and shared multi-server sign-in is later design work.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    },
+    "note": {
+      "id": "fa25a74e-19ec-49a5-9e97-d8228e7d2e66",
+      "recordId": "PI-03",
+      "at": "2026-11-26T22:50:19.535Z",
+      "kind": "decision",
+      "body": "The owner approved first-run administrator setup by QR, optional email at signup, and local server-machine recovery if the owner loses both password and recovery code. The draft proposes keeping PI-3 local with a contained phone setup trial. Public access remains the v0.5 roadmap slice, and shared multi-server sign-in is later design work.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 2,
+      "requestId": "d71f9541-05e6-4657-b96e-9c5d61d51435",
+      "kind": "decision",
+      "body": "The owner replaced the first-run QR proposal with an Open FoundationOS link from the local server control. The browser opens first-owner signup on an empty store or sign-in on an existing store, and valid sessions must survive refresh. The draft nominates the MUI v6 templates and proposes an HttpOnly cookie backed by session state held by the client host.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    },
+    "note": {
+      "id": "d71f9541-05e6-4657-b96e-9c5d61d51435",
+      "recordId": "PI-03",
+      "at": "2026-11-26T22:56:53.593Z",
+      "kind": "decision",
+      "body": "The owner replaced the first-run QR proposal with an Open FoundationOS link from the local server control. The browser opens first-owner signup on an empty store or sign-in on an existing store, and valid sessions must survive refresh. The draft nominates the MUI v6 templates and proposes an HttpOnly cookie backed by session state held by the client host.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    }
+  }
+]
