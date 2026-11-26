@@ -64,5 +64,51 @@
         "drafts/pi-03-accounts-and-connection.md"
       ]
     }
+  },
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 2,
+      "requestId": "7828713d-3e62-40c7-8675-db681cff842b",
+      "kind": "decision",
+      "body": "The owner approved the MUI sign-in and signup templates and requires valid sign-in to survive browser close as well as refresh. The updated draft plans a polished account experience, a focused review and cleanup of the current foundation, documentation and full end-to-end QA. Expiry and full local client-host restart behavior remain open.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    },
+    "note": {
+      "id": "7828713d-3e62-40c7-8675-db681cff842b",
+      "recordId": "PI-03",
+      "at": "2026-11-26T23:01:10.905Z",
+      "kind": "decision",
+      "body": "The owner approved the MUI sign-in and signup templates and requires valid sign-in to survive browser close as well as refresh. The updated draft plans a polished account experience, a focused review and cleanup of the current foundation, documentation and full end-to-end QA. Expiry and full local client-host restart behavior remain open.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 3,
+      "requestId": "2edaec4d-b23c-4f42-a965-1260af4aed47",
+      "kind": "decision",
+      "body": "Promoted the account journeys to the v0.3 increment plan. The owner selected Sign out of all sessions for the signed-in account, including the initiating browser. The plan defines an independent-session and second-member acceptance check.",
+      "documentRefs": [
+        "PI-03/accounts-and-connection-plan.md",
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    },
+    "note": {
+      "id": "2edaec4d-b23c-4f42-a965-1260af4aed47",
+      "recordId": "PI-03",
+      "at": "2026-11-26T23:06:05.018Z",
+      "kind": "decision",
+      "body": "Promoted the account journeys to the v0.3 increment plan. The owner selected Sign out of all sessions for the signed-in account, including the initiating browser. The plan defines an independent-session and second-member acceptance check.",
+      "documentRefs": [
+        "PI-03/accounts-and-connection-plan.md",
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    }
   }
 ]

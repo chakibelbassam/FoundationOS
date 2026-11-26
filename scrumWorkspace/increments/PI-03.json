@@ -2,8 +2,8 @@
   "id": "PI-03",
   "kind": "pi",
   "title": "Accounts and connection",
-  "acceptance": "Complete first run, invitation, sign-in and sign-out against the real server. A second account can access only its authorised workspace.",
+  "acceptance": "Through the real local v0.3 launchers, create the first owner, enroll existing accounts, invite a member and sign in with a username and password. Preserve private homes and preferences through upgrade and recovery. Restore authorized routes after refresh and browser reopen. Verify current-session and all-session sign-out with two independent sessions for one account and an unaffected second member. Demonstrate member reset, owner code and server-machine recovery, polished MUI forms and independent workspace regression QA against the PI plan.",
   "status": "proposed",
-  "revision": 2,
+  "revision": 3,
   "targetVersion": "0.3"
 }

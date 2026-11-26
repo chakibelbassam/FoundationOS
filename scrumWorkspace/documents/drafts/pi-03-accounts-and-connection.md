@@ -1,11 +1,13 @@
 ---
-revision: 3
+revision: 5
 ---
 # PI-3 (Accounts and connection) · v0.3 user journeys
 
+**Planning history.** The [PI-3 increment plan](../PI-03/accounts-and-connection-plan.md) now owns delivery scope and acceptance, including Sign out of all sessions.
+
 ## Owner decisions
 
-Username and password is the normal v0.3 sign-in experience. The v0.2 client uses a pasted session token. The v0.1 server already has stable account IDs, roles, account keys, revocable sessions, one-time invitations and private homes. The owner approved a local browser link from the server control, browser sign-in that survives refresh, optional email, and recovery from the server machine after losing both owner credentials. The journeys below are proposed designs. The product increment remains in planning.
+Username and password is the normal v0.3 sign-in experience. The v0.2 client uses a pasted session token. The v0.1 server already has stable account IDs, roles, account keys, revocable sessions, one-time invitations and private homes. The owner approved a local browser link from the server control, MUI account templates, browser sign-in that survives refresh and browser close, optional email, and recovery from the server machine after losing both owner credentials. The journeys below are proposed designs. The product increment remains in planning.
 
 **Release story.** I start my server, open FoundationOS, sign in and land in my own workspace. When I open a private file link while signed out, I can return to that file after signing in to the right account. I can invite a member to the same server and they get a private Home of their own. I can recover access after forgetting my password and keep my files and settings.
 
@@ -32,14 +34,14 @@ Username and password is the normal v0.3 sign-in experience. The v0.2 client use
 
 - Use a **Sign in** screen with server identity, username, password, show/hide password, and **Need help signing in?**. The main sign-in action submits credentials to the paired server. The server validates them using the local SQLite account store. Support paste, password managers and keyboard submission. Use plain feedback for invalid credentials and distinct recovery for an offline or incompatible server. Keep passwords and bearer tokens out of routes, browser storage, logs, and evidence.
 - Sign in to an authenticated Home. Restore an internal deep link only after the server authorizes the route for the signed-in member. If it belongs to a different member or no longer exists, offer that member's Home without disclosing the previous workspace.
-- **Refresh acceptance:** refresh Home or a private route and stay signed in while the session is valid. Check the session before drawing private UI and then restore the authorized page. Keep the route during brief outages and offer Retry. Expired or revoked sessions return to Sign in and clear private state.
-- **Proposed design:** use an opaque HttpOnly app session cookie, with the client host holding the server credential and the server owning revocation. Bind the session to the paired installation and verify that separate local clients stay isolated, since cookies do not isolate by port. Validate cookie settings for the supported local transport and guard state-changing requests against cross-site submission. [OWASP sessions](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html) · [Cookie port scope](https://www.rfc-editor.org/rfc/rfc6265.html#section-8.5)
+- **Session acceptance:** stay signed in after refresh or fully closing and reopening the browser in the same profile, while the paired local client and server are running and the saved session is valid. A direct private link returns to its authorized page. Check the session before drawing private UI and then restore the authorized page. Keep the route during brief outages and offer Retry. Expired or revoked sessions return to Sign in and clear private state.
+- **Proposed design:** use a persistent, expiring HttpOnly cookie with an opaque app session ID, with the client host holding the server credential and the server owning revocation. Bind the session to the paired installation and verify that separate local clients stay isolated, since cookies do not isolate by port. Validate cookie settings for the supported local transport and guard state-changing requests against cross-site submission. [OWASP sessions](https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html) · [Cookie port scope](https://www.rfc-editor.org/rfc/rfc6265.html#section-8.5)
 - Sign out ends that session across the tabs sharing it, clears private data from the view, and returns to Sign in. If the server cannot confirm revocation, clear local access immediately and report that server-side sign-out was unconfirmed. Password recovery revokes all sessions for the recovered account.
 - Passwords are stored as salted, slow hashes. Proposed baseline is a minimum of 15 characters for sign-in with password alone, support for long passphrases and password managers, no arbitrary symbol rules, checks against known weak passwords and rate limits on authentication attempts. [NIST password guidance](https://pages.nist.gov/800-63-4/sp800-63b/authenticators/)
 
 ## Account forms
 
-Start with the official MUI v6 Sign-in and Sign-up templates, matching the current client. Adapt one FoundationOS layout for Sign in, Create the administrator account, Join by invitation and Reset password. Support browser autofill, keyboard submission, narrow layouts and form errors. Reuse the FoundationOS theme. React Bits can supply a background if needed. [MUI v6 templates](https://v6.mui.com/material-ui/getting-started/templates/) · [React Bits catalog](https://reactbits.dev/get-started/index)
+Use the official MUI v6 Sign-in and Sign-up templates within the FoundationOS theme. Share the account layout across sign-in, administrator signup, invitations and reset. Polish desktop and narrow layouts, browser autofill, password visibility, keyboard and focus, loading, and readable errors with useful next actions. Verify slow requests and interrupted flows. Keep any React Bits background subordinate to the form. [MUI v6 templates](https://v6.mui.com/material-ui/getting-started/templates/) · [React Bits catalog](https://reactbits.dev/get-started/index)
 
 ## Invite someone to this server
 
@@ -81,7 +83,7 @@ Recovery codes and reset codes are scoped to one server, account and purpose. St
 
 **v0.5 on the current roadmap:** authorized remote access and security/deployment work. A useful first online test is one FoundationOS server at a protected hostname, with HTTPS, access boundaries and recovery verified. Cloudflare Tunnel can connect a hostname to a selected server and can support private routes. It provides reachability. [Roadmap](../../../planning/Roadmap.md) · [Cloudflare Tunnel fundamentals](https://developers.cloudflare.com/tunnel/concepts/)
 
-**Future shared entry point:** the vision for os.subsolutions.dev is one place to enter FoundationOS and reach the server you belong to. Treat multi-server routing as a separate design decision. Usernames are local to each server, so Bob's and Alice's servers can each have an account with the same name. A first design could select a server via a verified invite, workspace address or remembered choice. If the product later chooses central sign-in, map a verified identity to server memberships at the shared entry point and let the destination server independently verify the issued sign-in proof and its own membership. Keep each server's account passwords with that server. Cloudflare or a managed identity provider can be evaluated when this scope is planned.
+**Future shared entry point:** os.subsolutions.dev could discover verified server memberships and direct users to the right installation. Usernames remain local to a server. Central identity and routing are separate design work.
 
 ## Proposed delivery and acceptance
 
@@ -90,7 +92,13 @@ Recovery codes and reset codes are scoped to one server, account and purpose. St
 3. Deliver invitation creation, redemption, expiry and revocation. Exercise two members on one real local server in separate browser contexts and test reconnect and switching.
 4. Deliver password change, member reset, owner recovery code and local owner maintenance recovery. Verify a locked-out owner regains the same workspace after a restart. Run the complete cold-start, upgrade, two-member, restart and recovery journeys through the actual launchers. Confirm each member keeps their own files, projects, apps and preferences throughout.
 
+## Foundation review and release QA
+
+- Start from the accepted v0.2 build. Run both launchers with disposable stores and two members. Record the working routes, version pair, storage and run steps before changing the baseline.
+- Review the session, client host, API, route guards and store boundaries. Fix confirmed defects where the new account flows touch older code. Check stale data on account switch, repeated submissions, migration failures and changed ports. Remove superseded token-entry UI after the new route works. Document the run commands, data locations, supported versions, and setup, invite, upgrade and recovery paths.
+- Test the real Windows launcher and built browser client. Run cold start, upgrade on a copied store, sign-in, refresh, close and reopen, expiry, sign-out, invites and both recovery paths. Retest v0.2 Home, Projects, Apps, SVAR, the file reader, Back and appearance with both members. Capture independent browser results and retests from the final build.
+
 ## Decisions still open
 
-- **Session lifetime.** Refresh persistence is decided. Choose session expiry and whether sign-in should survive browser close or a full client-host restart.
-- **Existing accounts.** Confirm that v0.1 stores with real user data are an upgrade acceptance target. Recommend preserving existing identities and documenting recovery before migration.
+- **Session lifetime.** Refresh and browser-close persistence are decided. Choose session expiry and whether sign-in also survives a full client-host restart. Consider a shared-browser opt-out when defining the form.
+- **Existing accounts.** Confirm the supported upgrade starting versions and when a legacy account key is retired after password enrollment.
