@@ -5,9 +5,9 @@
   "title": "Publish the OpenAPI contract",
   "acceptance": "Story: the 0.2 client and every agent build against a written contract.\nExpected: an openapi.yaml beside the server copy documents every route, the bearer scheme and the error shape, and the CI proves each documented route.\nNot expected: generated client code or a public developer portal.\nDepends on: the routes from WI-12 to WI-16.\nVerify: the test run exercises every documented route.",
   "status": "review",
-  "revision": 5,
+  "revision": 6,
   "type": "enabler",
   "priority": 2,
   "effort": 3,
-  "evidence": "openapi.yaml beside the server documents every operation, the bearer scheme and the error shape; QA confirmed a 1:1 route match, and CI now runs the server tests."
+  "evidence": "openapi.yaml beside the server documents every operation, the bearer scheme and the error shape; QA confirmed a 1:1 route match, and CI now runs the server tests. PR #6: https://github.com/chakibelbassam/FoundationOS/pull/6."
 }

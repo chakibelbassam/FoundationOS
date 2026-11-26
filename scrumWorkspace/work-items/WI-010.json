@@ -5,9 +5,9 @@
   "title": "Move the server to one versioned store",
   "acceptance": "Story: the operator starts the 0.2 server copy and it keeps every account and file across restarts in one shared store instead of a per-version folder.\nExpected: the server boots against the shared FoundationOS store under LOCALAPPDATA, honours the FOUNDATIONOS_DATA override for isolated runs, and keeps accounts and homes under that one root.\nNot expected: importing or migrating the old 0.1 development data; that fixture store stays untouched.\nDepends on: nothing. WI-11 builds its migration runner on this store.\nVerify: restart the server in acceptance and confirm both members and their files remain.",
   "status": "review",
-  "revision": 5,
+  "revision": 6,
   "type": "feature",
   "priority": 1,
   "effort": 3,
-  "evidence": "Implemented in versions/0.2 FoundationOS/FoundationOS Server/server.ts: one store under LOCALAPPDATA/FoundationOS/store with a FOUNDATIONOS_DATA override; accounts and homes survive restart (node test keeps data across restarts, verify.py restart step)."
+  "evidence": "Implemented in versions/0.2 FoundationOS/FoundationOS Server/server.ts: one store under LOCALAPPDATA/FoundationOS/store with a FOUNDATIONOS_DATA override; accounts and homes survive restart (node test keeps data across restarts, verify.py restart step). PR #6: https://github.com/chakibelbassam/FoundationOS/pull/6."
 }

@@ -5,9 +5,9 @@
   "title": "Invite members",
   "acceptance": "Story: the admin invites a person without handing over admin rights.\nExpected: POST /invitations as admin mints a one-time invitation; POST /accounts with that invitation creates a member account, a private home and a one-time key in the response; a used invitation cannot be reused.\nNot expected: email delivery, invitation expiry or members inviting members.\nDepends on: WI-12 first-run admin and WI-13 sessions.\nVerify: acceptance invites, creates a member, and confirms the invitation is spent.",
   "status": "review",
-  "revision": 5,
+  "revision": 6,
   "type": "feature",
   "priority": 1,
   "effort": 2,
-  "evidence": "Admin invitation then POST /accounts creates a member home and one-time key; a used invitation answers 403 and the claim is atomic inside the transaction, so concurrent reuse cannot create a second account."
+  "evidence": "Admin invitation then POST /accounts creates a member home and one-time key; a used invitation answers 403 and the claim is atomic inside the transaction, so concurrent reuse cannot create a second account. PR #6: https://github.com/chakibelbassam/FoundationOS/pull/6."
 }

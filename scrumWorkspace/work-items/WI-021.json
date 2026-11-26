@@ -5,9 +5,9 @@
   "title": "Accept the server increment",
   "acceptance": "Story: the increment ends with evidence, not claims.\nExpected: the extended verify script passes launcher, first-run admin, invitation, sign-in, folder work, isolation, revocation, restart and contract checks, and the Manual records the verified outcome with its PDF republished.\nNot expected: client journeys or remote deployment; those belong to later increments.\nDepends on: every item of S5 to S8.\nVerify: running the acceptance end to end from a clean shell.",
   "status": "review",
-  "revision": 5,
+  "revision": 6,
   "type": "task",
   "priority": 1,
   "effort": 3,
-  "evidence": "Full acceptance passed after QA fixes: node server tests 10/10, verify.py passed launcher through restart, Scrum tests 12/12, validate ok with 43 records, and the Manual and its PDF were republished."
+  "evidence": "Full acceptance passed after QA fixes: node server tests 10/10, verify.py passed launcher through restart, Scrum tests 12/12, validate ok with 43 records, and the Manual and its PDF were republished. PR #6: https://github.com/chakibelbassam/FoundationOS/pull/6."
 }
