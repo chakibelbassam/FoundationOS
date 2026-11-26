@@ -1,0 +1,27 @@
+---
+revision: 2
+---
+# PI-2 (Client foundation) · Finish v0.2 on PR #9
+
+Sprint-6 (Stabilize and polish the v0.2 workspace) follows the original five sprints. The owner approved the four review fixes, SVAR File Explorer, Magic Bento Home and the React Bits background picker for the current v0.2 candidate. Work on the existing [PR #9](https://github.com/chakibelbassam/FoundationOS/pull/9). Start from its actual head, keep work attributable by item and leave merge and tag with the owner. The current v0.2 workspace is the review baseline. The earlier OneDrive prototype replay and console-style navigation are out of the Sprint-6 acceptance scope by owner decision. Treat past QA reports as evidence for their own runs.
+
+## Delivery order
+
+1. **WI-045 and WI-046** share the session and settings boundary. Establish that boundary before wiring member-owned explorer and appearance state.
+2. **WI-047 and WI-048** fix nested discovery and scroll during dwell. They can proceed in parallel with the boundary work where edits are independent.
+3. **WI-051** integrates SVAR into the existing browse and reader journey. **WI-052** adds a Magic Bento Home that links to it and to basic Projects and Apps views. **WI-053** adds appearance backgrounds with Topography as the default. Keep reviews scoped by work item, even when implementation can proceed in parallel.
+4. **WI-049** reviews the integrated workspace and fixes polish defects. This proposed item was repurposed from the discontinued prototype replay before work began. **WI-050** verifies the final combined PR head after all other items.
+
+## Workspace decisions
+
+- **File Explorer.** Use SVAR in the authenticated client. Adapt the existing v0.1 directory and text-read contract, member-relative routes and text reader. Lazy-load on navigation, preserve deep links and Back, and show actionable loading, empty, missing and offline states. Scope v0.2 to browsing, with name search and sorting for the loaded directory. Hide or disable unsupported operations at every entry point. SVAR's read-only mode still enables Download by default. [SVAR folder data](https://docs.svar.dev/react/filemanager/api/actions/request-data/) · [SVAR read-only mode](https://docs.svar.dev/react/filemanager/guides/read_only_mode/)
+- **Home.** Use actual [Magic Bento](https://reactbits.dev/components/magic-bento) for the four sections. Upper right shows up to three projects and Show all projects. Lower left shows up to three recently opened apps and Show all apps. Upper left opens File Explorer. The merged lower-right panel is Activity. Treat projects as member-designated or pinned folders. Start Apps Explorer with real recognised apps scoped to a defined member catalog or search area and make that scope clear; a shelf's probe budget is insufficient coverage for a workspace-wide claim. Only deliberate overview opens record a recent app. Use an honest idle or unavailable state for Activity until there is a real source. Give each entry a single click, tap or keyboard activation, normal tab order, visible focus and mobile stacking. Preserve reconnect and return focus.
+- **Appearance.** Add Standard, Topography, Magic Rings, Lightfall and Ghost Fibers. Topography applies on first run when there is no saved background and when defaults are reset. Preserve explicit selection and the rest of a member's settings across restarts. Use a static fallback for motion-off, reduced-motion when Follow system is selected, or unavailable graphics. Mount only the selected effect and release resources on switch. Verify Solid and Glass readability and cursor/flip layering with the actual effects. [Topography](https://reactbits.dev/backgrounds/topography) · [Magic Rings](https://reactbits.dev/backgrounds/magic-rings) · [Lightfall](https://reactbits.dev/backgrounds/lightfall) · [Ghost Fibers](https://reactbits.dev/backgrounds/ghost-fibers)
+
+This is a v0.2 integration and polish pass. The broader React component refresh is later work. Account onboarding and real sign-in belong to v0.3. Keep the known v0.1 server contract and existing member-token workflow for this candidate.
+
+## Independent agents and release evidence
+
+Edge coordinates. A Muse Spark 1.3 Contributor developer implements and fixes code. A separate Muse Spark 1.3 Contributor tester runs hands-on user journeys and reports reproducible failures. A GLM 5.3 Flash QA agent independently derives and drives acceptance and regression tests, then checks CI and release evidence. Both reviewers use OpenCode's built-in browser and their own disposable data and browser contexts, or sequential runs with clean fixtures if tooling requires it. The earlier QA briefs explicitly reserved browser operation for Edge. They produced HTTP checks, source review, screenshot review and contrast calculations, but neither reviewer independently drove the full release UI. Do not count screenshots, a desk review, or another agent's browser pass as a reviewer's own interactive run.
+
+Use the real v0.1 and v0.2 launchers with explicit disposable data roots. Track and await cleanup of child processes started by each run. Never stop unrelated Node processes. Verify the Windows launcher on Windows. Capture both reviewer runs and retests at the final PR head, the browser, viewport, input and results. Report unavailable hardware or blocked browser access as evidence gaps. Keep the acceptance open if either browser run cannot be completed.

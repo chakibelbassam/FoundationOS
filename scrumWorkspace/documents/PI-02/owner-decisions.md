@@ -1,5 +1,5 @@
 ---
-revision: 1
+revision: 3
 ---
 # 📦 PI-2 owner decisions · 26 November 2026
 
@@ -56,3 +56,7 @@ The owner recorded these decisions while PI-02 was still proposed. They apply to
 - QA evidence: `versions/0.2 FoundationOS/qa/`, curated and secret-free.
 - Contributor artifacts: `versions/0.2 FoundationOS/agents/{role}/{WI-ID}/`.
 - Raw captures, builds, dependencies and anything holding a credential stay untracked.
+
+## Follow-up after initial release review
+
+[Sprint-6 (Stabilize and polish the v0.2 workspace)](pr-9-acceptance-follow-up.md) delivers the v0.2 workspace follow-up on PR #9. The owner approved SVAR File Explorer, Magic Bento Home, the React Bits background picker with Topography as default, four fixes, and polish. The sixth sprint works from the current v0.2 client and replaces the prior live OneDrive replay requirement. A Muse Spark 1.3 Contributor tester and a GLM 5.3 Flash QA agent each drive independent browser checks. The developer has a separate Muse agent. Broader UI work remains later and v0.3 handles accounts and connection.

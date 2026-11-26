@@ -1,0 +1,12 @@
+{
+  "id": "WI-051",
+  "kind": "item",
+  "parent": "S-02-6",
+  "title": "Integrate SVAR File Explorer with the private workspace",
+  "type": "feature",
+  "priority": 1,
+  "effort": 4,
+  "status": "proposed",
+  "revision": 1,
+  "acceptance": "**Expected behaviour** · Use the SVAR React File Manager with the existing member session, directory API, routes and text reader. Provide a useful folder tree and file list, loading each directory on demand.\n\n**Delivery dependencies** · WI-045 and WI-046 for identity and stale-state handling.\n\n**Verify** · Verify list and folder opens, loaded-directory search and sort, deep links, refresh and reconnect, Back focus, and member switching. Verify unsupported actions including Download are absent or disabled even through menus and keyboard shortcuts.\n\n**Delivery** · v0.2 client, existing PR #9."
+}

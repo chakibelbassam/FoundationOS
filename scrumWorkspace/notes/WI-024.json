@@ -16,5 +16,27 @@
       "body": "Assumption (Edge judgement, 26 Nov 2026): the prototype source is unavailable in this checkout, so the replay uses the recorded source observations plus the v0.2 candidate and the upstream React Bits TargetCursor description. Verification: the substitute replay sequences in the document were run against the built client (pointer pass, ~1 s dwell, activation, Escape, flip frames, nested Back, arrow boundaries). If the owner supplies the prototype later, re-run the matrix and update the decisions.",
       "documentRefs": []
     }
+  },
+  {
+    "submitted": {
+      "id": "WI-024",
+      "revision": 4,
+      "requestId": "64b588b0-e54d-4adf-9ac1-b24f6cb3a185",
+      "kind": "decision",
+      "body": "The owner removed live OneDrive prototype replay from final v0.2 acceptance. Keep the earlier substitute replay as historical evidence and use the built v0.2 client for the new navigation and polish work.",
+      "documentRefs": [
+        "PI-02/pr-9-acceptance-follow-up.md"
+      ]
+    },
+    "note": {
+      "id": "64b588b0-e54d-4adf-9ac1-b24f6cb3a185",
+      "recordId": "WI-024",
+      "at": "2026-11-26T22:31:41.063Z",
+      "kind": "decision",
+      "body": "The owner removed live OneDrive prototype replay from final v0.2 acceptance. Keep the earlier substitute replay as historical evidence and use the built v0.2 client for the new navigation and polish work.",
+      "documentRefs": [
+        "PI-02/pr-9-acceptance-follow-up.md"
+      ]
+    }
   }
 ]

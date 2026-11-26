@@ -2,9 +2,13 @@
 
 Edge, own this increment from the first work item through a polished, independently tested release candidate and review-ready GitHub PRs. I’ll be away. Use this prompt as my authorization to carry out the recorded PI-2 work, delegate implementation and QA, fix defects, push scoped branches and open PRs. Make routine decisions yourself and keep going across work items and sprints.
 
+## Current handoff for Sprint-6
+
+For the current PR #9 work, follow [PI-2 - Continue the attempt](PI-2%20-%20Continue%20the%20attempt.md). It supersedes this initial goal for Sprint-6 scope, design, reviewer assignments and release acceptance. The following sections describe the original delivery framework.
+
 ## Start from the actual state
 
-Work from `C:\FoundationOS\FoundationOS Development`. Read the root `AGENTS.md`, `Edge/AGENTS.md`, the relevant Edge skills, and `scrumWorkspace/documents/PI-02/client-increment-plan.md`. Use `scrumWorkSpace` to query PI-02, its five sprint buckets, WorkItem-24 through WorkItem-44, their acceptance criteria, dependencies, notes and linked documents. Use the product vision, interface inventory, procedures and prototype research when a design question arises.
+Work from `C:\FoundationOS\FoundationOS Development`. Read the root `AGENTS.md`, `Edge/AGENTS.md`, the relevant Edge skills, and `scrumWorkspace/documents/PI-02/client-increment-plan.md`. Use `scrumWorkSpace` to query PI-02, its six sprint buckets, WorkItem-24 through WorkItem-50, their acceptance criteria, dependencies, notes and linked documents. Use the product vision, interface inventory, procedures and prototype research when a design question arises.
 
 Verify the target before every delegation. PI-2 produces the client under `versions/0.2 FoundationOS/`. Its backend dependency is the separately started, released v0.1 server. The OneDrive prototype is a reference for investigation and selective reuse. Inspect the current checkout, local changes and open PRs before branching. Make sure the implementation checkout contains the reconciled v0.1 baseline and current PI-2 plan. Preserve existing work.
 
@@ -12,7 +16,7 @@ Verify the target before every delegation. PI-2 produces the client under `versi
 
 You own the Scrum lifecycle for this PI: activate PI-02 and each sprint when its turn comes, move work items proposed → ready → active → review → done, and write a note at each transition. Review and done require evidence. Pull-request merges stay with me.
 
-When evidence diverges from the plan, resequence, reprioritise, revise effort, move proposed work between the five sprints, or add and defer items with a recorded reason. Keep the five sprints and existing IDs, and report what changed. The running Scrum server may still enforce the older owner-controlled policy until it is restarted; verify the `manual` records topic before relying on activation.
+When evidence diverges from the plan, resequence, reprioritise, revise effort, move proposed work between the existing sprints, or add and defer items with a recorded reason. Preserve existing IDs and report what changed. Verify the `manual` records topic before relying on activation.
 
 ## Run the team
 
@@ -57,7 +61,7 @@ Every delegation includes the titled work item, target folder, acceptance, relev
 
 ## Verify the product I expect
 
-**Use OpenCode’s built-in browser for all interactive browser QA.** Open the URL printed by the actual launcher. Use isolated test data. Do not launch Chrome or silently substitute an external browser. If Flash cannot access the built-in browser directly, let Flash design the test and evaluate the evidence while Edge operates that browser. If browser access is unavailable, record the gap and continue the checks that can run.
+**Use OpenCode’s built-in browser for all interactive browser QA.** Open the URL printed by the actual launcher. Use isolated test data. The independent reviewer drives the browser for WorkItem-50. If Flash cannot access the built-in browser directly, Edge can operate it for supplementary evidence. Record the outstanding independent browser acceptance and continue the checks that can run.
 
 Verify the complete Weather journey. Start v0.1 first, launch the built v0.2 client separately on a free port, connect one active member, find Weather, reveal **Run · Open · More**, open its overview, read its README, refresh, reconnect and return with Back to the originating action. In v0.2, Run explains runtime availability. Open visits the overview.
 
@@ -66,12 +70,10 @@ Give the essential components real attention:
 - **App card and Glass.** Test a quick pointer pass, roughly one second of hover, deliberate activation, held Enter, Escape and rapid reversal. Inspect intermediate flip frames on a busy background. Check text legibility, stationary neighbours, the first focus on Run after keyboard reveal, and the reduced-motion face change. Judge timings against the WI-044 token table.
 - **Folders and Target Cursor.** Check nested folders, arrow boundaries, scroll and focus restoration. Verify which control the brackets frame over a widget, its decorative icon and a separate action button. Check lock-on during transitions, loading, menu dismissal, resize and input changes. Record physical stylus observations separately from emulation. Use the keyboard to verify the directional model intended for later controller work.
 - **Profile and Settings.** Use one active profile. Under the same Windows login, save different theme, surface, density, motion and cursor choices for two members. Fully restart the client on a different port and reconnect as each member. Verify that each gets their own settings and home. Exercise Apply, Cancel, Reset and a failed save.
-- **Independent release QA.** Protect the fifth sprint for visual review, defect fixes and retesting. Cover desktop, 390 px and 320 × 600, plus revoked sessions, stale responses, missing files, malformed app descriptors and unavailable servers. Check the first-run Glass surface, the motion timings and the per-member defaults. Attach evidence from the final candidate. State which hardware and surfaces were actually tested.
+- **Independent release QA.** Repeat the Sprint-5 checks on the final Sprint-6 candidate. Cover actual browser viewports at desktop, 390 px and 320 × 600, plus revoked sessions, stale responses, missing files, malformed app descriptors and unavailable servers. Check the first-run Glass surface, the motion timings and the per-member defaults. Attach evidence from the final candidate. State which hardware and surfaces were actually tested.
 
 ## Deliver and stop
 
-Follow the repository’s work-item branch and PR conventions. For dependent items whose predecessors await owner merge, use reviewable dependent branches or stacked PRs, document their base and review order, and verify the combined candidate. Keep moving without requiring me to merge intermediate PRs. Monitor required CI, fix actionable failures and mark passing PRs ready for review.
+For the Sprint-6 follow-up, use PR #9 and the work-item commit trailers. For other delivery work, follow the repository's work-item branch and PR conventions. Monitor required CI, fix actionable failures and return PR #9 to owner review.
 
-**Your unattended delivery is complete when all 21 planned items have been carried through their acceptance checks, release-blocking findings have been fixed and independently retested, the combined v0.2 candidate has passed its release journey, and the delivery PRs are open and review-ready.** Link every item to its evidence and PR. You own the Scrum transitions and attach the evidence; I own the merges.
-
-Finish with one report containing the tested version pair and candidate revision, the five sprint outcomes, the status of all 21 items, PR links in review order, CI and independent QA results, assumptions you made, and any remaining device limitations or owner actions. A scaffold, an intermediate PR, or a passing unit suite alone is a checkpoint. Continue through release review.
+Use the [continuation goal](PI-2%20-%20Continue%20the%20attempt.md) for the current Sprint-6 completion criteria and report.

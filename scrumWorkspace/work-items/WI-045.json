@@ -1,0 +1,12 @@
+{
+  "status": "proposed",
+  "revision": 1,
+  "id": "WI-045",
+  "kind": "item",
+  "parent": "S-02-6",
+  "title": "Bind workspace preferences to the verified member",
+  "type": "bug",
+  "priority": 1,
+  "effort": 4,
+  "acceptance": "**Expected behaviour** · The client host derives the preference identity from the active v0.1 session. Keep existing saved settings readable and preserve independent updates when two client windows or hosts save concurrently.\n\n**Related earlier work** · WI-036\n\n**Delivery dependencies** · Can begin on the current PR head. Coordinate the shared session boundary with the companion fix.\n\n**Verify** · Verify distinct member settings, host-side rejection of invalid or expired sessions, preserved concurrent writes and failed-write recovery. Restart on a different port and verify both settings sets. Keep the existing v0.1 contract.\n\n**Delivery** · v0.2 client, existing PR #9."
+}

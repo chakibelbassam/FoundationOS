@@ -1,9 +1,10 @@
 ---
-revision: 3
+revision: 6
 ---
 # 📦 PI-2 (Client foundation) · v0.2 increment plan
 
-**Target v0.2 · 💭 Proposed**  
+**Target v0.2**
+
 **Product folder** · `versions/0.2 FoundationOS/`  
 **Dependency** · the independently launched v0.1 FoundationOS Server from 📦 PI-1 (FoundationOS Server).
 
@@ -13,6 +14,8 @@ revision: 3
 
 I start my server, open the web client, connect to my private home and find Weather. I reveal its actions, choose **Open**, and read its README. After a refresh I reconnect and return to the same file. Back brings me to the control I used. I can tell who I am connected as, check the server, and try different workspace treatments in Settings. This delivers the find-and-inspect part of the [v1 Weather story](../../../Product%20Information/FoundationOS%20Product%20Vision.md).
 
+[Sprint-6 (Stabilize and polish the v0.2 workspace)](pr-9-acceptance-follow-up.md) adds SVAR, Bento Home, backgrounds and dual browser QA.
+
 ## Delivery scope
 
 - **Startup and connection.** Start the v0.1 server first. Its console gives the operator the loopback address. The v0.2 launcher takes that address, checks readiness and version, serves the built client on a free loopback port, and opens the browser. The operator controls the two processes independently. Use an existing member session token in memory. Keep credentials out of routes, logs and preferences. On refresh or session expiry, retain the member-relative route, validate the new session and reload the data. Clear private content and discard stale requests when identity changes. A full launcher restart can assign a new client port.
@@ -20,7 +23,7 @@ I start my server, open the web client, connect to my private home and find Weat
 - **App recognition and overview.** For the first slice, recognize a folder with a direct `app.json` declaring a nonblank name and optional text brief. Probe visible entries with bounded concurrency and prioritize the one being opened. Keep item order and focus stable as metadata arrives. Missing or malformed descriptors leave the folder browsable. Show name, path, optional brief, **Open README** when present, and **Browse files**. Read text through the v0.1 files API.
 - **App card.** Show identity on the front. Trial a one-second mouse dwell to reveal the back. Cancel on pointer exit, scroll or navigation. Click, tap, Enter or Space reveals immediately. Keep the name and brief legible above **Run · Open · More**. When deliberately entering actions by keyboard, focus Run. A second explicit activation is required. In v0.2, Run explains the runtime limitation inline and points to Open. Open goes to the overview. Start More with Browse files. Escape dismisses the menu first, then the action face. A reduced-motion face change must support the same actions. Actual app execution belongs to the later runtime increment.
 - **Shell and Settings.** Keep the clickable username, server state and local time together. The username menu marks the active profile and opens Profile. The connection panel shows the address, status and recovery action. Distinguish an available server from an expired member session. Use three Settings pages as the working design: **Profile** for username and role, **Appearance** for theme and Solid/Glass comparison, and **Workspace** for density, motion and System/Target cursor comparison. Use actual workspace widgets in the preview, reversible changes, and a compact About entry for version information.
-- **Prototype adoption.** Replay the OneDrive FoundationOS-Interface before porting each essential component. Investigate the background visible midway through the glass-card flip, inconsistent folder gestures and uneven directional movement. Record the input sequence, observed result and reuse, adapt or replace decision. Compose controls with MUI or React Bits, use Material Icons, and document adopted behaviour and evidence in the [interface inventory](../../../Product%20Information/Interface/Components/README.md).
+- **Prototype adoption.** The original plan called for a OneDrive replay. The owner removed it from final acceptance. Review the current v0.2 client. Compose controls with MUI or React Bits, use Material Icons, and document adopted behaviour and evidence in the [interface inventory](../../../Product%20Information/Interface/Components/README.md).
 
 ## Target Cursor and navigation focus
 
@@ -39,7 +42,7 @@ Use the React Bits corner brackets to show the actionable target. The OneDrive s
 
 **Input and motion checks.** Verify rapid crossings between a card, its nested icon and its separate buttons. Repeat after moving the shelf and switching between keyboard and mouse. For a hover-capable stylus, test hover preview, pen exit, then tap to reveal and tap to activate. A contact-only pen uses the touch path. Touch scrolling should dismiss transient hover feedback. With reduced motion, use a stationary outline and an immediate face change. Confirm the overlay never intercepts taps, covers the label or hides the system pointer on fallback. Record the tested device and browser. Emulation covers event logic; physical pen feel and controller ergonomics require device evidence. Controller support is a later delivery goal; v0.2 proves the directional model with keyboard input.
 
-## Five planned sprints
+## Original five sprints
 
 | Sprint | Working demonstration and exit evidence |
 |---|---|
@@ -61,7 +64,7 @@ The version root owns the launcher and brief. The React + TypeScript + Vite pack
 
 ## Recorded sprint buckets
 
-Delivery follows the listed IDs. Each record names its technical prerequisites separately from its previous item in the delivery queue. All 21 items begin proposed. Each sprint inherits v0.2 from this PI.
+Delivery follows the listed IDs. Each record names its technical prerequisites separately from its previous item in the delivery queue. The original 21 items precede the Sprint-6 follow-up. Each sprint inherits v0.2 from this PI.
 
 | Sprint | Work items in delivery order |
 |---|---|
@@ -71,7 +74,7 @@ Delivery follows the listed IDs. Each record names its technical prerequisites s
 | [🏁 Sprint-4 (Refine and document the workspace)](../../sprints/S-02-4.json) | [WorkItem-36 (Persist workspace preferences per member)](../../work-items/WI-036.json) → [WorkItem-37 (Preview and apply settings on real widgets)](../../work-items/WI-037.json) → [WorkItem-38 (Refine cursor behaviour across inputs and pages)](../../work-items/WI-038.json) → [WorkItem-39 (Document the launcher and adopted components)](../../work-items/WI-039.json) |
 | [🏁 Sprint-5 (Fix visual defects and verify the release)](../../sprints/S-02-5.json) | [WorkItem-40 (Run independent release-journey QA)](../../work-items/WI-040.json) → [WorkItem-41 (Review visual and input behaviour independently)](../../work-items/WI-041.json) → [WorkItem-42 (Resolve release-blocking findings)](../../work-items/WI-042.json) → [WorkItem-43 (Assemble the v0.2 acceptance evidence)](../../work-items/WI-043.json) |
 
-Priority follows release dependencies and urgency. Effort is relative agent difficulty, with the dominant cost documented on each item. Reassess flip polish after prototype replay and the repair allowance after independent QA. Keep the original estimate and record the reason for a revision.
+Priority follows release dependencies and urgency. Effort is relative agent difficulty, with the dominant cost documented on each item. Reassess flip polish on the final v0.2 client after independent QA. Keep the original estimate and record the reason for a revision.
 
 
 [Brainstorming decisions](../drafts/pi-02-client-foundation.md) · [50 interaction questions](../drafts/pi-02-workspace-interaction.md) · [Component and account review](../drafts/pi-02-header-settings-review.md) · [Roadmap](../../../planning/Roadmap.md)

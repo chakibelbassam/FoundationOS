@@ -58,5 +58,51 @@
       "body": "Delivery starts. Sprinter order 1 to 5 per plan revision 3. Owner decisions adopted: System theme, Glass surface, Comfortable density, motion on, Target cursor; Sev-1 only blocks; descriptor budget 12 per view, 3 concurrent.",
       "documentRefs": []
     }
+  },
+  {
+    "submitted": {
+      "id": "PI-02",
+      "revision": 9,
+      "requestId": "7e354f3d-150f-43d9-aca2-630c170ca204",
+      "kind": "decision",
+      "body": "PI-2 returned to active because the owner requested six additional items on PR #9. Sprint-6 holds the four fixes, live prototype replay and independent browser acceptance. Topography is the default when the workspace background feature is introduced. Release placement of the navigation work is proposed in the linked draft.",
+      "documentRefs": [
+        "PI-02/pr-9-acceptance-follow-up.md",
+        "drafts/workspace-home-and-file-explorer.md"
+      ]
+    },
+    "note": {
+      "id": "7e354f3d-150f-43d9-aca2-630c170ca204",
+      "recordId": "PI-02",
+      "at": "2026-11-26T22:12:21.657Z",
+      "kind": "decision",
+      "body": "PI-2 returned to active because the owner requested six additional items on PR #9. Sprint-6 holds the four fixes, live prototype replay and independent browser acceptance. Topography is the default when the workspace background feature is introduced. Release placement of the navigation work is proposed in the linked draft.",
+      "documentRefs": [
+        "PI-02/pr-9-acceptance-follow-up.md",
+        "drafts/workspace-home-and-file-explorer.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-02",
+      "revision": 10,
+      "requestId": "e60a548f-2556-4f89-8af0-8c6dca8c6466",
+      "kind": "decision",
+      "body": "The owner expanded Sprint-6 on PR #9 to include SVAR File Explorer, Magic Bento Home, Topography and the background picker, and current-client polish. The live OneDrive replay is no longer required. A separate Muse tester and GLM Flash QA reviewer each drive the browser.",
+      "documentRefs": [
+        "PI-02/pr-9-acceptance-follow-up.md"
+      ]
+    },
+    "note": {
+      "id": "e60a548f-2556-4f89-8af0-8c6dca8c6466",
+      "recordId": "PI-02",
+      "at": "2026-11-26T22:30:45.975Z",
+      "kind": "decision",
+      "body": "The owner expanded Sprint-6 on PR #9 to include SVAR File Explorer, Magic Bento Home, Topography and the background picker, and current-client polish. The live OneDrive replay is no longer required. A separate Muse tester and GLM Flash QA reviewer each drive the browser.",
+      "documentRefs": [
+        "PI-02/pr-9-acceptance-follow-up.md"
+      ]
+    }
   }
 ]

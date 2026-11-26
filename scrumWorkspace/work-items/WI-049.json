@@ -1,0 +1,12 @@
+{
+  "status": "proposed",
+  "revision": 2,
+  "id": "WI-049",
+  "kind": "item",
+  "parent": "S-02-6",
+  "title": "Review and polish the integrated v0.2 workspace",
+  "type": "task",
+  "priority": 1,
+  "effort": 4,
+  "acceptance": "**Expected behaviour** · Walk the current built client, record and fix UI and interaction defects in the Sprint-6 scope. Review spacing, typography, contrast, navigation, toolbars, empty and error states, keyboard and narrow layouts. Recheck app-card animation, cursor, focus and Settings across the integrated workspace.\n\n**Delivery dependencies** · Start baseline inspection immediately. Retest after WI-045 through WI-048 and WI-051 through WI-053 land.\n\n**Verify** · Record before/after examples and resolved issues from the current candidate. Exercise desktop and actual narrow browser viewports with both Solid and Glass. Refresh the version notes and component inventory.\n\n**Delivery** · v0.2 client, existing PR #9."
+}
