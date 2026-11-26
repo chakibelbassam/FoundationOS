@@ -6,7 +6,8 @@
   "type": "task",
   "priority": 1,
   "effort": 4,
-  "revision": 1,
-  "status": "proposed",
-  "acceptance": "**Story or goal** · Close the defects established by independent QA.\n\n**Expected behaviour** · Triage both reports. File distinct confirmed defects as Bug records with severity, reproduction, expected and actual behaviour. Address release blockers and rerun their scenarios.\n\n**Scope boundary** · A repair allowance whose estimate depends on the reports. If no blockers are found, attach both reports.\n\n**Previous in delivery queue** · WI-041\n\n**Depends on** · WI-040, WI-041\n\n**Verify** · Independent reviewer retests fixes on the candidate. Record dispositions for remaining findings.\n\n**Effort basis** · Unknown repair scope; revisit estimate after both reports."
+  "revision": 4,
+  "status": "review",
+  "acceptance": "**Story or goal** · Close the defects established by independent QA.\n\n**Expected behaviour** · Triage both reports. File distinct confirmed defects as Bug records with severity, reproduction, expected and actual behaviour. Address release blockers and rerun their scenarios.\n\n**Scope boundary** · A repair allowance whose estimate depends on the reports. If no blockers are found, attach both reports.\n\n**Previous in delivery queue** · WI-041\n\n**Depends on** · WI-040, WI-041\n\n**Verify** · Independent reviewer retests fixes on the candidate. Record dispositions for remaining findings.\n\n**Effort basis** · Unknown repair scope; revisit estimate after both reports.",
+  "evidence": "qa/sprint-5/WI-042/README.md records both fixes and retests. Boundaries: #5f7088, 3.22-5.05:1 measured, retested PASS. Launcher: parentheses escaped, new tests/launcher.test.mjs passes on Windows and the real launcher printed `FoundationOS 0.2 client ready at http://127.0.0.1:61052/`; the Weather journey ran through that URL (qa/release/17-final-launcher.jpg). Evidence notes corrected, long-username image replaced, non-text state recorded as unreachable through v0.1 (assumption 9). No Sev-1 remains in either report."
 }

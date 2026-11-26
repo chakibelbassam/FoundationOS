@@ -1,0 +1,20 @@
+[
+  {
+    "submitted": {
+      "id": "WI-040",
+      "revision": 4,
+      "requestId": "151d0344-259b-4d75-8990-48af1de27d4f",
+      "kind": "progress",
+      "body": "Retest verified the fixed launcher with a stub server: ready line, /client-config ok, clean stop; launcher test 1/1 on Windows; Scrum validate ok. Two Sev-4 notes recorded (superseded historical line in the release README, fixed; missing note for the WI-040 images, added).",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "151d0344-259b-4d75-8990-48af1de27d4f",
+      "recordId": "WI-040",
+      "at": "2026-11-26T21:24:45.115Z",
+      "kind": "progress",
+      "body": "Retest verified the fixed launcher with a stub server: ready line, /client-config ok, clean stop; launcher test 1/1 on Windows; Scrum validate ok. Two Sev-4 notes recorded (superseded historical line in the release README, fixed; missing note for the WI-040 images, added).",
+      "documentRefs": []
+    }
+  }
+]

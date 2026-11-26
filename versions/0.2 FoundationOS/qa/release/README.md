@@ -1,8 +1,8 @@
 # Release evidence · v0.2 client foundation
 
-Candidate: `edge-opencode/pi-02-client-foundation` at `b8459c6` (final commit recorded on the PR).
+Candidate: `edge-opencode/pi-02-client-foundation` at `d4a59f3` plus the retest evidence commit (see PR #9).
 Pair: client 0.2 · server 0.1 schema 2 (released v0.1 server, started separately).
-Entry point: `versions/0.2 FoundationOS/Start.cmd http://127.0.0.1:54544` → printed `FoundationOS 0.2 client ready at http://127.0.0.1:64617/`.
+Entry point: `versions/0.2 FoundationOS/Start.cmd http://127.0.0.1:52093 --no-open` → printed `FoundationOS 0.2 client ready at http://127.0.0.1:61052/` (the launcher defect found by WI-040 was fixed before this run).
 Browser: OpenCode built-in Chromium (Edge-family desktop), Windows 11, the URL printed by the launcher.
 Windows display setting: dark theme; the default Theme `System` therefore resolves dark for members without a saved choice.
 Input: mouse and keyboard through the in-app browser; the stylus, controller and a physical phone were not available.
