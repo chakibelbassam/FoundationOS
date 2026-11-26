@@ -1,0 +1,9 @@
+{
+  "id": "S-01-5",
+  "kind": "sprint",
+  "parent": "PI-01",
+  "title": "Build the storage spine",
+  "acceptance": "Run the server from one shared, versioned store with ordered migrations and a schema guard.",
+  "status": "ready",
+  "revision": 2
+}

@@ -40,3 +40,13 @@ A pull request opens as a draft with a plain `WI-### <verb phrase>` title. The b
 `.github/workflows/scrum-tests.yml` runs `npm test` and validates the store on every pull request. Browser QA and PDF publishing stay local because they need a desktop and a browser. After acceptance, the merge commit receives a version tag and release notes derived from the Scrum evidence.
 
 The first live use is PR #3 for WI-008: https://github.com/chakibelbassam/FoundationOS/pull/3. Repository rulesets and branch protection are not configured yet; they remain an owner-side GitHub setting. The agent identity is a commit name rather than a GitHub account, so GitHub shows the commits as unverified while still naming the agent and model.
+
+## PI-01 server increment (2026-11-26)
+
+PI-01 was retitled FoundationOS Server. The 0.1 loopback fixture is its first accepted slice; five sprints (S5 to S9) and thirteen work items (WI-10 to WI-22) plan the real build. The plan lives at `scrumWorkspace/documents/PI-01/server-increment-plan.md`, linked to WI-10 as a requirement.
+
+Owner decisions: one shared store with cumulative migrations and a schema guard; sessions with revocation, a first-run admin and invitations, with keys remaining the member credential; OpenAPI-first contracts with endpoint tests in CI; a frozen server copy per version folder; folder-plus-launcher packaging, with a single executable revisited at 1.0.
+
+Deferred by design: the browser client (0.2), sign-in screens and passwords (0.3), move and rename (0.4), backup commands and remote access (0.5), code execution and workers (0.7 and 0.8), sharing (0.9), catalog and release (1.0). Multi-host and networked databases stay off the roadmap.
+
+Delivery runs as one pull request for the increment. Development sub-agents run on Muse Spark 1.3 Contributor and QA runs on GLM 5.3-Flash; sub-agents never run Git, and the session commits in the visible terminal. The parallel OpenCode tooling wiring is recorded as WI-22 and ships with the increment branch.

@@ -1,0 +1,13 @@
+{
+  "id": "WI-016",
+  "kind": "item",
+  "parent": "S-01-7",
+  "title": "Serve hierarchical folder operations",
+  "acceptance": "Story: members organise work in folders rather than one flat list.\nExpected: create a folder, list any folder, read, write and delete files and empty folders by relative path, with parent checks and the 64 KiB text limit kept.\nNot expected: move or rename, binary or multipart uploads, or any sharing between members.\nDepends on: WI-13 sessions; WI-17 proves its boundaries.\nVerify: acceptance builds a nested tree, reads it back and deletes parts of it.",
+  "status": "review",
+  "revision": 5,
+  "type": "feature",
+  "priority": 2,
+  "effort": 4,
+  "evidence": "POST /folder and GET, PUT and DELETE on /files paths create, list, read, write and remove files and empty folders by relative path; the 64 KiB limit answers 413 (node test)."
+}

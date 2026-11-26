@@ -1,0 +1,13 @@
+{
+  "id": "WI-011",
+  "kind": "item",
+  "parent": "S-01-5",
+  "title": "Add the migration runner and schema guard",
+  "acceptance": "Story: a newer server copy upgrades the store, and an older copy never corrupts it.\nExpected: migrations apply in order, each inside a transaction, the schema version is recorded in the store, and a copy that meets a newer schema refuses to start with a clear message.\nNot expected: downgrade support or migration while another process holds the store.\nDepends on: the WI-10 store layout.\nVerify: a test bumps the stored schema past the copy and expects the boot refusal; acceptance restart shows no re-migration.",
+  "status": "review",
+  "revision": 5,
+  "type": "enabler",
+  "priority": 1,
+  "effort": 3,
+  "evidence": "Ordered migrations 1 to 2 with schema_meta; a store newer than the copy refuses to start. Node test refuses a store newer than this copy supports exits 1 with the refusal message; acceptance restart shows no re-migration."
+}

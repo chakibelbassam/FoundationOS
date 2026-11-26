@@ -1,0 +1,13 @@
+{
+  "id": "WI-015",
+  "kind": "item",
+  "parent": "S-01-6",
+  "title": "Enforce admin and member roles",
+  "acceptance": "Story: roles keep administration and everyday work apart.\nExpected: admin-only routes refuse members, and admin routes never read member files; every role failure uses the uniform error shape with 403.\nNot expected: further roles such as guest or moderator; those arrive with sharing in 0.9.\nDepends on: WI-13 sessions and WI-14 accounts.\nVerify: acceptance drives a member against an admin route and the admin against a member file, and expects refusals.",
+  "status": "review",
+  "revision": 5,
+  "type": "enabler",
+  "priority": 2,
+  "effort": 2,
+  "evidence": "Member requests to /invitations and /accounts answer 403 with the uniform error shape, and the admin listing carries no key or digest (node test)."
+}

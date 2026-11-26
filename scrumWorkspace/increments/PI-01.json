@@ -1,8 +1,8 @@
 {
   "id": "PI-01",
   "kind": "pi",
-  "title": "Local server",
-  "acceptance": "Start a loopback Node/TypeScript server, create two private profiles, restart and verify both homes. Scope every file operation to the authenticated principal and exclude links and traversal.",
-  "status": "proposed",
-  "revision": 1
+  "title": "FoundationOS Server",
+  "acceptance": "Run the FoundationOS server as a product on one host: a single versioned data store with migrations, a first-run admin, invitations, sessions with revocation, hierarchical private homes scoped to the signed-in member, an OpenAPI contract with endpoint tests, uniform JSON errors, status and logging, ready for backup. The 0.1 loopback fixture is the first accepted slice, and the client 0.2, accounts 0.3, navigation 0.4 and security and deployment 0.5 increments build on this server.",
+  "status": "ready",
+  "revision": 3
 }
