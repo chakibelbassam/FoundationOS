@@ -1,0 +1,12 @@
+{
+  "id": "WI-028",
+  "kind": "item",
+  "parent": "S-02-2",
+  "title": "Restore the current route after reconnect",
+  "type": "feature",
+  "priority": 1,
+  "effort": 4,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Resume my page after refresh or expiry.\n\n**Expected behaviour** · Retain the route for the same identity. Replacing the active member clears private content and opens the new member’s Home. Ignore stale requests. Preserve only nonsecret identity context needed to distinguish reconnects.\n\n**Scope boundary** · One active profile per client session. Direct links resolve against the authenticated member.\n\n**Previous in delivery queue** · WI-027\n\n**Depends on** · WI-027\n\n**Verify** · Refresh a file, reconnect as its member, then reconnect as the second member with a delayed first-member response. Check route, content and history.\n\n**Effort basis** · Race conditions across routing and session state."
+}

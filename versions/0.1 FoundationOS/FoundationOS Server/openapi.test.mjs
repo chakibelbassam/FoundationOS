@@ -1,4 +1,4 @@
-// Contract suite for the FoundationOS 0.2 server.
+// Contract suite for the FoundationOS 0.1 server.
 //
 // This file reads openapi.yaml beside it, starts the server on a fresh
 // temporary store, calls every documented operation and every documented
@@ -60,7 +60,7 @@ function launch(dir) {
   const ready = new Promise((resolve, reject) => {
     const timer = setTimeout(() => reject(new Error('server did not print a ready line: ' + out + err)), 15000);
     const check = () => {
-      const match = /FoundationOS 0\.2 ready at (http:\/\/127\.0\.0\.1:\d+)\/status/.exec(out);
+      const match = /FoundationOS 0\.1 ready at (http:\/\/127\.0\.0\.1:\d+)\/status/.exec(out);
       if (match) {
         clearTimeout(timer);
         resolve(match[1]);
@@ -69,7 +69,7 @@ function launch(dir) {
     proc.stdout.on('data', check);
     proc.on('error', (error) => { clearTimeout(timer); reject(error); });
     proc.on('exit', (code) => {
-      if (!/FoundationOS 0\.2 ready/.test(out)) {
+      if (!/FoundationOS 0\.1 ready/.test(out)) {
         clearTimeout(timer);
         reject(new Error(`server exited with ${code}: ${out}${err}`));
       }
@@ -355,7 +355,7 @@ function validate(doc, schema, value, where) {
 
 // --- The contract run ---
 
-test('0.2 contract: every documented operation and response status validates', async (t) => {
+test('0.1 contract: every documented operation and response status validates', async (t) => {
   const doc = parseYaml(fs.readFileSync(openapiPath, 'utf8'));
   const documented = {};
   for (const [template, item] of Object.entries(doc.paths)) {

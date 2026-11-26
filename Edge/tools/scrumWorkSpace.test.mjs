@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import fs from 'node:fs';
 import os from 'node:os';
+import { spawnSync } from 'node:child_process';
+import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 
 const testRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'foundationos-scrum-'));
@@ -21,7 +23,7 @@ after(() => {
 
 function createBase() {
   action('create', {
-    id: 'PI-00', kind: 'pi', title: 'Setup', acceptance: 'Setup acceptance',
+    id: 'PI-00', kind: 'pi', targetVersion: 'none', title: 'Setup', acceptance: 'Setup acceptance',
     status: 'proposed', revision: 0
   });
   action('create', {
@@ -66,15 +68,15 @@ test('enforces the item lifecycle and evidence', () => {
   action('update', { id: 'WI-001', revision: 2, changes: { status: 'active' } });
   assert.throws(
     () => action('update', { id: 'WI-001', revision: 3, changes: { status: 'review' } }),
-    /Review requires evidence/
+    /Review and done records require evidence/
   );
   action('update', {
     id: 'WI-001', revision: 3, changes: { status: 'review', evidence: 'Verified.' }
   });
-  assert.throws(
-    () => action('update', { id: 'WI-001', revision: 4, changes: { status: 'done' } }),
-    /Final acceptance/
-  );
+  action('update', { id: 'WI-001', revision: 4, changes: { status: 'done' } });
+  assert.equal(action('query', { id: 'WI-001' }).status, 'done');
+  action('update', { id: 'WI-001', revision: 5, changes: { status: 'review' } });
+  assert.equal(action('query', { id: 'WI-001' }).status, 'review');
 });
 
 test('enforces parentage', () => {
@@ -189,18 +191,18 @@ test('links documents to work items', () => {
 test('recovers create and update by requestId', () => {
   const createId = randomUUID();
   const created = action('create', {
-    id: 'PI-00', kind: 'pi', title: 'Setup', acceptance: 'Setup acceptance',
+    id: 'PI-00', kind: 'pi', targetVersion: 'none', title: 'Setup', acceptance: 'Setup acceptance',
     status: 'proposed', revision: 0, requestId: createId
   });
   assert.equal(created.revision, 1);
   const replay = action('create', {
-    id: 'PI-00', kind: 'pi', title: 'Setup', acceptance: 'Setup acceptance',
+    id: 'PI-00', kind: 'pi', targetVersion: 'none', title: 'Setup', acceptance: 'Setup acceptance',
     status: 'proposed', revision: 0, requestId: createId
   });
   assert.deepEqual(replay, created);
   assert.throws(
     () => action('create', {
-      id: 'PI-00', kind: 'pi', title: 'Different', acceptance: 'Setup acceptance',
+      id: 'PI-00', kind: 'pi', targetVersion: 'none', title: 'Different', acceptance: 'Setup acceptance',
       status: 'proposed', revision: 0, requestId: createId
     }),
     /already used/
@@ -259,7 +261,7 @@ test('refuses writes while the lock is held', () => {
 test('rejects raw HTML in durable text', () => {
   assert.throws(
     () => action('create', {
-      id: 'PI-00', kind: 'pi', title: '<script>alert(1)</script>',
+      id: 'PI-00', kind: 'pi', targetVersion: 'none', title: '<script>alert(1)</script>',
       acceptance: 'Setup', status: 'proposed', revision: 0
     }),
     /HTML tags are not Markdown/
@@ -281,4 +283,67 @@ test('serves the manual index and topics', () => {
   const topic = action('manual', { action: 'topic', topic: 'documents' });
   assert.equal(topic.topic, 'documents');
   assert.ok(topic.fields.action.includes('create'));
+});
+
+test('show this sprint: keep the item lifecycle and all five effort grades', () => {
+  createBase();
+  for (const effort of [1, 2, 3, 4, 5]) {
+    const item = action('query', { id: 'WI-001' });
+    action('update', { id: item.id, revision: item.revision, changes: { effort } });
+    const bucket = action('query', { pi: 'PI-00', sprint: 1 });
+    assert.equal(bucket.items[0].effort, effort);
+    assert.equal(bucket.items.filter(row => row.status === 'done').length, 0);
+    assert.equal(action('validate', {}).ok, true);
+  }
+  for (const effort of [0, 6]) {
+    const item = action('query', { id: 'WI-001' });
+    assert.throws(() => action('update', { id: item.id, revision: item.revision, changes: { effort } }));
+  }
+});
+
+test('why this design: retrieve the cited requirement through the item link', () => {
+  createBase();
+  const relativePath = 'PI-00/design.md';
+  const body = '# Design decision\n\nKeep one store so restarts preserve member homes.';
+  action('documents', { action: 'create', relativePath, revision: 0, body });
+  action('knowledge', { action: 'link', id: 'WI-001', revision: 1, referencesRevision: 0,
+    relativePath, purpose: 'requirement', documentRevision: 1 });
+  const [link] = action('knowledge', { action: 'read', id: 'WI-001' }).references;
+  assert.equal(link.purpose, 'requirement');
+  const doc = action('documents', { action: 'read', relativePath: link.relativePath });
+  assert.ok(doc.body.includes('so restarts preserve member homes.'));
+});
+
+test('resume this item: replace stale handoff values with the current parent chain', () => {
+  createBase();
+  const handoff = { id: 'WI-001', revision: 1 };
+  action('update', { ...handoff, changes: { status: 'ready' } });
+  const item = action('query', { id: handoff.id });
+  const sprint = action('query', { id: item.parent });
+  const pi = action('query', { id: sprint.parent });
+  assert.ok(item.revision > handoff.revision);
+  assert.equal(item.status, 'ready');
+  assert.equal(pi.targetVersion, 'none');
+});
+
+test('verify this PI: resolve from its record and refuse conflicting expectations', () => {
+  const pi = { id: 'PI-09', kind: 'pi', title: 'Test release', acceptance: 'Launch', status: 'proposed', revision: 0 };
+  assert.throws(() => action('create', pi), /targetVersion/);
+  action('create', { ...pi, targetVersion: '0.1' });
+  assert.throws(() => action('update', { id: pi.id, revision: 1, changes: { targetVersion: '0.2' } }), /owner decision/);
+  const runner = fileURLToPath(new URL('./Run-EdgeTool.ps1', import.meta.url));
+  const qa = fileURLToPath(new URL('./qa.py', import.meta.url));
+  const resolve = expected => process.platform === 'win32'
+    ? spawnSync('powershell', ['-NoProfile', '-ExecutionPolicy', 'Bypass', '-File', runner, 'qa', pi.id, '-ResolveOnly', '-ExpectedVersion', expected], { encoding: 'utf8' })
+    : spawnSync('python3', [qa, pi.id, '--resolve-only', '--expect-version', expected], { encoding: 'utf8' });
+  const ok = resolve('0.1');
+  assert.equal(ok.status, 0, ok.error?.message || ok.stderr);
+  const context = JSON.parse(ok.stdout);
+  assert.equal(context.piRevision, 1);
+  assert.equal(context.targetVersion, '0.1');
+  assert.equal(path.basename(context.launcher), 'Start.cmd');
+  assert.match(context.sourceCommit, /^[0-9a-f]{40,64}$/);
+  const conflict = resolve('0.2');
+  assert.notEqual(conflict.status, 0);
+  assert.match(conflict.stderr, /conflicts with the recorded v0.1/);
 });

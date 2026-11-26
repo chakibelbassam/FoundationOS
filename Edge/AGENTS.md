@@ -38,4 +38,4 @@ Run every Git and GitHub command in the OpenCode terminal tab so the owner can w
 
 ## Maintain your working context
 
-Start a scratchpad from workspace/Scratchpad.template.md. After a restart, verify the branch, item revision, current launcher and last result. When an observation repeats, use improve-edge to change its owning skill or tool and replay the failed scenario. Preserve user decisions, separate experiment results from product promises, and leave human approval to the owner.
+Resume the work item through [manage-edge-handoff](skills/development/manage-edge-handoff/SKILL.md). After a restart, verify the branch, item revision, current launcher and last result. When an observation repeats, use improve-edge to change its owning skill or tool and replay the failed scenario. Preserve user decisions, separate experiment results from product promises, and leave human approval to the owner.

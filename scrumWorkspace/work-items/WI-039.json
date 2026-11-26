@@ -1,0 +1,12 @@
+{
+  "id": "WI-039",
+  "kind": "item",
+  "parent": "S-02-4",
+  "title": "Document the launcher and adopted components",
+  "type": "task",
+  "priority": 3,
+  "effort": 2,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Make the release reproducible for operators and component maintainers.\n\n**Expected behaviour** · Document prerequisites, startup/shutdown, supported version pair, storage/reset and component inputs, focus, motion and failure states.\n\n**Scope boundary** · Use the version README and shared component inventory. Label unverified observations.\n\n**Previous in delivery queue** · WI-038\n\n**Depends on** · WI-026, WI-035, WI-036, WI-037, WI-038\n\n**Verify** · Follow the startup instructions and resolve each component’s evidence link and usage example.\n\n**Effort basis** · Documentation from recorded implementation evidence."
+}

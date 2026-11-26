@@ -1,0 +1,12 @@
+{
+  "id": "WI-041",
+  "kind": "item",
+  "parent": "S-02-5",
+  "title": "Review visual and input behaviour independently",
+  "type": "task",
+  "priority": 1,
+  "effort": 4,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Verify the release visually and across inputs.\n\n**Expected behaviour** · Review desktop, 390 px and 320 × 600 with Solid/Glass, long labels, flip frames, cursor lock, shelf edges, reduced motion and touch.\n\n**Scope boundary** · Record input hardware and any untested pen behaviour.\n\n**Previous in delivery queue** · WI-040\n\n**Depends on** · WI-024, WI-035, WI-038, WI-039\n\n**Verify** · Capture expected and observed results with viewport, input sequence, visual evidence and a reproducible defect list.\n\n**Effort basis** · Visual judgement and device-dependent verification."
+}

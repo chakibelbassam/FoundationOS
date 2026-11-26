@@ -5,6 +5,6 @@ description: Resume or hand off a FoundationOS work session using a short local 
 
 # manage edge handoff
 
-Open Edge/workspace/Scratchpad.md if present; create it from Scratchpad.template.md when starting new work. Capture objective, item and revision, branch, entry point, last verified result and next action. Check those identifiers against Git and Scrum before relying on them after a restart.
+Open the work item's entry in Edge/workspace/Scratchpad.md. Keep one short file per item in Edge/workspace/handoffs/<stored-id>.md using Scratchpad.template.md. Keep only links in the index. On resume query the named item, follow its parent sprint to the live PI, compare revisions and target, and check the actual branch and last result. Start with the updated record if the handoff is stale.
 
-Put transient browser notes and screenshots beneath Edge/workspace. Move accepted evidence into the item or review PR, a repeatable action into a skill, and a product decision into the decision log. Keep the scratchpad brief by replacing expired steps. Scope handoff to the current task and exclude credentials, personal user files and model conversation dumps.
+Keep transient evidence in workspace. Put verification evidence on the item or review PR. Record durable owner decisions as dated Scrum decision notes, referencing the relevant document. For retargeting, name both versions and cite the decision in the PI evidence update. Replace expired next steps and archive superseded local handoffs when useful.

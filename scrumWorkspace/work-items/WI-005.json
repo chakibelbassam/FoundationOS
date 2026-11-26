@@ -3,11 +3,11 @@
   "kind": "item",
   "title": "Implement scoped workspace operations",
   "acceptance": "Each permitted file operation derives its root from the authenticated principal.",
-  "status": "review",
-  "revision": 2,
+  "status": "done",
+  "revision": 4,
   "parent": "S-01-3",
   "type": "enabler",
   "priority": 1,
-  "effort": 2,
+  "effort": 4,
   "evidence": "Version 0.1 Start.cmd verified on Windows using FoundationOS Server/verify.py. Manual and matching PDF updated."
 }

@@ -3,11 +3,11 @@
   "kind": "item",
   "title": "Launch server 0.1",
   "acceptance": "Double-click starts the version on loopback and shows status.",
-  "status": "review",
-  "revision": 2,
+  "status": "done",
+  "revision": 4,
   "parent": "S-01-1",
   "type": "feature",
   "priority": 1,
-  "effort": 4,
+  "effort": 2,
   "evidence": "Version 0.1 Start.cmd verified on Windows using FoundationOS Server/verify.py. Manual and matching PDF updated."
 }

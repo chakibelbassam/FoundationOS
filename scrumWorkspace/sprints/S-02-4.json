@@ -1,0 +1,9 @@
+{
+  "id": "S-02-4",
+  "kind": "sprint",
+  "parent": "PI-02",
+  "title": "Refine and document the workspace",
+  "acceptance": "Two members using the same Windows login apply distinct settings. After a full client restart on a different port, each sees their own choices.",
+  "status": "proposed",
+  "revision": 1
+}

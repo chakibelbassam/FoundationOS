@@ -2,9 +2,9 @@
   "id": "PI-01",
   "kind": "pi",
   "title": "FoundationOS Server",
-  "acceptance": "Run the FoundationOS server as a product on one host: a single versioned data store with migrations, a first-run admin, invitations, sessions with revocation, hierarchical private homes scoped to the signed-in member, an OpenAPI contract with endpoint tests, uniform JSON errors, status and logging, ready for backup. The 0.1 loopback fixture is the first accepted slice, and the client 0.2, accounts 0.3, navigation 0.4 and security and deployment 0.5 increments build on this server.",
-  "status": "ready",
-  "revision": 5,
-  "targetVersion": "0.2",
-  "evidence": "Retargeted from 0.1 to 0.2 on the owner's 26 November 2026 decision to extend PI-01 (FoundationOS Server). The 0.1 loopback fixture remains the first accepted slice; the 0.2 server copy in versions/0.2 FoundationOS is this increment's target. Plan revision 3 records the scope and the WI-23 review fixes."
+  "acceptance": "Launch the v0.1 loopback server with a versioned store and first-run admin. Invite members, sign in and revoke sessions, and verify private hierarchical homes, restart, boundary refusals, uniform errors, status and logs. Verify the published OpenAPI contract and the Windows launcher.",
+  "status": "done",
+  "revision": 8,
+  "targetVersion": "0.1",
+  "evidence": "The owner confirmed all server delivery belongs to PI-01 and v0.1. Sprints 1–4 record the initial server slice and sprints 5–9 record the completed server. Older review evidence using the temporary v0.2 label is historical. On 26 November 2026 the relocated v0.1 server passed 14 server and contract tests covering 12 operations and 40 documented responses, Windows launcher acceptance, and the browser status check. The v0.1 Manual PDF was regenerated."
 }

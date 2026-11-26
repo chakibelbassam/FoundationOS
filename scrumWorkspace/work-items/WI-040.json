@@ -1,0 +1,12 @@
+{
+  "id": "WI-040",
+  "kind": "item",
+  "parent": "S-02-5",
+  "title": "Run independent release-journey QA",
+  "type": "task",
+  "priority": 1,
+  "effort": 3,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Verify the release from the operator and member entry points.\n\n**Expected behaviour** · Use two homes and the built launcher. Check server-first startup, wrong server, revocation, delayed responses, reconnect, different-port restart and member-specific settings.\n\n**Scope boundary** · Independent QA against the v0.2 client and released v0.1 backend.\n\n**Previous in delivery queue** · WI-039\n\n**Depends on** · WI-027, WI-028, WI-033, WI-036, WI-037, WI-039\n\n**Verify** · Attach candidate identity, commands, observed results and reproduction steps for every failed scenario.\n\n**Effort basis** · Multi-step verification against explicit outcomes."
+}

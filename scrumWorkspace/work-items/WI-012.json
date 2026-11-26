@@ -4,10 +4,10 @@
   "parent": "S-01-6",
   "title": "Create the admin on first run",
   "acceptance": "Story: the operator double-clicks the launcher on a fresh machine and receives an admin credential without a command line.\nExpected: when the store has no accounts, startup creates one admin, prints a one-time key in the console as a single JSON line, and never prints it again.\nNot expected: an admin creation screen, repeated first-run keys or command-line user creation; members arrive by invitation only.\nDepends on: the WI-10 store and its accounts table.\nVerify: acceptance captures the first-run key, signs in with it, and confirms a restart prints nothing new.",
-  "status": "review",
-  "revision": 6,
+  "status": "done",
+  "revision": 10,
   "type": "feature",
   "priority": 1,
-  "effort": 2,
+  "effort": 4,
   "evidence": "First run with zero accounts creates the admin and prints one JSON admin-created line with the one-time key; restart prints no second line (node test and verify.py). PR #6: https://github.com/chakibelbassam/FoundationOS/pull/6."
 }

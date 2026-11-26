@@ -1,0 +1,9 @@
+{
+  "id": "S-02-5",
+  "kind": "sprint",
+  "parent": "PI-02",
+  "title": "Fix visual defects and verify the release",
+  "acceptance": "An independent reviewer repeats the built release journey and checks member isolation, settings persistence and visual/input behaviour. Trace each accepted fix to retest evidence.",
+  "status": "proposed",
+  "revision": 1
+}

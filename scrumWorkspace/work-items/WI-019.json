@@ -4,10 +4,10 @@
   "parent": "S-01-8",
   "title": "Return uniform JSON errors",
   "acceptance": "Story: every failure looks the same to every caller.\nExpected: all failures answer with one JSON error shape and documented codes: 400 invalid input, 401 sign-in required, 403 forbidden, 404 unknown, 405 wrong method, 409 conflict and 413 too large.\nNot expected: codes beyond the documented set or HTML error pages.\nDepends on: the routes from WI-12 to WI-16.\nVerify: tests assert the shape and codes for representative failures.",
-  "status": "review",
-  "revision": 6,
+  "status": "done",
+  "revision": 10,
   "type": "task",
   "priority": 2,
-  "effort": 2,
+  "effort": 4,
   "evidence": "Every failure answers the error shape with 400, 401, 403, 404, 405, 409 or 413; wrong methods answer 405 (node test and QA probe). PR #6: https://github.com/chakibelbassam/FoundationOS/pull/6."
 }

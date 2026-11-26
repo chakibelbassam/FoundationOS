@@ -176,7 +176,7 @@ Decided:
 - Types: **Feature**, **Enhancement** (`new` / `improve`), **Bug**, **Enabler**,
   **Dev Task**.
 - **Severity** is bugs-only (Sev 1-5). **Priority** is all items (P-1..P-5).
-  **Effort** is all items (Ef-1..Ef-5, Ef-1 hardest for an agent).
+  **Effort** is all items (Ef-1..Ef-5, originally Ef-1 hardest for an agent; superseded by the owner’s ascending effort scale, Ef-1 lowest through Ef-5 highest).
 - Promise vs absence decides Bug vs Enhancement (`09` §3.2).
 - The guide is generated; the PDF is an export, never hand-edited.
 - Enforce on new writes; backfill the 10 existing records with `type: null`

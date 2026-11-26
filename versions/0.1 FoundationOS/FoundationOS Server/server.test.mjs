@@ -35,7 +35,7 @@ function launch(dir) {
   const ready = new Promise((resolve, reject) => {
     const timer = setTimeout(() => reject(new Error('server did not print a ready line: ' + out + err)), 15000);
     const check = () => {
-      const match = /FoundationOS 0\.2 ready at (http:\/\/127\.0\.0\.1:\d+)\/status/.exec(out);
+      const match = /FoundationOS 0\.1 ready at (http:\/\/127\.0\.0\.1:\d+)\/status/.exec(out);
       if (match) {
         clearTimeout(timer);
         resolve(match[1]);
@@ -44,7 +44,7 @@ function launch(dir) {
     proc.stdout.on('data', check);
     proc.on('error', (error) => { clearTimeout(timer); reject(error); });
     proc.on('exit', (code) => {
-      if (!/FoundationOS 0\.2 ready/.test(out)) {
+      if (!/FoundationOS 0\.1 ready/.test(out)) {
         clearTimeout(timer);
         reject(new Error(`server exited with ${code}: ${out}${err}`));
       }
@@ -83,7 +83,7 @@ function errorShape(result) {
   assert.ok(result.body && typeof result.body.error === 'string', 'expected {error} shape, got ' + JSON.stringify(result.body));
 }
 
-test('0.2 server: status, sessions, invitations, roles, files, revocation, restart, schema guard', async (t) => {
+test('0.1 server: status, sessions, invitations, roles, files, revocation, restart, schema guard', async (t) => {
   const dir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'foundation02-'));
   const live = [];
   t.after(async () => {
@@ -101,7 +101,7 @@ test('0.2 server: status, sessions, invitations, roles, files, revocation, resta
     server.admin = created;
     const status = await call(base, '/status');
     assert.equal(status.status, 200);
-    assert.deepEqual(status.body, { version: '0.2', status: 'ready', schema: 2 });
+    assert.deepEqual(status.body, { version: '0.1', status: 'ready', schema: 2 });
     assert.equal(status.headers.get('cache-control'), 'no-store');
     assert.equal(status.headers.get('x-content-type-options'), 'nosniff');
     assert.equal(status.headers.get('content-type'), 'application/json');
@@ -315,7 +315,7 @@ test('0.2 server: status, sessions, invitations, roles, files, revocation, resta
     const base = await again.ready;
     assert.ok(!again.output().includes('"admin-created"'), 'restart must not print a second admin key');
     const status = await call(base, '/status');
-    assert.deepEqual(status.body, { version: '0.2', status: 'ready', schema: 2 });
+    assert.deepEqual(status.body, { version: '0.1', status: 'ready', schema: 2 });
     const signed = await call(base, '/sessions', { method: 'POST', auth: member.key });
     assert.equal(signed.status, 200);
     const kept = await call(base, '/files/docs/sub/deep.txt', { auth: signed.body.token });
@@ -347,7 +347,7 @@ test('0.2 server: status, sessions, invitations, roles, files, revocation, resta
   });
 });
 
-test('0.2 server: a failed first-run home setup retries cleanly', async (t) => {
+test('0.1 server: a failed first-run home setup retries cleanly', async (t) => {
   const dir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'foundation02-retry-'));
   const servers = [];
   t.after(async () => {

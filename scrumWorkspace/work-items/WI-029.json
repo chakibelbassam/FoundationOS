@@ -1,0 +1,12 @@
+{
+  "id": "WI-029",
+  "kind": "item",
+  "parent": "S-02-2",
+  "title": "Browse Home and nested folders",
+  "type": "feature",
+  "priority": 1,
+  "effort": 3,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Explore my private folders at every depth.\n\n**Expected behaviour** · Use one folder widget, breadcrumbs and folder routes. Graphic and label open the same folder. Give empty, missing, loading and outage states appropriate recovery.\n\n**Scope boundary** · Use v0.1 directory listings and text reads.\n\n**Previous in delivery queue** · WI-028\n\n**Depends on** · WI-028\n\n**Verify** · Open two levels with mouse, keyboard and tap. Verify swipe scroll, direct entry, Back and empty-folder recovery.\n\n**Effort basis** · Contained UI and route composition."
+}

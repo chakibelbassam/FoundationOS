@@ -1,0 +1,12 @@
+{
+  "id": "WI-025",
+  "kind": "item",
+  "parent": "S-02-1",
+  "title": "Build and serve the versioned client",
+  "type": "enabler",
+  "priority": 1,
+  "effort": 3,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Give all client features a version-specific browser entry point.\n\n**Expected behaviour** · Build React, TypeScript, Vite and React Router under the v0.2 client package and serve its built output on an available loopback port.\n\n**Scope boundary** · Own the version launcher, host and shell.\n\n**Previous in delivery queue** · WI-024\n\n**Depends on** · No PI-2 work-item prerequisite.\n\n**Verify** · Launch the build, load a nested route directly and verify an unknown asset returns an asset error.\n\n**Effort basis** · Locality across a small package and launcher."
+}

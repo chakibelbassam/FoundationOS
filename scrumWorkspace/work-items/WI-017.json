@@ -4,10 +4,10 @@
   "parent": "S-01-7",
   "title": "Verify path boundaries",
   "acceptance": "Story: the 0.1 boundary promise survives the richer path model.\nExpected: traversal, encoded traversal, hard links and junctions are refused, and one member can never address another member's home.\nNot expected: quarantine or antivirus behaviour; refusal is enough.\nDepends on: WI-16 path handling.\nVerify: tests and acceptance exercise traversal, links and cross-home attempts.",
-  "status": "review",
-  "revision": 7,
+  "status": "done",
+  "revision": 11,
   "type": "enabler",
   "priority": 2,
-  "effort": 2,
+  "effort": 4,
   "evidence": "Traversal, encoded traversal, hard links and junctions answer 404, and a second member cannot read another home (node test, verify.py and the independent QA replay). PR #6: https://github.com/chakibelbassam/FoundationOS/pull/6. The 0.1 acceptance was re-run after the increment and passed: version launcher, two profiles, scoped reads and writes, links, restart."
 }

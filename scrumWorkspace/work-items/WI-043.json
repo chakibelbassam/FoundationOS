@@ -1,0 +1,12 @@
+{
+  "id": "WI-043",
+  "kind": "item",
+  "parent": "S-02-5",
+  "title": "Assemble the v0.2 acceptance evidence",
+  "type": "task",
+  "priority": 2,
+  "effort": 2,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Give the owner a traceable release decision.\n\n**Expected behaviour** · Replay the final candidate after fixes. Collect the version pair, launcher, test results, visual evidence and device limitations. Update verified product documentation.\n\n**Scope boundary** · Owner reviews final acceptance.\n\n**Previous in delivery queue** · WI-042\n\n**Depends on** · WI-039, WI-040, WI-041, WI-042\n\n**Verify** · Follow links from the PI through each review and retest to the candidate and its versioned Manual evidence.\n\n**Effort basis** · Assembling existing records and rerunning a known journey."
+}

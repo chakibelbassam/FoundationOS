@@ -1,0 +1,12 @@
+{
+  "id": "WI-030",
+  "kind": "item",
+  "parent": "S-02-2",
+  "title": "Make shelf navigation and cursor targets predictable",
+  "type": "feature",
+  "priority": 1,
+  "effort": 4,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Move to one intended target at a time and find it again after Back.\n\n**Expected behaviour** · Scope arrows to the shelf. Restore focus and scroll. Target Cursor frames the actionable widget or distinct icon button. Latest deliberate input selects pointer or focus targeting.\n\n**Scope boundary** · Keep native keyboard focus and touch controls usable with the effect off.\n\n**Previous in delivery queue** · WI-029\n\n**Depends on** · WI-024, WI-029\n\n**Verify** · Replay row edges, nested icons, separate buttons, keyboard/mouse handoff, a removed target and reduced motion.\n\n**Effort basis** · Timing and geometry across input modes."
+}

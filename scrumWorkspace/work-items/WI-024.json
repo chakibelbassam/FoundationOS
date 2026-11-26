@@ -1,0 +1,12 @@
+{
+  "id": "WI-024",
+  "kind": "item",
+  "parent": "S-02-1",
+  "title": "Reproduce the prototype interactions",
+  "type": "task",
+  "priority": 1,
+  "effort": 3,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Decide which prototype behaviours can be adopted.\n\n**Expected behaviour** · Replay glass-card flip, folder graphic versus label, nested Back, directional movement and cursor lock in the OneDrive prototype.\n\n**Scope boundary** · Investigate the prototype as a reference for v0.2.\n\n**Previous in delivery queue** · First item in PI-2.\n\n**Depends on** · No PI-2 work-item prerequisite.\n\n**Verify** · Record input, expected and observed result, version and a reuse/adapt/replace decision for each interaction.\n\n**Effort basis** · Verifiability of visual symptoms across inputs."
+}

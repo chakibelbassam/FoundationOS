@@ -1,0 +1,12 @@
+{
+  "id": "WI-032",
+  "kind": "item",
+  "parent": "S-02-3",
+  "title": "Recognize apps without disturbing the shelf",
+  "type": "enabler",
+  "priority": 1,
+  "effort": 4,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Identify app folders without interrupting browsing.\n\n**Expected behaviour** · Read direct app.json descriptors for visible candidates with bounded concurrency and prioritize the activated item. Preserve focus and order on late results.\n\n**Scope boundary** · A valid nonblank name and optional text brief identify the v0.2 app. Missing or malformed metadata leaves the folder browsable.\n\n**Previous in delivery queue** · WI-031\n\n**Depends on** · WI-027, WI-029, WI-030\n\n**Verify** · Measure request counts in a representative large home. Activate a pending card, change routes and deliver a late response.\n\n**Effort basis** · Asynchronous discovery and cancellation."
+}

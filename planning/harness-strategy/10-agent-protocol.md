@@ -50,7 +50,7 @@ rather than "query a database":
   "prds": [ { "id": "…", "title": "One workspace, many agents", "status": "draft" } ],
   "items": {
     "open": 14, "ready": 6, "inProgress": 1, "blocked": 2,
-    "next": [ { "id": "…", "title": "Harness supervisor", "type": "dev-task", "priority": "P-1", "effort": "Ef-2" } ]
+    "next": [ { "id": "…", "title": "Harness supervisor", "type": "dev-task", "priority": "P-1", "effort": "Ef-4" } ]
   },
   "decisions": [ { "id": "D4", "status": "LEAN", "question": "…" } ],
   "alerts": [ { "kind": "workshop-crashed", "app": "Weather", "since": "…" } ],
@@ -76,7 +76,7 @@ One workspace that organizes work. Read `system/agents/FoundationOS.md` first.
 
 ## Now
 - Running: Weather / builder / 12m / waiting for approval (item #142)
-- Next ready: #151 Harness supervisor (P-1, Ef-2, dev-task)
+- Next ready: #151 Harness supervisor (P-1, Ef-4, dev-task)
 
 ## Apps
 | id | name | state | last QA | open items |

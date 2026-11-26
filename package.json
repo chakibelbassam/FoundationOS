@@ -4,6 +4,6 @@
   "type": "module",
   "scripts": {
     "scrumWorkSpace": "node Edge/tools/scrumWorkSpace.mjs",
-    "test": "node --test Edge/tools/scrumWorkSpace.test.mjs"
+    "test": "node --test Edge/tools/*.test.mjs Edge/plugins/visible-terminal/guard.test.mjs"
   }
 }

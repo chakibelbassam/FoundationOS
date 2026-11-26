@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: FoundationOS Server
-  version: '0.2'
+  version: '0.1'
   description: Single-process operator server. Sign in with an account key, work
     in your own home with folders and files, and sign out. Every failure answers
     with the error shape. Every route answers 405 with that shape when the method
@@ -32,7 +32,7 @@ components:
       required: [version, status, schema]
       properties:
         version:
-          const: '0.2'
+          const: '0.1'
         status:
           const: ready
         schema:

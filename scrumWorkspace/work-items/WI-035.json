@@ -1,0 +1,12 @@
+{
+  "id": "WI-035",
+  "kind": "item",
+  "parent": "S-02-3",
+  "title": "Polish the flip and cursor handoff",
+  "type": "enhancement",
+  "priority": 2,
+  "effort": 4,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Keep the card readable and its target stable throughout the turn.\n\n**Expected behaviour** · Compare Solid and Glass mid-flip. Remove background bleed, text jitter and shelf movement. Keep the outline on the stable face until actions are ready.\n\n**Scope boundary** · Support an immediate face change under reduced motion and as a fallback for an unreliable flip.\n\n**Previous in delivery queue** · WI-034\n\n**Depends on** · WI-024, WI-030, WI-034\n\n**Verify** · Capture intermediate frames on a busy background. Replay rapid reversals, repeat input and a disappearing target.\n\n**Effort basis** · Visual judgement and intermediate-frame verification."
+}

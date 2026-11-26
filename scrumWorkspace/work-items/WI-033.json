@@ -1,0 +1,12 @@
+{
+  "id": "WI-033",
+  "kind": "item",
+  "parent": "S-02-3",
+  "title": "Open the app overview and text reader",
+  "type": "feature",
+  "priority": 1,
+  "effort": 3,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Inspect an app and find its files.\n\n**Expected behaviour** · Show the name, path and optional brief. Offer Browse files and Open README when present. Give both overview and reader direct routes.\n\n**Scope boundary** · Read text from the member’s private home.\n\n**Previous in delivery queue** · WI-032\n\n**Depends on** · WI-028, WI-032\n\n**Verify** · Open a direct overview URL, read the README, refresh/reconnect and press Back. Verify absent README and focus restoration.\n\n**Effort basis** · Reuses established routes and file client."
+}

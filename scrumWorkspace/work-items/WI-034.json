@@ -1,0 +1,12 @@
+{
+  "id": "WI-034",
+  "kind": "item",
+  "parent": "S-02-3",
+  "title": "Reveal and operate the app card actions",
+  "type": "feature",
+  "priority": 1,
+  "effort": 4,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · Choose an app action without triggering it accidentally.\n\n**Expected behaviour** · Reveal after about one second of continuous hover or immediate deliberate click, tap, Enter or Space. Order actions Run, Open, More below the brief. Keyboard reveal focuses Run when settled.\n\n**Scope boundary** · Run explains v0.2 availability. Open visits the overview. More offers Browse files.\n\n**Previous in delivery queue** · WI-033\n\n**Depends on** · WI-030, WI-032, WI-033\n\n**Verify** · Test quick pass, timer cancellation, a separate activation, held Enter, Escape and Back to the originating action.\n\n**Effort basis** · Cross-input state and focus timing."
+}

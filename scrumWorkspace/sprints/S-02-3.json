@@ -1,0 +1,9 @@
+{
+  "id": "S-02-3",
+  "kind": "sprint",
+  "parent": "PI-02",
+  "title": "Recognize an app and inspect its files",
+  "acceptance": "Complete Weather → reveal actions → Open → README → refresh → reconnect → Back. Preserve navigation during delayed metadata and card animation.",
+  "status": "proposed",
+  "revision": 1
+}

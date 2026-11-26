@@ -4,6 +4,7 @@
   "parent": "PI-01",
   "title": "Build the storage spine",
   "acceptance": "Run the server from one shared, versioned store with ordered migrations and a schema guard.",
-  "status": "ready",
-  "revision": 2
+  "status": "done",
+  "revision": 5,
+  "evidence": "Accepted as part of the owner-confirmed completed PI-01. See the sprint work-item evidence and PI acceptance."
 }

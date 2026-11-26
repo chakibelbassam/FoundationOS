@@ -1,0 +1,12 @@
+{
+  "id": "WI-031",
+  "kind": "item",
+  "parent": "S-02-2",
+  "title": "Show the active member and server in the header",
+  "type": "feature",
+  "priority": 2,
+  "effort": 3,
+  "revision": 1,
+  "status": "proposed",
+  "acceptance": "**Story or goal** · See who I am and why my connection needs attention.\n\n**Expected behaviour** · Place clickable username, connection state and local time together. Open Profile from the username menu. Show backend address/version, retry and session recovery in the connection panel.\n\n**Scope boundary** · Profile shows the single active member’s name and role.\n\n**Previous in delivery queue** · WI-030\n\n**Depends on** · WI-028, WI-030\n\n**Verify** · Test expiry against a ready server and separately stop the backend. Check menu focus, Escape and long usernames at narrow width.\n\n**Effort basis** · Existing identity and status APIs with bounded UI states."
+}

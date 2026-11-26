@@ -1,0 +1,9 @@
+{
+  "id": "S-02-2",
+  "kind": "sprint",
+  "parent": "PI-02",
+  "title": "Browse a private home",
+  "acceptance": "Browse two folder levels and return to the originating widget. Distinguish a server outage from session expiry and recover without exposing another member’s content.",
+  "status": "proposed",
+  "revision": 1
+}
