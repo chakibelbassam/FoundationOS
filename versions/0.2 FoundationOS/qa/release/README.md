@@ -40,13 +40,13 @@ Input: mouse and keyboard through the in-app browser; the stylus, controller and
 
 ## Final candidate run
 
-The journey above was repeated on a fresh pair after the last code commit: server v0.1 on port 52662, client 0.2 on port 60553, member alice, with her saved preferences restored after the restart.
+The journey above was repeated on a fresh pair after the last code commit: server v0.1 on port 52093, client 0.2 started through the **real launcher** — `Start.cmd http://127.0.0.1:52093 --no-open` printed `FoundationOS 0.2 client ready at http://127.0.0.1:61052/`. Member alice with no saved preferences received the owner defaults: System theme (dark on this Windows), Glass, Comfortable, On, Target. An earlier run on ports 52662/60553 confirmed alice's saved Light Glass preferences after a restart.
 
-- `13-final-home.jpg` — Home with the restored light Glass surface and Weather as an app card.
-- `14-final-actions.jpg` — keyboard reveal with Run focused.
-- `15-final-overview.jpg` — overview with Open README and Browse files.
-- `16-final-reader.jpg` — README at `/file/Weather/README.md`.
+- `13-final-home.jpg`, `14-final-actions.jpg`, `15-final-overview.jpg`, `16-final-reader.jpg` — the fresh pair with alice's saved preferences.
+- `17-final-launcher.jpg` — Home reached through the launcher-printed URL, with the default dark Glass surface and the raised card boundary.
 - Refresh showed Connect at the same URL with `Last member on this browser: alice`; reconnecting restored the reader; Back focused Open README; the second Back revealed the card and focused Open.
+
+The launcher's unquoted-parenthesis defect found by WI-040 is fixed; `tests/launcher.test.mjs` now covers the positional URL.
 
 ## Not covered by this folder
 

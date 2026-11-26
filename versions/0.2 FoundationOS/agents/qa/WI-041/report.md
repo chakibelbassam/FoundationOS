@@ -117,3 +117,48 @@ The bracket geometry is exactly the code's contract (`TargetCursor.tsx` 129–14
 ## 8 · Verdict
 
 **FAIL** on the stated visual release criteria — text contrast, focus visibility, narrow layouts, the mid-flip bleed fix, motion tokens and cursor geometry all pass on the evidence, but F1 (component boundaries at 1.1–2.3:1, including a white-on-near-white light Glass edge caused by the undefined `--fo-glass-border`) fails the owner's stated 3:1 interface bar in all four theme × surface combinations. By the owner's own severity rule this is the release-blocking Sev-1. The fix is a small, cheap token change; if the owner instead rules the card boundary out of 1.4.11 scope, the release criteria would pass as evidenced.
+
+---
+
+# Retest · 26 November 2026 (candidate revised in the working tree; commit follows)
+
+Method: re-read `src/styles.css` from the working tree, refreshed the token inputs in `contrast-check.mjs`, recomputed every border ratio independently (alpha compositing, WCAG 2.1 luminance, worst-region bound plus a physical sweep over tint alpha), and inspected the supplied and neighbouring evidence. One correction to my own first report: my `saturate(1.35)` helper skipped the linear→sRGB re-encode, which understated some glass numbers (light primary-on-glass was published as 12.87; correct value 15.14). The error was conservative in direction and changes no first-report verdict; all Retest numbers below use the fixed helper.
+
+## New border tokens — independent computation
+
+Code confirmed: `--fo-border: #5f7088` and `--fo-glass-border: #5f7088` in **both** theme blocks (`styles.css` 27–45); the glass and dark-glass overrides now consume `var(--fo-glass-border)` (lines 260, 266); card actions (line 382), card note (408), Settings options (612), the state panel (546) and the header rule (101) all use the token. The white-fallback mechanism from the first review is gone.
+
+| Boundary | Light Solid | Dark Solid | Light Glass (bound) | Dark Glass (physical) | Dark Glass (bound) |
+| --- | --- | --- | --- | --- | --- |
+| Card border vs page | **4.49** | **3.71** | **3.51** | **3.17–3.45** | 2.42 ✘ (unreachable) |
+| Card border vs card / glass fill | **5.05** | **3.34** | **4.42** | **3.21–3.39** | 2.96 ✘ (unreachable) |
+| Open/More + Settings pill border vs card | **5.05** | **3.34** | — | — | — |
+| Hover border mix (34% accent + token) | **5.67** | **4.91** | — | — | — |
+
+The dark-glass bound rows deserve the number in full: at the theoretical full-strength blue tint the fill side gives **2.96:1** and the page side **2.42:1**. That composite is not reachable: the blue radial's centre sits at −10 % viewport height (off-screen), so the strongest tint under any card row is alpha ≈ 0.06 (evidence geometry, card tops at y≈189 at 1232×871) to ≈0.08 (small windows), and the sweep puts the 3:1 crossover at alpha ≈ **0.197** (fill side) and ≈ **0.096** (page side). Every physically achievable composite clears 3:1 on both sides. Blue and purple tints do not overlap at card height (verified geometrically).
+
+**Watch item (not a defect):** the dark-glass page-side margin is the thinnest number in the fix — crossover at tint alpha 0.096 against ≈0.06–0.08 achievable. Keep assumption 10's recompute hook; if a future layout ever starts card rows materially higher, this is the number to recheck.
+
+## Evidence
+
+- `sprint-5/WI-042/glass-borders-fixed.jpg` — light Glass, Home shelf: every card edge clearly delineated; focus ring and brackets visible. ✔
+- `sprint-5/WI-042/solid-borders-fixed.jpg` — light Solid, Settings preview on the real `AppCard`/`FolderWidget`: crisp boundaries on cards and pills. ✔
+- `sprint-5/WI-042/dark-glass-borders-fixed.jpg` — Blair's Dark·Glass home: clearly visible borders against the dark page. ✔ (Present in the folder though not listed in the retest request; it closes the dark-surface visual gap.)
+- Residual scope note: the Solid evidence is the Settings preview (same components), not the Home shelf in Solid; acceptable, recorded precisely.
+
+## Per-finding result
+
+| Finding | Sev at first report | Retest result |
+| --- | --- | --- |
+| F1 component boundaries under 3:1 | Sev-1 | **PASS** — solid token `#5f7088` everywhere, all physically achievable theme × surface composites ≥ 3.17:1 (table above); boundary visible in all three supplied screenshots. Watch item recorded. |
+| F2 turn-duration note (1600 ms vs 520 ms) | Sev-3 | **PASS** — release README now states the capture was deliberately slowed to 1600 ms by overriding `--fo-dur-flip` and names the shipped 520 ms; WI-044 states the 900 ms sample deliberately includes the settle. Consistent with the code. |
+| F3 text-jitter acceptance unevidenced | Sev-4 | **PASS** — WI-044 "Not measured" now records jitter as unmeasured/evidence-limited (paused frames show no wrap, size change or reflow); assumption 8 repeats it. The claim is withdrawn, matching the evidence. |
+| F4 stale WI-031 truncation image | Sev-4 | **PASS** — replaced by `320-long-username-final.jpg`, which does show `alexandr…` at 320 px; the README discloses that the old image showed a pre-fix wrap. |
+| F5 folder/app graphics under 3:1 | Sev-4 | **OPEN, correctly recorded** — unchanged in CSS (26 %/56 %/14 % accent mixes), deliberately retained because labels carry identification; assumption 10 registers it as a Sev-4 visual observation for the owner. Non-blocking. |
+| F6 uncited missing-file evidence / type-and-size state | Sev-5 | **PASS** — release README now cites `08-missing-file.jpg` and records the non-text/oversized state as unreachable through v0.1 (UTF-8 ≤ 64 KiB, no size exposed), formalised as assumption 9 with a verify/reverse path. |
+
+Revised Sev-1 count: **0**. Unchanged limitations stand (no physical phone/touch/pen/controller; container previews; single-machine frame sampling; System-theme first-run dark surface described, not screenshotted).
+
+## Revised verdict
+
+**PASS** on the visual release criteria. Text contrast passes everywhere including worst-case glass; the interface boundaries now clear 3:1 in all four theme × surface combinations on every physically achievable composite (thinnest margin: dark-glass page side, 3.17:1 at the maximum on-screen tint); the note corrections are accurate. Remaining items are non-blocking: the Sev-4 folder/app graphic observation for owner review, and the watch item on the dark-glass margin.

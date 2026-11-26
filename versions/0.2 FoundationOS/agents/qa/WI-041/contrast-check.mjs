@@ -29,7 +29,12 @@ const ratio = (a, b) => {
 };
 const css = (c) => `rgb(${c.map((v) => Math.round(v * 10) / 10).join(' ')})`;
 
-// saturate(s) filter matrix applied to linear RGB (CSS filter-effects spec)
+// saturate(s) filter matrix applied to linear RGB (CSS filter-effects spec),
+// result re-encoded to sRGB so downstream math stays in one space
+const encode = (v) => {
+  v = Math.max(0, Math.min(1, v));
+  return (v <= 0.0031308 ? v * 12.92 : 1.055 * Math.pow(v, 1 / 2.4) - 0.055) * 255;
+};
 function saturate(c, s) {
   const [r, g, b] = c.slice(0, 3).map(F);
   const m = [
@@ -38,9 +43,9 @@ function saturate(c, s) {
     [0.213 * (1 - s), 0.715 * (1 - s), 0.072 + 0.928 * s],
   ];
   return [
-    clamp255(m[0][0] * r + m[0][1] * g + m[0][2] * b),
-    clamp255(m[1][0] * r + m[1][1] * g + m[1][2] * b),
-    clamp255(m[2][0] * r + m[2][1] * g + m[2][2] * b),
+    encode(m[0][0] * r + m[0][1] * g + m[0][2] * b),
+    encode(m[1][0] * r + m[1][1] * g + m[1][2] * b),
+    encode(m[2][0] * r + m[2][1] * g + m[2][2] * b),
   ];
 }
 const clamp255 = (v) => Math.max(0, Math.min(1, v)) * 255;
@@ -177,13 +182,17 @@ for (const [nm, th] of [['light', light], ['dark', dark]]) {
 // The full-centre tint alphas are unreachable under cards (blue centre sits at -10% height,
 // off-screen; ~alpha .06 under the first card row at 1232x871). Here: ratio as a function
 // of a SINGLE tint at alpha a, with and without the dot grid, and the alpha that lands
-// the ratio exactly on 3.0.
+// the ratio exactly on 3.0. Both sides of the boundary are checked: the glass fill
+// (inside the edge) and the raw page behind it (outside the edge; unfiltered by the card).
 function borderOverGlass(theme, tintsOn, withDots) {
   let page = theme.page;
   for (const t of tintsOn) page = over(t, page);
   if (withDots) page = over(dots, page);
   const fill = glassCard(theme, page, true); // saturate(1.35) applied as shipped
-  return ratio(theme.solidBorder.slice(0, 3), fill);
+  return {
+    fillSide: ratio(theme.solidBorder.slice(0, 3), fill),
+    pageSide: ratio(theme.solidBorder.slice(0, 3), page),
+  };
 }
 console.log('\n===== RETEST: border #5f7088 over glass fill vs tint alpha =====');
 for (const [nm, th, tint] of [
@@ -192,15 +201,21 @@ for (const [nm, th, tint] of [
   for (const dotsOn of [false, true]) {
     const line = [0, 0.06, 0.084, 0.17, 0.22].map((a) => {
       const r = borderOverGlass(th, [rgba(...tint.slice(0, 3), a)], dotsOn);
-      return `a=${a.toFixed(3)}:${r.toFixed(2)}${r >= 3 ? '' : ' ✘'}`;
+      return `a=${a.toFixed(3)}: fill ${r.fillSide.toFixed(2)}${r.fillSide >= 3 ? '' : '\u2718'} / page ${r.pageSide.toFixed(2)}${r.pageSide >= 3 ? '' : '\u2718'}`;
     }).join('  ');
     console.log(`${nm}${dotsOn ? '+dots' : '     '} ${line}`);
   }
   // solve alpha for ratio exactly 3.0 (with dots, saturate applied)
-  let lo = 0, hi = 0.22;
-  for (let i = 0; i < 40; i++) {
-    const mid = (lo + hi) / 2;
-    if (borderOverGlass(th, [rgba(...tint.slice(0, 3), mid)], true) >= 3) lo = mid; else hi = mid;
+  for (const side of ['fillSide', 'pageSide']) {
+    let lo = 0, hi = 0.22;
+    if (borderOverGlass(th, [rgba(...tint.slice(0, 3), 0)], true)[side] < 3) {
+      console.log(`${nm} ${side}: under 3:1 already at alpha 0`);
+      continue;
+    }
+    for (let i = 0; i < 40; i++) {
+      const mid = (lo + hi) / 2;
+      if (borderOverGlass(th, [rgba(...tint.slice(0, 3), mid)], true)[side] >= 3) lo = mid; else hi = mid;
+    }
+    console.log(`${nm} ${side}: ratio hits 3.00 at tint alpha ≈ ${lo.toFixed(3)} (dots on); max on-screen alpha under a card row ≈ 0.06–0.09`);
   }
-  console.log(`${nm}: ratio hits 3.00 at tint alpha ≈ ${lo.toFixed(3)} (dots on); max on-screen alpha under a card row ≈ 0.06–0.09`);
 }

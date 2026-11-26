@@ -4,7 +4,7 @@
 
 - **Server:** FoundationOS 0.1, schema 2, started first from `versions/0.1 FoundationOS/Start.cmd`.
 - **Client:** FoundationOS 0.2, built from `versions/0.2 FoundationOS/FoundationOS`, launched with `Start.cmd http://127.0.0.1:<server-port>`.
-- **Final run:** server port 52093, client port 64128. Earlier runs used 49674/55296, 54544/61686 and 52662/60553 to prove the different-port restart.
+- **Final run:** started through the real launcher, `Start.cmd http://127.0.0.1:52093 --no-open`, which printed `FoundationOS 0.2 client ready at http://127.0.0.1:61052/`. Earlier runs used 49674/55296, 54544/61686 and 52662/60553 to prove the different-port restart and per-member settings.
 - **Candidate:** branch `edge-opencode/pi-02-client-foundation`, commit recorded on PR #9 after the QA retest.
 - **Browser:** OpenCode built-in Chromium; Windows 11; desktop, 390 px and 320 × 600 container previews.
 - **Input hardware:** mouse and keyboard. No pen, controller, touch screen or physical phone.
@@ -47,8 +47,8 @@
 
 ## Independent QA
 
-- **WI-040 journey QA:** result to be recorded from `agents/qa/WI-040/report.md`.
-- **WI-041 visual review:** one Sev-1 (interface boundaries below 3:1). Fixed with the solid `#5f7088` boundary token; retest result to be recorded.
+- **WI-040 journey QA:** 15 PASS, 2 FAIL initially. The Sev-1 was the shipped `Start.cmd` rejecting the positional server URL (unescaped parentheses broke cmd block parsing); fixed, covered by `tests/launcher.test.mjs`, and the full journey then ran through the launcher-printed URL. The Sev-2 Scrum-validation failure was the two missing document revision headers, now fixed. Retest appended to `agents/qa/WI-040/report.md`.
+- **WI-041 visual review:** one Sev-1 (interface boundaries below 3:1). Fixed with the solid `#5f7088` boundary token; independent retest revised the verdict to **PASS**, 0 Sev-1, with the thinnest physically achievable ratio at 3.17:1 (dark Glass page side) recorded as a watch item.
 - **WI-042 retest:** numbers in `../WI-042/README.md` (3.22–5.05:1 for the boundary across light/dark, Solid/Glass).
 
 ## CI

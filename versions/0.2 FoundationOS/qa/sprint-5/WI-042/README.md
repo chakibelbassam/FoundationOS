@@ -3,7 +3,6 @@
 Candidate after the fixes: branch `edge-opencode/pi-02-client-foundation`, commit recorded on PR #9 after the retest.
 
 ## F1 · Interface boundaries below 3:1 (Sev-1, independent review)
-
 **Confirmed.** The old `--fo-border` was 14%/22% ink and `--fo-glass-border` was referenced but never defined, giving a white edge on near-white Glass.
 
 **Fix.** Both boundary tokens are now the solid ink `#5f7088` in light and dark, used by the card and folder faces, the glass border, secondary action buttons and Settings options. Folder and app graphics keep their accent tints because their labels carry identification (Sev-4, recorded for the owner).
@@ -42,3 +41,11 @@ Recorded as an evidence limit: paused frames show no wrap, size change or reflow
 ## Retest
 
 Independent retest requested from GLM 5.3 Flash against the new tokens and images; result appended to `../../agents/qa/WI-041/report.md`.
+
+## Launcher rejects the positional URL (Sev-1, independent journey QA)
+
+**Confirmed.** `Start.cmd <url>` sent the URL to the host as an unknown argument. Unescaped parentheses in the usage `echo` inside a nested `if` block broke cmd's block parsing, so the no-argument branch ran and the guard was skipped.
+
+**Fix.** The parentheses are escaped (`echo   ^(or set ...^)`) and a new Windows-only test, `FoundationOS/tests/launcher.test.mjs`, starts `Start.cmd` against a stub server and asserts the ready line. The real launcher then started the client at `http://127.0.0.1:61052/`, and the full Weather journey ran through that URL (`release/17-final-launcher.jpg`).
+
+**Owner action:** the launcher test is skipped on non-Windows CI (recorded), so the fix is verified on Windows locally and by the independent retest.

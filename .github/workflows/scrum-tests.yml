@@ -47,6 +47,6 @@ jobs:
       - name: Build the client
         run: npm run build
       - name: Run the host and launcher tests
-        run: node --test tests/host.test.mjs
+        run: node --test tests/host.test.mjs tests/launcher.test.mjs
       - name: Run the QA fixture tests
         run: node --test tests/fixtures/seed.test.mjs

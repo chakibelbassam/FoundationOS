@@ -10,7 +10,7 @@ if "%~1"=="" (
   if "%FOUNDATIONOS_SERVER%"=="" (
     echo Usage: Start.cmd ^<server-url^> [host options]
     echo Example: Start.cmd http://127.0.0.1:8787 --no-open
-    echo   (or set FOUNDATIONOS_SERVER and pass only host options)
+    echo   ^(or set FOUNDATIONOS_SERVER and pass only host options^)
     exit /b 2
   )
   node "%~dp0FoundationOS\host\serve.mjs" %*
