@@ -24,8 +24,7 @@ test('parseInvocation rejects unknown commands and bad JSON', () => {
   assert.match(parseInvocation(['read', 'not-json']).error, /must be JSON, or @path/);
 });
 
-test('parseInvocation loads @file arguments', async () => {
-  const { mkdtemp, writeFile } = await import('node:fs/promises');
+test('parseInvocation loads @file arguments', async () => {  const { mkdtemp, writeFile } = await import('node:fs/promises');
   const dir = await mkdtemp(os.tmpdir() + '/edge-term-');
   const file = dir + '/args.json';
   await writeFile(file, '{"ptyID":"pty_persistent_9"}');

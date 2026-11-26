@@ -66,6 +66,7 @@ export function api(cli, method, apiPath, body, extraArgs = []) {
     throw new Error(`opencode api failed: ${(result.stderr || '').trim().split('\n')[0] || 'exit ' + result.status}`);
   }
   const text = (result.stdout || '').trim();
+  if (!text) return null; // 204 No Content, e.g. a delete
   try {
     return JSON.parse(text);
   } catch {
@@ -142,10 +143,18 @@ async function typeIntoTerminal({ cli, base, ptyID, text, slowMs = 0, enter = tr
   });
   await sleep(800);
   let sent = 0;
-  for (const char of text) {
-    ws.send(char);
-    sent += 1;
-    if (slowMs > 0) await sleep(slowMs);
+  if (slowMs > 0) {
+    // Watchable mode: one frame per character so the owner sees each keystroke.
+    for (const char of text) {
+      ws.send(char);
+      sent += 1;
+      await sleep(slowMs);
+    }
+  } else {
+    // Fast mode: one frame for the whole command. Sending a burst of small
+    // frames loses the tail when the socket closes soon after.
+    ws.send(text);
+    sent = text.length;
   }
   if (enter) {
     await sleep(Math.max(slowMs * 4, 300));
@@ -154,7 +163,7 @@ async function typeIntoTerminal({ cli, base, ptyID, text, slowMs = 0, enter = tr
   }
   await sleep(settleMs);
   ws.close();
-  await sleep(300);
+  await sleep(500);
   return { sent, outputTail: stripAnsi(output).slice(-2000) };
 }
 

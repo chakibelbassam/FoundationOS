@@ -16,6 +16,10 @@ Work from the repository root. The session defaults to `OPENCODE_SESSION_ID`, so
 node Edge/tools/opencode-terminal.mjs type '@Edge/workspace/term-args.json'
 ```
 
+### Prefer the native tools when they are available
+
+The `visible-terminal` plugin registers the same operations as `terminal_list`, `terminal_create`, `terminal_type`, `terminal_read` and `terminal_close` in the `terminal` namespace. Use them directly when present: they take the same arguments without the quoting workaround, default the working directory to the workspace, and are guarded against protected git operations. Fall back to the commands below when the plugin is not loaded.
+
 ### 1. Reuse or create one terminal per session
 
 ```powershell
