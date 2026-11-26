@@ -1,7 +1,7 @@
 import { createServer, type IncomingMessage, type ServerResponse } from 'node:http';
 import { createHash, randomBytes, randomUUID } from 'node:crypto';
-import { existsSync, lstatSync, mkdirSync, realpathSync, writeFileSync } from 'node:fs';
-import { mkdir, open, readFile, readdir, rename, rm } from 'node:fs/promises';
+import { existsSync, lstatSync, mkdirSync, realpathSync, rmSync, writeFileSync, writeSync } from 'node:fs';
+import { mkdir, open, readFile, readdir, rename, rm, rmdir } from 'node:fs/promises';
 import { homedir } from 'node:os';
 import path from 'node:path';
 import { DatabaseSync } from 'node:sqlite';
@@ -55,7 +55,7 @@ function validName(name: string) {
 }
 
 const homesPath = path.join(root, 'homes');
-mkdirSync(homesPath, { recursive: true, mode: 0o700 });
+if (!existsSync(homesPath)) mkdirSync(homesPath, { mode: 0o700 });
 function mustDir(p: string) {
   const stat = lstatSync(p);
   if (!stat.isDirectory() || realpathSync.native(p) !== p) refuse(404, 'Unknown path');
@@ -67,7 +67,6 @@ function regularFile(p: string, stat = lstatSync(p)) {
 function realDir(p: string, stat = lstatSync(p)) {
   return stat.isDirectory() && realpathSync.native(p) === p;
 }
-mustDir(homesPath);
 function filesOf(account: string) {
   mustDir(homesPath);
   mustDir(path.join(homesPath, account));
@@ -76,13 +75,43 @@ function filesOf(account: string) {
   return folder;
 }
 
+function createHome(id: string, name: string, role: string) {
+  mustDir(homesPath);
+  const home = path.join(homesPath, id);
+  try {
+    mkdirSync(home, { mode: 0o700 });
+    writeFileSync(path.join(home, 'profile.json'), JSON.stringify({ id, name, role }, null, 2), { flag: 'wx', mode: 0o600 });
+    mkdirSync(path.join(home, 'files'), { mode: 0o700 });
+  } catch (error) {
+    try { rmSync(home, { recursive: true, force: true }); } catch { /* best effort */ }
+    throw error;
+  }
+}
+function provisionMessage(error: unknown) {
+  if (error && typeof error === 'object' && 'error' in error) return String((error as { error: unknown }).error);
+  const message = (error as { message?: unknown }).message;
+  return message === undefined ? String(error) : String(message);
+}
+function failBoot(error: unknown): never {
+  // Synchronous write: process.exit must not truncate the line on a pipe.
+  try { writeSync(1, JSON.stringify({ event: 'admin-provision-failed', error: provisionMessage(error) }) + '\n'); } catch { /* fall through to exit */ }
+  process.exit(1);
+}
+
 if ((db.prepare('SELECT COUNT(*) AS n FROM accounts').get() as { n: number }).n === 0) {
   const id = randomUUID();
   const key = fresh();
-  db.prepare('INSERT INTO accounts VALUES (?,?,?,?,?)').run(id, 'admin', 'admin', digest(key), now());
-  mkdirSync(path.join(homesPath, id), { mode: 0o700 });
-  writeFileSync(path.join(homesPath, id, 'profile.json'), JSON.stringify({ id, name: 'admin', role: 'admin' }, null, 2), { flag: 'wx', mode: 0o600 });
-  mkdirSync(path.join(homesPath, id, 'files'), { mode: 0o700 });
+  try {
+    createHome(id, 'admin', 'admin');
+  } catch (error) {
+    failBoot(error);
+  }
+  try {
+    db.prepare('INSERT INTO accounts VALUES (?,?,?,?,?)').run(id, 'admin', 'admin', digest(key), now());
+  } catch (error) {
+    try { rmSync(path.join(homesPath, id), { recursive: true, force: true }); } catch { /* best effort */ }
+    failBoot(error);
+  }
   console.log(JSON.stringify({ event: 'admin-created', id, key }));
 }
 
@@ -217,6 +246,11 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
       if (typeof input.name !== 'string' || !/^[a-z][a-z0-9_-]{1,38}$/.test(input.name)) refuse(400, 'Use a lowercase member name of 2 to 39 characters.');
       const id = randomUUID();
       const key = fresh();
+      try {
+        createHome(id, input.name, 'member');
+      } catch {
+        refuse(404, 'Workspace unavailable');
+      }
       db.exec('BEGIN IMMEDIATE');
       try {
         db.prepare('INSERT INTO accounts VALUES (?,?,?,?,?)').run(id, input.name, 'member', digest(key), now());
@@ -225,14 +259,10 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
         db.exec('COMMIT');
       } catch (error) {
         if (db.isTransaction) db.exec('ROLLBACK');
+        try { rmSync(path.join(homesPath, id), { recursive: true, force: true }); } catch { /* best effort */ }
         if (/UNIQUE constraint failed/i.test((error as { message?: string }).message || '')) refuse(409, 'Name already taken');
         throw error;
       }
-      try {
-        mkdirSync(path.join(homesPath, id), { mode: 0o700 });
-        writeFileSync(path.join(homesPath, id, 'profile.json'), JSON.stringify({ id, name: input.name, role: 'member' }, null, 2), { flag: 'wx', mode: 0o600 });
-        mkdirSync(path.join(homesPath, id, 'files'), { mode: 0o700 });
-      } catch { refuse(404, 'Workspace unavailable'); }
       log('account-created', { name: input.name, account: id });
       return reply(res, 200, { id, name: input.name, key });
     }
@@ -302,8 +332,12 @@ async function handle(req: IncomingMessage, res: ServerResponse) {
           await rm(target);
         } else if (stat.isDirectory()) {
           if (!realDir(target, stat)) refuse(404, 'Unknown path');
-          try { await rm(target, { recursive: false }); }
-          catch { refuse(409, 'Folder is not empty'); }
+          try { await rmdir(target); }
+          catch (error) {
+            const code = (error as NodeJS.ErrnoException)?.code;
+            if (code === 'ENOTEMPTY' || code === 'EEXIST') refuse(409, 'Folder is not empty');
+            refuse(404, 'Unknown path');
+          }
         } else refuse(404, 'Unknown path');
         log('delete', { account: me.name, path: rel });
         return reply(res, 200, { path: rel });

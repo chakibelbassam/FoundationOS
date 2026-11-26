@@ -12,4 +12,4 @@ Files live in your own home. GET /files lists the root as names with their type.
 
 The shared store lives under %LOCALAPPDATA%/FoundationOS/store. Set FOUNDATIONOS_DATA to an operator-owned directory for a separate test installation. Stopping the server and copying the store directory backs it up. The store carries a schema version: a newer server migrates it on boot, and this copy refuses to start against a store that a newer copy already moved ahead.
 
-This increment does NOT include a browser client, remote access, running imported code, sharing between members, or move and rename. The console, the API beside this file in openapi.yaml, and verify.py are the interface, on purpose.
+This increment does NOT include a browser client, remote access, running imported code, sharing between members, or move and rename. The console, the API beside this file in openapi.yaml, and verify.py are the interface, on purpose. The contract suite in openapi.test.mjs reads openapi.yaml and calls every documented operation, checking every documented response status against its schema.
