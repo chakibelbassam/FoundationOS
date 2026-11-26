@@ -6,7 +6,8 @@
   "type": "enabler",
   "priority": 1,
   "effort": 4,
-  "revision": 1,
-  "status": "proposed",
-  "acceptance": "**Story or goal** · Restore my settings after restarting the local client.\n\n**Expected behaviour** · Derive the member ID from the selected server’s verified profile. Validate allowed values and atomically save theme, surface, density, motion and cursor in the current Windows user’s application-data directory. Load system defaults before connection.\n\n**Scope boundary** · Client-host preferences only. Keep tokens in memory and exclude secrets from disk.\n\n**Previous in delivery queue** · WI-035\n\n**Depends on** · WI-026, WI-028\n\n**Verify** · Apply distinct choices for two members, restart on a different port and reconnect to each. Exercise missing preferences, invalid values and failed writes without losing the last saved state.\n\n**Effort basis** · Identity, durable data and failure recovery."
+  "revision": 4,
+  "status": "review",
+  "acceptance": "**Story or goal** · Restore my settings after restarting the local client.\n\n**Expected behaviour** · Derive the member ID from the selected server’s verified profile. Validate allowed values and atomically save theme, surface, density, motion and cursor in the current Windows user’s application-data directory. Load system defaults before connection.\n\n**Scope boundary** · Client-host preferences only. Keep tokens in memory and exclude secrets from disk.\n\n**Previous in delivery queue** · WI-035\n\n**Depends on** · WI-026, WI-028\n\n**Verify** · Apply distinct choices for two members, restart on a different port and reconnect to each. Exercise missing preferences, invalid values and failed writes without losing the last saved state.\n\n**Effort basis** · Identity, durable data and failure recovery.",
+  "evidence": "Alice and Blair saved distinct theme, surface, density, motion and cursor choices keyed by member id. The client host was stopped and relaunched on different ports; each member recovered their own settings and home. A member with no entry received the recorded defaults. Invalid values return 400 and leave the file untouched; a read-only file makes the save fail while the last good file stays. Evidence: qa/sprint-4/WI-036/."
 }

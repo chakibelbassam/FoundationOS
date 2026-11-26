@@ -6,7 +6,8 @@
   "type": "feature",
   "priority": 2,
   "effort": 3,
-  "revision": 1,
-  "status": "proposed",
-  "acceptance": "**Story or goal** · See who I am and why my connection needs attention.\n\n**Expected behaviour** · Place clickable username, connection state and local time together. Open Profile from the username menu. Show backend address/version, retry and session recovery in the connection panel.\n\n**Scope boundary** · Profile shows the single active member’s name and role.\n\n**Previous in delivery queue** · WI-030\n\n**Depends on** · WI-028, WI-030\n\n**Verify** · Test expiry against a ready server and separately stop the backend. Check menu focus, Escape and long usernames at narrow width.\n\n**Effort basis** · Existing identity and status APIs with bounded UI states."
+  "revision": 4,
+  "status": "review",
+  "acceptance": "**Story or goal** · See who I am and why my connection needs attention.\n\n**Expected behaviour** · Place clickable username, connection state and local time together. Open Profile from the username menu. Show backend address/version, retry and session recovery in the connection panel.\n\n**Scope boundary** · Profile shows the single active member’s name and role.\n\n**Previous in delivery queue** · WI-030\n\n**Depends on** · WI-028, WI-030\n\n**Verify** · Test expiry against a ready server and separately stop the backend. Check menu focus, Escape and long usernames at narrow width.\n\n**Effort basis** · Existing identity and status APIs with bounded UI states.",
+  "evidence": "Header shows local time, connection chip, username menu and Settings. Revoking a session produced `Reconnect` plus `Your session expired. Connect again to continue.` at the unchanged route; stopping the server produced `Server offline` and the restart instruction. The username menu marks the active profile and Escape returns focus to the trigger. `alexandra-montgomery` truncates to `alexandr...` at 320 px with the full name in title and menu; no horizontal overflow. Evidence: qa/sprint-2/WI-031/."
 }

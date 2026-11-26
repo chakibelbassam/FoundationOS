@@ -6,7 +6,8 @@
   "type": "feature",
   "priority": 1,
   "effort": 4,
-  "revision": 1,
-  "status": "proposed",
-  "acceptance": "**Story or goal** · Choose an app action without triggering it accidentally.\n\n**Expected behaviour** · Reveal after about one second of continuous hover or immediate deliberate click, tap, Enter or Space. Order actions Run, Open, More below the brief. Keyboard reveal focuses Run when settled.\n\n**Scope boundary** · Run explains v0.2 availability. Open visits the overview. More offers Browse files.\n\n**Previous in delivery queue** · WI-033\n\n**Depends on** · WI-030, WI-032, WI-033\n\n**Verify** · Test quick pass, timer cancellation, a separate activation, held Enter, Escape and Back to the originating action.\n\n**Effort basis** · Cross-input state and focus timing."
+  "revision": 4,
+  "status": "review",
+  "acceptance": "**Story or goal** · Choose an app action without triggering it accidentally.\n\n**Expected behaviour** · Reveal after about one second of continuous hover or immediate deliberate click, tap, Enter or Space. Order actions Run, Open, More below the brief. Keyboard reveal focuses Run when settled.\n\n**Scope boundary** · Run explains v0.2 availability. Open visits the overview. More offers Browse files.\n\n**Previous in delivery queue** · WI-033\n\n**Depends on** · WI-030, WI-032, WI-033\n\n**Verify** · Test quick pass, timer cancellation, a separate activation, held Enter, Escape and Back to the originating action.\n\n**Effort basis** · Cross-input state and focus timing.",
+  "evidence": "Quick pass stayed closed; 1.3 s dwell revealed; leaving at 0.6 s cancelled. Click and keyboard reveal immediately, and keyboard focus lands on Run. Second activation shows the inline runtime note. Escape closes More first (focus More, face still open), then the face (focus returns to the trigger). Repeated keydowns on Run are prevented. Reduced-motion members get an immediate face change. Evidence: qa/sprint-3/WI-034/ and src/components/AppCard.test.tsx."
 }
