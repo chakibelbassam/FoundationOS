@@ -177,7 +177,7 @@ export function AppOverview() {
               startIcon={<FolderOpenIcon />}
               onClick={() => {
                 setResumeFocus(path);
-                navigate(`/folder/${path}`, { state: { from: browseFrom } });
+                navigate(`/files/${path}`, { state: { from: browseFrom } });
               }}
             >
               Browse files

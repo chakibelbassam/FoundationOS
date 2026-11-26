@@ -657,3 +657,28 @@ body {
   white-space: nowrap;
   border: 0;
 }
+
+/* WI-051 file explorer: the SVAR tree + list fits the member theme, keeps a
+   visible focus target, and collapses to a single list pane on narrow
+   viewports without horizontal scrolling. */
+.fo-explorer {
+  border: 1px solid var(--fo-border, #5f7088);
+  border-radius: var(--fo-radius);
+  overflow: hidden;
+  background: var(--fo-panel-bg, transparent);
+  min-height: 320px;
+}
+
+.fo-explorer :focus-visible {
+  outline: 3px solid var(--fo-focus);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .fo-explorer .wx-sidebar {
+    display: none;
+  }
+  .fo-explorer .wx-content {
+    width: 100% !important;
+  }
+}

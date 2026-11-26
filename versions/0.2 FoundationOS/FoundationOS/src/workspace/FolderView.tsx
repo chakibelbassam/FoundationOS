@@ -78,6 +78,13 @@ export function FolderView() {
     navigate(router, { state: { from: { route: location.pathname, path: target } } });
   };
 
+  // The app card's "Browse files" action opens the explorer; the shelf keeps
+  // its /folder route for compatibility.
+  const openFiles = (target: string) => {
+    setResumeFocus(target);
+    navigate(`/files/${target}`);
+  };
+
   const reducedMotion = useMemo(() => {
     if (effective.motion === 'off') return true;
     if (effective.motion === 'system') {
@@ -145,6 +152,7 @@ export function FolderView() {
             onOpenFolder={(target) => open('folder', target)}
             onOpenApp={(target) => open('app', target)}
             onOpenFile={(target) => open('file', target)}
+            onBrowseFiles={openFiles}
           />
           {items.length === 0 ? <p>No entries.</p> : null}
         </div>

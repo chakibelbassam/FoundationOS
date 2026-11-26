@@ -6,6 +6,7 @@ import { Header } from '../components/Header';
 import { TargetCursor } from '../components/TargetCursor';
 import { ConnectView } from '../connect/ConnectView';
 import { FileReader } from '../workspace/FileReader';
+import { FileExplorer } from '../workspace/FileExplorer';
 import { FolderView } from '../workspace/FolderView';
 import { AppOverview } from '../workspace/AppOverview';
 import { SettingsView } from '../settings/SettingsView';
@@ -45,6 +46,8 @@ function Protected() {
     <Routes>
       <Route path="/" element={<FolderView />} />
       <Route path="/folder/*" element={<FolderView />} />
+      <Route path="/files" element={<FileExplorer />} />
+      <Route path="/files/*" element={<FileExplorer />} />
       <Route path="/app/*" element={<AppOverview />} />
       <Route path="/file/*" element={<FileReader />} />
       <Route path="/settings/:page" element={<SettingsView />} />

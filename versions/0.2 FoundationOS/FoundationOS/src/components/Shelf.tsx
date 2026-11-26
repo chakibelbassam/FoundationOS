@@ -12,13 +12,14 @@ interface ShelfProps {
   onOpenFolder: (path: string) => void;
   onOpenApp: (path: string) => void;
   onOpenFile: (path: string) => void;
+  onBrowseFiles?: (path: string) => void;
 }
 
 function centre(rect: DOMRect) {
   return { x: rect.left + rect.width / 2, y: rect.top + rect.height / 2 };
 }
 
-export function Shelf({ items, apps, reducedMotion, focusPath, onOpenFolder, onOpenApp, onOpenFile }: ShelfProps) {
+export function Shelf({ items, apps, reducedMotion, focusPath, onOpenFolder, onOpenApp, onOpenFile, onBrowseFiles }: ShelfProps) {
   const refs = useRef(new Map<string, HTMLElement>());
   const [active, setActive] = useState(0);
 
@@ -133,7 +134,7 @@ export function Shelf({ items, apps, reducedMotion, focusPath, onOpenFolder, onO
                   autoReveal={focusPath === item.path}
                   registerItem={register}
                   onOpen={() => onOpenApp(item.path)}
-                  onBrowse={() => onOpenFolder(item.path)}
+                  onBrowse={() => (onBrowseFiles ?? onOpenFolder)(item.path)}
                 />
               ) : (
                 <FolderWidget
