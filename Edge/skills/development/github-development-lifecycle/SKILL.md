@@ -36,6 +36,12 @@ Do not hide Git or GitHub work in a background shell. Follow [opencode-terminal]
 
 The same rule covers long-running scripts, tests, builds and app launches when the owner asked to see them. Keep the terminal tab open for follow-ups.
 
+## Sub-agents
+
+OpenCode can run a sub-agent on a chosen chat model. The owner's standing assignment: development work such as features, enablers and bug fixes runs on `opencode-go/muse-spark-1.3-contributor`; QA and verification run on `opencode-go/glm-5.3-flash`. Look the IDs up with the models tool before spawning; never guess them.
+
+Give a sub-agent a clean, self-contained brief: the work item ID with its full acceptance, the exact files to touch, the repository conventions, the checks to run and what not to do. Sub-agents do not run Git; the session commits in the visible terminal. Quote a sub-agent's observed results as evidence on the work item.
+
 ## The seven phases
 
 ### 1. Sync
@@ -117,6 +123,10 @@ When the change depends on an unmerged PR, branch from that PR's branch and open
 
 Example: `edge-opencode/wi-009-visible-git` bases on `edge-opencode/wi-008-scrum-workspace` because the lifecycle skill only exists there until PR #3 merges.
 
+### Choose the pull request size
+
+One pull request per work item is the smallest option, not the default. Before opening pull requests for a chunk of work, ask the owner how to deliver it: one pull request per work item, per sprint, or per product increment. Prefer fewer, well-described pull requests; the owner approves products, not paperwork. A chunk pull request names every included work item in its body and keeps one branch. Stacked pull requests do not approve each other; every one still needs its own merge, so stack only on a genuine dependency. Branch names follow the chunk: `edge-opencode/wi-10-slug` for one item, `edge-opencode/pi-01-slug` for a whole increment.
+
 ### 7. Review and merge
 
 ```powershell
@@ -142,6 +152,8 @@ gh release create v0.1 --target <merge-sha> --title "0.1 <plain name>" --notes-f
 | --- | --- |
 | WI-008 Enhance Scrum tooling | WI-008 Add manual, validate and receipt to scrumWorkSpace |
 | WI-009 Streamline QA | WI-009 Run server and browser QA from one launcher |
+
+Use the short form in prose, titles and commit messages: WI-10, S5, PI 1, with the title in parentheses when referring to a record, like WI-10 (Move the server to one versioned store). Stored IDs keep their padded form inside records, trailers and receipts.
 
 ## Pull request body
 
