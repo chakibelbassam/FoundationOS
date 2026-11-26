@@ -145,6 +145,12 @@ with tempfile.TemporaryDirectory(prefix='foundationos-02-') as temp:
         assert request(base, '/files/docs/scratch.txt', 'PUT', token=blair['session']['token'],
                        text='bye')[0] == 200
         assert request(base, '/files/docs/scratch.txt', 'DELETE', token=blair['session']['token'])[0] == 200
+        assert request(base, '/folder', 'POST', token=blair['session']['token'],
+                       json_body={'path': 'empty'})[0] == 200
+        status, removed = request(base, '/files/empty', 'DELETE', token=blair['session']['token'])
+        assert status == 200, (status, removed)
+        assert removed == {'path': 'empty'}, removed
+        assert request(base, '/files', token=blair['session']['token'])[1] == [{'name': 'docs', 'type': 'folder'}]
     with running(env, complete=False) as (base, second_admin):
         assert second_admin is None, 'restart must not print a second admin key'
         assert request(base, '/status')[1]['schema'] == 2

@@ -50,3 +50,9 @@ Owner decisions: one shared store with cumulative migrations and a schema guard;
 Deferred by design: the browser client (0.2), sign-in screens and passwords (0.3), move and rename (0.4), backup commands and remote access (0.5), code execution and workers (0.7 and 0.8), sharing (0.9), catalog and release (1.0). Multi-host and networked databases stay off the roadmap.
 
 Delivery runs as one pull request for the increment. Development sub-agents run on Muse Spark 1.3 Contributor and QA runs on GLM 5.3-Flash; sub-agents never run Git, and the session commits in the visible terminal. The parallel OpenCode tooling wiring is recorded as WI-22 and ships with the increment branch.
+
+## Reviewing a contract claim (2026-11-26)
+
+An independent review held PI-01 acceptance on three points, and all three were reproducible. `fs.rm` with `recursive: false` returns `ERR_FS_EISDIR` for a directory, so a delete handler that catches every error as "not empty" silently makes empty folders undeletable; the positive case needs its own test. Provisioning that writes the account row before the home can consume a one-time invitation and lose the only key when the filesystem fails; create the home first, clean up on a database failure, and test the retry with the same invitation. A contract is only proved by a check that reads the contract, calls every documented operation and validates every documented response status; a hand-written route list is not evidence.
+
+The lesson for Edge: when a work item says "CI proves each documented route", the acceptance test must open the published file and fail on an undocumented operation or response. Negative tests alone can pass while the positive path is broken.

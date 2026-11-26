@@ -4,5 +4,6 @@
   "title": "Client foundation",
   "acceptance": "Open the React client against representative data. Verify folder and app widgets, focus, loading, empty and unavailable states.",
   "status": "proposed",
-  "revision": 1
+  "revision": 2,
+  "targetVersion": "0.2"
 }

@@ -2,6 +2,7 @@
 
 | Workflow | When to use it |
 | --- | --- |
+| [present-scrum-workspace](planning/present-scrum-workspace/SKILL.md) | Display titled Scrum records, sprint buckets, status and completion, and explain decisions with linked quotations. |
 | [work-in-foundationos](development/work-in-foundationos/SKILL.md) | Orient a new FoundationOS session, reconcile prototype versus version, and resume an item from a nested folder. |
 | [github-development-lifecycle](development/github-development-lifecycle/SKILL.md) | Turn an approved work item into a reviewed PR with explicit base, attribution, before/after explanation and owner-controlled merge. |
 | [triage-foundationos-work](planning/triage-foundationos-work/SKILL.md) | Investigate a reported FoundationOS issue against verified behaviour and propose its work type, severity and priority. |

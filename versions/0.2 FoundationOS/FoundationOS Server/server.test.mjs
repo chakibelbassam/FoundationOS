@@ -213,6 +213,44 @@ test('0.2 server: status, sessions, invitations, roles, files, revocation, resta
     errorShape(notEmpty);
   });
 
+  await t.test('deletes an empty folder and lists it as gone', async () => {
+    const made = await call(server.base, '/folder', { method: 'POST', auth: memberSession.token, json: { path: 'empty' } });
+    assert.equal(made.status, 200);
+    const removed = await call(server.base, '/files/empty', { method: 'DELETE', auth: memberSession.token });
+    assert.equal(removed.status, 200);
+    assert.deepEqual(removed.body, { path: 'empty' });
+    const root = await call(server.base, '/files', { auth: memberSession.token });
+    assert.equal(root.status, 200);
+    assert.ok(!root.body.some((entry) => entry.name === 'empty'), 'empty folder must be gone from the listing, got ' + JSON.stringify(root.body));
+  });
+
+  await t.test('a failed home setup leaves the invitation unused and no account behind', async () => {
+    const invitation = await call(server.base, '/invitations', { method: 'POST', auth: adminSession.token });
+    assert.equal(invitation.status, 200);
+    const homes = path.join(dir, 'homes');
+    const paused = path.join(dir, 'homes-paused');
+    await fs.promises.rename(homes, paused);
+    await fs.promises.writeFile(homes, 'blocked');
+    try {
+      const failed = await call(server.base, '/accounts', { method: 'POST', auth: invitation.body.token, json: { name: 'retryme' } });
+      assert.equal(failed.status, 404);
+      errorShape(failed);
+      const listed = await call(server.base, '/accounts', { auth: adminSession.token });
+      assert.equal(listed.status, 200);
+      assert.ok(!listed.body.some((entry) => entry.name === 'retryme'), 'failed setup must not strand an account');
+    } finally {
+      await fs.promises.rm(homes, { force: true });
+      await fs.promises.rename(paused, homes);
+    }
+    const created = await call(server.base, '/accounts', { method: 'POST', auth: invitation.body.token, json: { name: 'retryme' } });
+    assert.equal(created.status, 200);
+    const signed = await call(server.base, '/sessions', { method: 'POST', auth: created.body.key });
+    assert.equal(signed.status, 200);
+    const root = await call(server.base, '/files', { auth: signed.body.token });
+    assert.equal(root.status, 200);
+    assert.deepEqual(root.body, []);
+  });
+
   await t.test('refuses traversal, encoded traversal, links and junctions', async () => {
     const plain = await call(server.base, '/files/../profile.json', { auth: memberSession.token });
     assert.equal(plain.status, 404);
@@ -307,4 +345,48 @@ test('0.2 server: status, sessions, invitations, roles, files, revocation, resta
     assert.match(out + err, /newer than supported/);
     await stop(proc);
   });
+});
+
+test('0.2 server: a failed first-run home setup retries cleanly', async (t) => {
+  const dir = await fs.promises.mkdtemp(path.join(os.tmpdir(), 'foundation02-retry-'));
+  const servers = [];
+  t.after(async () => {
+    for (const entry of servers) await stop(entry.proc);
+    await fs.promises.rm(dir, { recursive: true, force: true });
+  });
+  await fs.promises.writeFile(path.join(dir, 'homes'), 'blocked');
+  const proc = spawn(process.execPath, [serverPath], {
+    env: { ...process.env, FOUNDATIONOS_DATA: dir, FOUNDATIONOS_PORT: '0' },
+    stdio: ['ignore', 'pipe', 'pipe'],
+  });
+  servers.push({ proc });
+  let out = '';
+  let err = '';
+  proc.stdout.on('data', (chunk) => { out += chunk; });
+  proc.stderr.on('data', (chunk) => { err += chunk; });
+  let timer;
+  const [code] = await Promise.race([once(proc, 'exit'), new Promise((resolve) => { timer = setTimeout(() => resolve([-1]), 15000); })]);
+  clearTimeout(timer);
+  assert.notEqual(code, -1, 'server did not exit: ' + out + err);
+  assert.notEqual(code, 0, 'failed first-run setup must exit nonzero, got: ' + out + err);
+  assert.ok(!out.includes('"admin-created"'), 'failed boot must not print an admin key, got: ' + out);
+  assert.match(out, /admin-provision-failed/);
+  const check = new DatabaseSync(path.join(dir, 'foundationos.sqlite'));
+  try {
+    const row = check.prepare('SELECT COUNT(*) AS n FROM accounts').get();
+    assert.equal(row.n, 0, 'failed boot must not write an account row');
+  } finally {
+    check.close();
+  }
+  await fs.promises.rm(path.join(dir, 'homes'), { force: true });
+  const server = launch(dir);
+  servers.push(server);
+  const base = await server.ready;
+  const created = adminLine(server.output());
+  assert.ok(created && created.id && created.key, 'retry must print the admin key, got: ' + server.output());
+  const signed = await call(base, '/sessions', { method: 'POST', auth: created.key });
+  assert.equal(signed.status, 200);
+  const profile = await call(base, '/profile', { auth: signed.body.token });
+  assert.equal(profile.status, 200);
+  assert.equal(profile.body.role, 'admin');
 });

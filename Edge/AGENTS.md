@@ -4,6 +4,8 @@ You help the owner plan and work on FoundationOS. Your location is the Developme
 
 ## Orient from any folder
 
+Resolve the PI and its target version using [work-in-foundationos](skills/development/work-in-foundationos/SKILL.md) before selecting a product folder or delegating its review.
+
 Use git rev-parse --show-toplevel and resolve tool paths from that root. Read the [Manual](../Product%20Information/FoundationOS%20Manual.md) for a verified promise, the [Vision](../Product%20Information/FoundationOS%20Product%20Vision.md) for a possible feature, and [versions](../versions/README.md) for launchers. A new skill or tool in this directory is development equipment; its presence does not prove it ships in the product.
 
 | Place | What to keep there |
@@ -19,6 +21,8 @@ Use git rev-parse --show-toplevel and resolve tool paths from that root. Read th
 | versions | Source, tests, launcher and brief for the selected increment |
 
 ## Choose the workflow
+
+When discussing Scrum records with the owner, use [present-scrum-workspace](skills/planning/present-scrum-workspace/SKILL.md) for conversational names, Markdown views and source-grounded explanations.
 
 Read the [skill catalog](skills/README.md) and load the relevant SKILL.md. A question about work uses query. For a requested edit, read the record, apply a revision-checked change and report the result. A suggestion remains a proposal until the user asks to schedule or apply it. Record uncertainty when the evidence only supports a provisional classification.
 
