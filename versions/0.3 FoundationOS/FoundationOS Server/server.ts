@@ -281,6 +281,7 @@ function accountByUsername(username: string) {
 function publicProfile(account: Account) {
   return {
     id: account.id,
+    name: account.username,
     username: account.username,
     role: account.role,
     email: account.email,
@@ -791,6 +792,21 @@ async function handle(req: any, res: any) {
       limitClear(key);
       event('member-recovered', row.account_id, {});
       return reply(res, 200, { reset: true });
+    }
+
+    if (route === '/profile/password') {
+      const who = caller(req);
+      if (method !== 'POST') refuse(405, 'Use POST');
+      const input = await jsonBody(req);
+      const hash = (db.prepare('SELECT password_hash FROM accounts WHERE id=?').get(who.account.id) as { password_hash: string }).password_hash;
+      if (typeof input.current !== 'string' || !(await verifyPassword(input.current, hash))) refuse(401, 'The current password is not correct.');
+      if (typeof input.next !== 'string' || input.next.length < 6) refuse(400, 'Use a password of at least 6 characters.');
+      const nextHash = await hashPassword(input.next);
+      db.prepare('UPDATE accounts SET password_hash=? WHERE id=?').run(nextHash, who.account.id);
+      revokeAll(who.account.id);
+      clearSessionCookie(res);
+      event('password-changed', who.account.id, {});
+      return reply(res, 200, { changed: true });
     }
 
     if (route === '/profile/avatar') {
