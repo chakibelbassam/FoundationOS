@@ -708,6 +708,12 @@ async function main() {
     const actual = typeof address === 'object' && address ? address.port : PORT;
     const url = `http://127.0.0.1:${actual}/`;
     console.log(`FoundationOS ${CLIENT_VERSION} client ready at ${url}`);
+    // Pair the address so the server console can remember which client belongs to it.
+    fetch(`${SERVER_ROOT}/pair`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ url }),
+    }).catch(() => { /* pairing is best effort; the console can still spawn a client */ });
     if (CONFIG.openBrowser) {
       try {
         const child = spawn('cmd', ['/c', 'start', '', url], { stdio: 'ignore', detached: true });
