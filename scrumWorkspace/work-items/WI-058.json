@@ -6,7 +6,7 @@
   "type": "enabler",
   "priority": 1,
   "effort": 2,
-  "acceptance": "**Expected behaviour** · Adapt the v6 MUI templates for sign-in, signup and reset. Share the server identity, field labels, password visibility, autofill and async feedback.\n\n**Verify** · Verify keyboard submission, focus after an error, narrow layout, password-manager fields and double-submit handling. Record the reused components.\n\n**Delivery dependencies** · WI-057\n\n**Queue** · Follows WI-057 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+  "acceptance": "**Expected behaviour** · Adapt the v6 MUI templates for sign-in, signup and reset. Use the captured CodeSlots control for the six-digit invite and member-reset codes. Share the server identity, field labels, password visibility, autofill and async feedback.\n\n**Verify** · Verify keyboard submission, six-digit paste and entry, the error drain and clear, the success lock, focus after an error, narrow layout, password-manager fields, reduced motion and double-submit handling. Record the reused components.\n\n**Delivery dependencies** · WI-057\n\n**Queue** · Follows WI-057 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
   "status": "proposed",
-  "revision": 1
+  "revision": 2
 }

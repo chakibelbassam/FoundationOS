@@ -1,0 +1,25 @@
+{
+  "requestId": "715a6a69-1c32-45f7-b942-4c59c0374c66",
+  "operation": "update",
+  "id": "WI-067",
+  "submitted": {
+    "id": "WI-067",
+    "revision": 1,
+    "changes": {
+      "acceptance": "**Expected behaviour** · The owner checks identity out of band and issues a short-lived six-digit reset code. The member enters it with CodeSlots and sets their own password on the paired server.\n\n**Verify** · Exercise replaced, expired, used and revoked codes and interrupted submission. Check prior sessions are revoked and another member is unaffected.\n\n**Delivery dependencies** · WI-064, WI-065\n\n**Queue** · Follows WI-066 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3."
+    }
+  },
+  "result": {
+    "id": "WI-067",
+    "kind": "item",
+    "parent": "S-03-4",
+    "title": "Reset a member password by one-use code",
+    "type": "feature",
+    "priority": 1,
+    "effort": 3,
+    "acceptance": "**Expected behaviour** · The owner checks identity out of band and issues a short-lived six-digit reset code. The member enters it with CodeSlots and sets their own password on the paired server.\n\n**Verify** · Exercise replaced, expired, used and revoked codes and interrupted submission. Check prior sessions are revoked and another member is unaffected.\n\n**Delivery dependencies** · WI-064, WI-065\n\n**Queue** · Follows WI-066 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "proposed",
+    "revision": 2
+  },
+  "at": "2026-11-27T10:33:26.187Z"
+}

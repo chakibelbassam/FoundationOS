@@ -1,0 +1,20 @@
+[
+  {
+    "submitted": {
+      "id": "WI-058",
+      "revision": 2,
+      "requestId": "52fa769b-ef6a-4b5c-84f3-20c0ce79749d",
+      "kind": "decision",
+      "body": "The owner supplied the six-digit React Bits **CodeSlots** control (TypeScript + Tailwind variant). The verbatim source and integration notes are captured at `Edge/workspace/PI-03/CodeSlots.tsx` and `Edge/workspace/PI-03/CodeSlots.integration.md`; copy the source into the v0.3 client during this item.\n\nDependencies: `motion` is new; `@hugeicons/react` and `@hugeicons/core-free-icons` are already in the client. The client has no Tailwind and the source uses Tailwind v4 syntax, so either port the classes to a scoped CSS file (recommended) or add Tailwind v4 with preflight disabled. Use the control for invite redemption and member reset; the 16-character owner recovery code stays a standard field.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "52fa769b-ef6a-4b5c-84f3-20c0ce79749d",
+      "recordId": "WI-058",
+      "at": "2026-11-27T10:33:33.503Z",
+      "kind": "decision",
+      "body": "The owner supplied the six-digit React Bits **CodeSlots** control (TypeScript + Tailwind variant). The verbatim source and integration notes are captured at `Edge/workspace/PI-03/CodeSlots.tsx` and `Edge/workspace/PI-03/CodeSlots.integration.md`; copy the source into the v0.3 client during this item.\n\nDependencies: `motion` is new; `@hugeicons/react` and `@hugeicons/core-free-icons` are already in the client. The client has no Tailwind and the source uses Tailwind v4 syntax, so either port the classes to a scoped CSS file (recommended) or add Tailwind v4 with preflight disabled. Use the control for invite redemption and member reset; the 16-character owner recovery code stays a standard field.",
+      "documentRefs": []
+    }
+  }
+]

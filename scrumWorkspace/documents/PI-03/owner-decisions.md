@@ -1,5 +1,5 @@
 ---
-revision: 1
+revision: 2
 ---
 # PI-3 owner decisions · 26 November 2026
 
@@ -61,9 +61,17 @@ These decisions were recorded while **PI-3 (Accounts and connection)** is still 
 
 ## Preferences
 
-- **Working design, confirm before implementation.** The server is the source of truth in SQLite, keyed by account ID. The client keeps its local file as a cache for startup and offline display.
+Confirmed by the owner on 27 November 2026.
+- The server is the source of truth in SQLite, keyed by account ID. The client keeps its local file as a cache for startup and offline display.
 - On sign-in the client loads from the server and refreshes the cache. On save it writes the server, then the cache. If the cache is newer, it pushes first; otherwise the server wins. Last write wins per key, no merge interface.
 - The existing local preferences file is imported on first v0.3 sign-in. Purging an account removes its server-side preferences.
+
+## Code entry
+
+- Six-digit codes use the React Bits **CodeSlots** control captured at Edge/workspace/PI-03/CodeSlots.tsx. It serves invitation redemption and member reset.
+- The control is the TypeScript + Tailwind variant. The v0.3 client is MUI plus plain CSS and has no Tailwind, so Sprint-2 either ports the control to scoped CSS (recommended) or adds Tailwind v4 with preflight disabled. Record the choice on WI-058.
+- Dependencies: motion is new; @hugeicons/react and @hugeicons/core-free-icons are already in the client.
+- The 16-character owner recovery code stays a standard labelled field, because CodeSlots accepts digits only.
 
 ## Invitations
 
@@ -96,6 +104,5 @@ These edits follow from the decisions above and are applied as the next record r
 
 ## Still open
 
-- The owner will paste the six-digit React input component. Until then, use a standard MUI numeric input with six boxes, paste support and keyboard navigation.
-- Confirm the server-authoritative preferences design before building it.
+- Choose the CodeSlots styling route: a scoped CSS port (recommended) or Tailwind v4 with preflight disabled. Either is acceptable before Sprint-2.
 - Confirm the 30-day idle and 180-day absolute session lifetimes.
