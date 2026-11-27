@@ -7,6 +7,7 @@
   "priority": 1,
   "effort": 4,
   "acceptance": "**Expected behaviour** · Require current password and explicit confirmation, identify the account and explain the 30-day recovery window and exact deadline. Close access and revoke credentials, sessions and pending account reset codes. Isolate the private Home by stable ID and protect the last owner.\n\n**Verify** · Cancel and wrong password preserve access. Confirm with two live sessions and a second member. Retry after interruption, including failed file moves. The closed account and reused name cannot reach the retained Home. The remaining owner can sign in.\n\n**Delivery dependencies** · WI-055, WI-064, WI-070\n\n**Queue** · Follows WI-070 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
-  "status": "proposed",
-  "revision": 1
+  "status": "review",
+  "revision": 4,
+  "evidence": "The tester closed tester1 in the browser, saw the 30-day retained deadline, confirmed the closed session is refused, the username stays reserved and the owner still works. The server test covers closure and retention."
 }

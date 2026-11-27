@@ -1,0 +1,27 @@
+{
+  "requestId": "d975b9d2-e8e8-4ba7-a2a4-494853b76e32",
+  "operation": "update",
+  "id": "WI-055",
+  "submitted": {
+    "id": "WI-055",
+    "revision": 4,
+    "changes": {
+      "status": "review",
+      "evidence": "PI-03/session-and-retention-policy.md publishes the session, credential, retention and purge table; the server tests assert the boundaries."
+    }
+  },
+  "result": {
+    "id": "WI-055",
+    "kind": "item",
+    "parent": "S-03-1",
+    "title": "Set the session and account lifecycle policies",
+    "type": "enabler",
+    "priority": 1,
+    "effort": 3,
+    "acceptance": "**Expected behaviour** · Document cookie lifetime and restart behaviour, installation binding, username normalization, and how to enforce the approved 30-day offline Home retention, restoration authority and purge timing. Evaluate local installations sharing a browser and Windows account. No legacy key or older-store policy is required.\n\n**Verify** · Publish a decision table with expiry boundaries, the 30-day boundary, backup/rollback and owner continuity. Mark assumptions and use the table for contract tests. Prove cleanup on disposable data with the QA test clock.\n\n**Delivery dependencies** · WI-054\n\n**Queue** · Follows WI-054 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "review",
+    "revision": 5,
+    "evidence": "PI-03/session-and-retention-policy.md publishes the session, credential, retention and purge table; the server tests assert the boundaries."
+  },
+  "at": "2026-11-27T11:16:37.359Z"
+}

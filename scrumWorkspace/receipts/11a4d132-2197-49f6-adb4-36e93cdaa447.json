@@ -1,0 +1,22 @@
+{
+  "requestId": "11a4d132-2197-49f6-adb4-36e93cdaa447",
+  "operation": "update",
+  "id": "S-03-1",
+  "submitted": {
+    "id": "S-03-1",
+    "revision": 2,
+    "changes": {
+      "status": "ready"
+    }
+  },
+  "result": {
+    "id": "S-03-1",
+    "kind": "sprint",
+    "parent": "PI-03",
+    "title": "Establish the account foundation",
+    "acceptance": "Record the accepted baseline and policy choices, create the fresh v0.3 store, refuse an older store, and launch the v0.3 pair independently on loopback.",
+    "revision": 3,
+    "status": "ready"
+  },
+  "at": "2026-11-27T11:17:21.600Z"
+}

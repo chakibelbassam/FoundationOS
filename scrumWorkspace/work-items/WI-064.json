@@ -7,6 +7,7 @@
   "priority": 1,
   "effort": 3,
   "acceptance": "**Expected behaviour** · Implement current-session sign-out and confirmed account-wide sign-out. Clear local access on uncertain response and explain how to retry.\n\n**Verify** · Use A and B for one account and C for another. Cancel, sign out of one session, sign out of all, drop the response and reopen. C retains access throughout.\n\n**Delivery dependencies** · WI-062, WI-063\n\n**Queue** · Follows WI-063 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
-  "status": "proposed",
-  "revision": 1
+  "status": "review",
+  "revision": 4,
+  "evidence": "Current-session sign-out leaves another session alive; account-wide sign-out ends every session for that account and leaves another member working. The dialog and server test cover cancel and confirm."
 }

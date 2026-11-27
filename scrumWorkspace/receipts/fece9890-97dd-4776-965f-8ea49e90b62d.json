@@ -1,0 +1,24 @@
+{
+  "requestId": "fece9890-97dd-4776-965f-8ea49e90b62d",
+  "operation": "update",
+  "id": "S-03-2",
+  "submitted": {
+    "id": "S-03-2",
+    "revision": 4,
+    "changes": {
+      "status": "review",
+      "evidence": "Owner setup, sign-in, private Home and server preferences work through the built client; setup, claim reuse and preferences are covered by tests and browser evidence."
+    }
+  },
+  "result": {
+    "id": "S-03-2",
+    "kind": "sprint",
+    "parent": "PI-03",
+    "title": "Create accounts and sign in",
+    "acceptance": "Create one owner on an empty store, sign in to an authorized private file through the MUI account screens, and load member preferences from the server.",
+    "revision": 5,
+    "status": "review",
+    "evidence": "Owner setup, sign-in, private Home and server preferences work through the built client; setup, claim reuse and preferences are covered by tests and browser evidence."
+  },
+  "at": "2026-11-27T21:11:10.196Z"
+}

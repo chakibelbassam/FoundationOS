@@ -1,0 +1,25 @@
+{
+  "requestId": "d33723a1-df18-48a7-81fa-fb6f0027356e",
+  "operation": "update",
+  "id": "WI-058",
+  "submitted": {
+    "id": "WI-058",
+    "revision": 1,
+    "changes": {
+      "acceptance": "**Expected behaviour** · Adapt the v6 MUI templates for sign-in, signup and reset. Use the captured CodeSlots control for the six-digit invite and member-reset codes. Share the server identity, field labels, password visibility, autofill and async feedback.\n\n**Verify** · Verify keyboard submission, six-digit paste and entry, the error drain and clear, the success lock, focus after an error, narrow layout, password-manager fields, reduced motion and double-submit handling. Record the reused components.\n\n**Delivery dependencies** · WI-057\n\n**Queue** · Follows WI-057 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3."
+    }
+  },
+  "result": {
+    "id": "WI-058",
+    "kind": "item",
+    "parent": "S-03-2",
+    "title": "Build the shared MUI account forms",
+    "type": "enabler",
+    "priority": 1,
+    "effort": 2,
+    "acceptance": "**Expected behaviour** · Adapt the v6 MUI templates for sign-in, signup and reset. Use the captured CodeSlots control for the six-digit invite and member-reset codes. Share the server identity, field labels, password visibility, autofill and async feedback.\n\n**Verify** · Verify keyboard submission, six-digit paste and entry, the error drain and clear, the success lock, focus after an error, narrow layout, password-manager fields, reduced motion and double-submit handling. Record the reused components.\n\n**Delivery dependencies** · WI-057\n\n**Queue** · Follows WI-057 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "proposed",
+    "revision": 2
+  },
+  "at": "2026-11-27T10:33:26.165Z"
+}

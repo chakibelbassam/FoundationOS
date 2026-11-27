@@ -1,0 +1,25 @@
+{
+  "requestId": "92897e6b-08fe-4e51-8aa3-3d1abbea6f6e",
+  "operation": "update",
+  "id": "WI-069",
+  "submitted": {
+    "id": "WI-069",
+    "revision": 2,
+    "changes": {
+      "status": "active"
+    }
+  },
+  "result": {
+    "id": "WI-069",
+    "kind": "item",
+    "parent": "S-03-4",
+    "title": "Recover the owner on the server machine",
+    "type": "feature",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Offer local maintenance for an authorized operator who lost both credentials. Confirm the store and owner, take exclusive access and issue fresh credentials.\n\n**Verify** · Stop the real server, exercise wrong store, busy store and interrupted write, then restart and sign in as the same owner. Verify old sessions and recovery codes are invalid.\n\n**Delivery dependencies** · WI-056, WI-068\n\n**Queue** · Follows WI-068 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "active",
+    "revision": 3
+  },
+  "at": "2026-11-27T11:16:46.186Z"
+}

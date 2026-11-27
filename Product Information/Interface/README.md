@@ -1,6 +1,6 @@
 # Interface guide
 
-Design reference · proposed for versions 0.2 through 0.7. Compose controls from MUI or React Bits and use Material Icons. Give icon-only actions names. Keep focus and neighbours stable while widgets expand. Preview shared settings before saving. Offer a useful next action when empty and distinguish loading from unavailable.
+Design reference · proposed for versions 0.2 through 0.7. Compose controls from **MUI** or **React Bits** — the two component sources — and use Material Icons. MUI owns application surfaces, forms, dialogs, navigation and layout. React Bits owns distinctive visual and motion components. React Bits components are styled with **Tailwind**, imported with preflight disabled so it does not reset MUI or the app CSS. Give icon-only actions names. Keep focus and neighbours stable while widgets expand. Preview shared settings before saving. Offer a useful next action when empty and distinguish loading from unavailable.
 
 | Surface | Intended behaviour | Status |
 | --- | --- | --- |

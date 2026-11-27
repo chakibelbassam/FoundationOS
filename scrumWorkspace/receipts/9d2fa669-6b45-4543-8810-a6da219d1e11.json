@@ -1,0 +1,22 @@
+{
+  "requestId": "9d2fa669-6b45-4543-8810-a6da219d1e11",
+  "operation": "update",
+  "id": "S-03-3",
+  "submitted": {
+    "id": "S-03-3",
+    "revision": 1,
+    "changes": {
+      "status": "ready"
+    }
+  },
+  "result": {
+    "id": "S-03-3",
+    "kind": "sprint",
+    "parent": "PI-03",
+    "title": "Remember sessions and invite members",
+    "acceptance": "Restore a valid browser session, prove account isolation across tabs and browser profiles, and invite a new member to a private Home.",
+    "revision": 2,
+    "status": "ready"
+  },
+  "at": "2026-11-27T11:17:21.642Z"
+}

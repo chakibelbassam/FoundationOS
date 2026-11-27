@@ -1,0 +1,22 @@
+{
+  "requestId": "904999f6-3f76-4e4c-b522-3de0fa899e1a",
+  "operation": "update",
+  "id": "S-03-6",
+  "submitted": {
+    "id": "S-03-6",
+    "revision": 2,
+    "changes": {
+      "status": "active"
+    }
+  },
+  "result": {
+    "id": "S-03-6",
+    "kind": "sprint",
+    "parent": "PI-03",
+    "title": "Polish the experience and verify the release",
+    "acceptance": "Deliver a reproducible final candidate with polished account and profile screens, documented operations and two independent browser reports with fixes retested.",
+    "revision": 3,
+    "status": "active"
+  },
+  "at": "2026-11-27T11:17:21.717Z"
+}

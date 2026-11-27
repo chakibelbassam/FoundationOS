@@ -7,6 +7,7 @@
   "priority": 1,
   "effort": 2,
   "acceptance": "**Expected behaviour** · Detect a v0.1 or v0.2 store and any schema newer than supported. Stop with a clear message naming the supported client 0.3 and server 0.3 pair and the data root. Leave the older store untouched.\n\n**Verify** · Point v0.3 at a copied v0.1 and v0.2 store and observe the refusal. Start a fresh v0.3 store afterwards. Confirm the older files and hashes are unchanged.\n\n**Delivery dependencies** · WI-056\n\n**Queue** · Follows WI-057 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
-  "status": "proposed",
-  "revision": 2
+  "status": "review",
+  "revision": 5,
+  "evidence": "server.test.mjs starts a schema 2 store and asserts the 0.3 refusal message, exit code 1 and untouched store."
 }

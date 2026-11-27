@@ -1,0 +1,25 @@
+{
+  "requestId": "7ee0ef1c-f98f-4536-851b-5a23c87efeb1",
+  "operation": "update",
+  "id": "WI-073",
+  "submitted": {
+    "id": "WI-073",
+    "revision": 1,
+    "changes": {
+      "status": "ready"
+    }
+  },
+  "result": {
+    "id": "WI-073",
+    "kind": "item",
+    "parent": "S-03-5",
+    "title": "Edit my introduction and optional email",
+    "type": "feature",
+    "priority": 2,
+    "effort": 2,
+    "acceptance": "**Expected behaviour** · Use a multiline MUI TextField for a short plain-text introduction and a labelled optional unverified email field. Save or cancel edits, clear either field and restore saved values on reopen.\n\n**Verify** · Test empty, multiline, over-limit and markup-like input, failed save and account switch. Only the signed-in member can edit their own profile.\n\n**Delivery dependencies** · WI-070\n\n**Queue** · Follows WI-072 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "ready",
+    "revision": 2
+  },
+  "at": "2026-11-27T11:16:54.065Z"
+}

@@ -1,0 +1,24 @@
+{
+  "requestId": "825c0969-5066-491f-8b76-83498fdcab83",
+  "operation": "update",
+  "id": "S-03-1",
+  "submitted": {
+    "id": "S-03-1",
+    "revision": 4,
+    "changes": {
+      "status": "review",
+      "evidence": "Baseline, policy, schema 3 store, older-store refusal and the paired console launch are implemented and verified; 21 server tests and the real O/R console run pass."
+    }
+  },
+  "result": {
+    "id": "S-03-1",
+    "kind": "sprint",
+    "parent": "PI-03",
+    "title": "Establish the account foundation",
+    "acceptance": "Record the accepted baseline and policy choices, create the fresh v0.3 store, refuse an older store, and launch the v0.3 pair independently on loopback.",
+    "revision": 5,
+    "status": "review",
+    "evidence": "Baseline, policy, schema 3 store, older-store refusal and the paired console launch are implemented and verified; 21 server tests and the real O/R console run pass."
+  },
+  "at": "2026-11-27T21:11:10.181Z"
+}

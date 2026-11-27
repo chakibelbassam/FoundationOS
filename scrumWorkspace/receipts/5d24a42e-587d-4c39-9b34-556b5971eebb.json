@@ -1,0 +1,25 @@
+{
+  "requestId": "5d24a42e-587d-4c39-9b34-556b5971eebb",
+  "operation": "update",
+  "id": "WI-058",
+  "submitted": {
+    "id": "WI-058",
+    "revision": 2,
+    "changes": {
+      "status": "ready"
+    }
+  },
+  "result": {
+    "id": "WI-058",
+    "kind": "item",
+    "parent": "S-03-2",
+    "title": "Build the shared MUI account forms",
+    "type": "enabler",
+    "priority": 1,
+    "effort": 2,
+    "acceptance": "**Expected behaviour** · Adapt the v6 MUI templates for sign-in, signup and reset. Use the captured CodeSlots control for the six-digit invite and member-reset codes. Share the server identity, field labels, password visibility, autofill and async feedback.\n\n**Verify** · Verify keyboard submission, six-digit paste and entry, the error drain and clear, the success lock, focus after an error, narrow layout, password-manager fields, reduced motion and double-submit handling. Record the reused components.\n\n**Delivery dependencies** · WI-057\n\n**Queue** · Follows WI-057 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "ready",
+    "revision": 3
+  },
+  "at": "2026-11-27T11:16:37.432Z"
+}

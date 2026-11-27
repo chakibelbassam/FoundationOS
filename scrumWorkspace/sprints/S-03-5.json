@@ -4,6 +4,7 @@
   "parent": "PI-03",
   "title": "Manage my profile and close my account",
   "acceptance": "Rename the current account, edit its introduction and photo, and exercise self-deletion with an offline, 30-day private Home and last-owner protection.",
-  "revision": 1,
-  "status": "proposed"
+  "revision": 4,
+  "status": "review",
+  "evidence": "Rename, introduction, email, picture, member closure, 30-day retention, reserved username and hard deletion are verified by browser and controlled-clock tests."
 }

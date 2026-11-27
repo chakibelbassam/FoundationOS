@@ -1,0 +1,25 @@
+{
+  "requestId": "62d8f31d-f6e6-4905-9084-73afc84b5159",
+  "operation": "update",
+  "id": "WI-062",
+  "submitted": {
+    "id": "WI-062",
+    "revision": 2,
+    "changes": {
+      "status": "active"
+    }
+  },
+  "result": {
+    "id": "WI-062",
+    "kind": "item",
+    "parent": "S-03-3",
+    "title": "Remember a valid session after browser close",
+    "type": "feature",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Use a persistent opaque session cookie and server validation. Handle negotiated lifetimes and process restart per the agreed policy. Bind the host to the correct installation.\n\n**Verify** · Actually close and reopen the same browser profile. Check valid, expired and revoked sessions and isolation across two loopback installations, including changed ports.\n\n**Delivery dependencies** · WI-055, WI-061\n\n**Queue** · Follows WI-061 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "active",
+    "revision": 3
+  },
+  "at": "2026-11-27T11:16:37.566Z"
+}

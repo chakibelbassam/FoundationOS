@@ -1,0 +1,25 @@
+{
+  "requestId": "084133b4-80db-4987-af05-f86babcde2c7",
+  "operation": "update",
+  "id": "WI-070",
+  "submitted": {
+    "id": "WI-070",
+    "revision": 1,
+    "changes": {
+      "status": "ready"
+    }
+  },
+  "result": {
+    "id": "WI-070",
+    "kind": "item",
+    "parent": "S-03-5",
+    "title": "Rename my account without moving my workspace",
+    "type": "feature",
+    "priority": 1,
+    "effort": 3,
+    "acceptance": "**Expected behaviour** · Open Profile from the header. Offer availability feedback and enforce the same server-side uniqueness policy at save and signup. Keep IDs, role, Home and preferences, and refresh header and profile metadata.\n\n**Verify** · Race two users for the same name. Exactly one wins. Verify the new login and recovery name, the old login fails before reuse, and there is no cross-account access after name reuse.\n\n**Delivery dependencies** · WI-060, WI-065, WI-068\n\n**Queue** · Follows WI-069 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "ready",
+    "revision": 2
+  },
+  "at": "2026-11-27T11:16:46.206Z"
+}

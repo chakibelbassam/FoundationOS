@@ -1,0 +1,8 @@
+/*
+ * Tailwind is the styling layer for React Bits components only.
+ * Preflight is deliberately omitted so it cannot reset MUI or styles.css.
+ * Application surfaces stay on MUI and Emotion.
+ */
+@layer theme, base, components, utilities;
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/utilities.css" layer(utilities);

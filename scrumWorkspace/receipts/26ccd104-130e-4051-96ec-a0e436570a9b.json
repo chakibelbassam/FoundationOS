@@ -1,0 +1,27 @@
+{
+  "requestId": "26ccd104-130e-4051-96ec-a0e436570a9b",
+  "operation": "update",
+  "id": "WI-076",
+  "submitted": {
+    "id": "WI-076",
+    "revision": 4,
+    "changes": {
+      "status": "review",
+      "evidence": "versions/0.3 FoundationOS/README.md documents launch, the console menu, stores, accounts, sessions, recovery, profile, tests and limitations. The policy and baseline documents are linked."
+    }
+  },
+  "result": {
+    "id": "WI-076",
+    "kind": "item",
+    "parent": "S-03-6",
+    "title": "Document launch, store and account operations",
+    "type": "task",
+    "priority": 1,
+    "effort": 2,
+    "acceptance": "**Expected behaviour** · Write an operator and member guide based on the built candidate, including local pairing, the supported 0.3/0.3 pair, fresh-store creation, older-store refusal, invite, recovery, profile edits, session policies, retained Home handling and rollback.\n\n**Verify** · Follow the Windows instructions from a cold start using disposable stores. Match behaviour to the selected version and redact all credentials.\n\n**Delivery dependencies** · WI-075\n\n**Queue** · Follows WI-075 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "review",
+    "revision": 5,
+    "evidence": "versions/0.3 FoundationOS/README.md documents launch, the console menu, stores, accounts, sessions, recovery, profile, tests and limitations. The policy and baseline documents are linked."
+  },
+  "at": "2026-11-27T11:17:31.717Z"
+}

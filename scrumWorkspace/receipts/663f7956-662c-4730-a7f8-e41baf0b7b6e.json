@@ -1,0 +1,27 @@
+{
+  "requestId": "663f7956-662c-4730-a7f8-e41baf0b7b6e",
+  "operation": "update",
+  "id": "WI-074",
+  "submitted": {
+    "id": "WI-074",
+    "revision": 2,
+    "changes": {
+      "status": "active",
+      "evidence": "The browser uploaded a PNG through the profile picker, the server validated it and served it from the authenticated route. Remove is present; the independent pass retests it."
+    }
+  },
+  "result": {
+    "id": "WI-074",
+    "kind": "item",
+    "parent": "S-03-5",
+    "title": "Add, replace or remove my profile picture",
+    "type": "feature",
+    "priority": 2,
+    "effort": 3,
+    "acceptance": "**Expected behaviour** · Compose MUI Avatar and the documented file-upload Button. Preview a local selection, Save or Cancel, remove the picture and fall back to initials. Show the saved avatar in Profile and the account menu.\n\n**Verify** · Validate the actual supported image format, size and decoded dimensions on the server. Test corrupt and oversized images, failed replacement, removing, reopening and changing accounts. A failed save keeps the previous picture.\n\n**Delivery dependencies** · WI-056, WI-070\n\n**Queue** · Follows WI-073 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "active",
+    "revision": 3,
+    "evidence": "The browser uploaded a PNG through the profile picker, the server validated it and served it from the authenticated route. Remove is present; the independent pass retests it."
+  },
+  "at": "2026-11-27T11:17:27.387Z"
+}

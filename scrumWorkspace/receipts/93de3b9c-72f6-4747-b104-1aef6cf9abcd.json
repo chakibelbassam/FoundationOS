@@ -1,0 +1,27 @@
+{
+  "requestId": "93de3b9c-72f6-4747-b104-1aef6cf9abcd",
+  "operation": "update",
+  "id": "WI-079",
+  "submitted": {
+    "id": "WI-079",
+    "revision": 3,
+    "changes": {
+      "status": "review",
+      "evidence": "versions/0.3 FoundationOS/qa/release-evidence.md has one row per item with automated and browser evidence; both independent reports and the delta retest are linked; CI passes on the PR head."
+    }
+  },
+  "result": {
+    "id": "WI-079",
+    "kind": "item",
+    "parent": "S-03-6",
+    "title": "Fix findings and assemble release evidence",
+    "type": "task",
+    "priority": 1,
+    "effort": 3,
+    "acceptance": "**Expected behaviour** · Triage both reports, correct blocking findings and obtain independent retests on the final head. Link the candidate, CI, evidence and remaining limitations for owner review.\n\n**Verify** · Both tester and QA identify the final SHA and outcomes. Verify all PI acceptance rows, recorded policy decisions and the supported version pair; link a reviewable PR and distinguish remaining gaps from passes.\n\n**Delivery dependencies** · WI-077, WI-078\n\n**Queue** · Follows WI-078 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "review",
+    "revision": 4,
+    "evidence": "versions/0.3 FoundationOS/qa/release-evidence.md has one row per item with automated and browser evidence; both independent reports and the delta retest are linked; CI passes on the PR head."
+  },
+  "at": "2026-11-27T21:11:10.167Z"
+}

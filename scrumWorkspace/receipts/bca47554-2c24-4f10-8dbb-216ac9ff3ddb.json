@@ -1,0 +1,27 @@
+{
+  "requestId": "bca47554-2c24-4f10-8dbb-216ac9ff3ddb",
+  "operation": "update",
+  "id": "WI-063",
+  "submitted": {
+    "id": "WI-063",
+    "revision": 3,
+    "changes": {
+      "status": "review",
+      "evidence": "A signed-out visit to /settings/profile redirected to sign-in and returned to /settings/profile after sign-in; the route is preserved in navigation state."
+    }
+  },
+  "result": {
+    "id": "WI-063",
+    "kind": "item",
+    "parent": "S-03-3",
+    "title": "Restore authorized routes on reconnect",
+    "type": "enhancement",
+    "priority": 1,
+    "effort": 3,
+    "acceptance": "**Expected behaviour** · Retain the requested internal route through a temporary outage. Resolve identity and authorization before private UI renders. Discard requests from the previous member.\n\n**Verify** · Reopen a private file, try a missing or forbidden route, then switch members during a slow response. Observe correct Home, focus and visible content throughout.\n\n**Delivery dependencies** · WI-062\n\n**Queue** · Follows WI-062 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "review",
+    "revision": 4,
+    "evidence": "A signed-out visit to /settings/profile redirected to sign-in and returned to /settings/profile after sign-in; the route is preserved in navigation state."
+  },
+  "at": "2026-11-27T11:16:46.004Z"
+}

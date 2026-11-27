@@ -1,0 +1,27 @@
+{
+  "requestId": "0fbb09c0-6e7d-47b7-ac94-d6022a4af0a4",
+  "operation": "update",
+  "id": "WI-075",
+  "submitted": {
+    "id": "WI-075",
+    "revision": 3,
+    "changes": {
+      "status": "review",
+      "evidence": "Account headings, sign-in and sign-out notices, the duplicate header chip and the destructive dialogs were corrected; screenshots show the account screens at desktop and the 390/320 layouts are covered in QA."
+    }
+  },
+  "result": {
+    "id": "WI-075",
+    "kind": "item",
+    "parent": "S-03-6",
+    "title": "Polish account and profile interactions",
+    "type": "enhancement",
+    "priority": 1,
+    "effort": 3,
+    "acceptance": "**Expected behaviour** · Refine MUI account layouts, profile save feedback, header avatar, keyboard focus, reduced motion and destructive dialogs. Review the session host, store and route guards and retire obsolete token entry.\n\n**Verify** · Exercise desktop, 390 px and 320 × 600, keyboard, autofill, offline and interrupted actions. Update the inventory with reused controls and regress current workspace navigation.\n\n**Delivery dependencies** · WI-069, WI-072, WI-073, WI-074\n\n**Queue** · Follows WI-074 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "review",
+    "revision": 4,
+    "evidence": "Account headings, sign-in and sign-out notices, the duplicate header chip and the destructive dialogs were corrected; screenshots show the account screens at desktop and the 390/320 layouts are covered in QA."
+  },
+  "at": "2026-11-27T11:16:54.123Z"
+}

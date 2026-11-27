@@ -1,0 +1,25 @@
+{
+  "requestId": "f6e42eb4-aa0b-40f9-aa8b-951af3f4e2f4",
+  "operation": "update",
+  "id": "WI-059",
+  "submitted": {
+    "id": "WI-059",
+    "revision": 1,
+    "changes": {
+      "status": "ready"
+    }
+  },
+  "result": {
+    "id": "WI-059",
+    "kind": "item",
+    "parent": "S-03-2",
+    "title": "Create the first owner from the server link",
+    "type": "feature",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Issue a local, time-limited setup claim only on an empty installation. Create the owner, accept optional unverified email and show the one-time recovery code.\n\n**Verify** · Use competing tabs, expired claim and lost response. Exactly one owner and Home exist. Reopening an initialized store takes the normal sign-in path.\n\n**Delivery dependencies** · WI-056, WI-057, WI-058\n\n**Queue** · Follows WI-058 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "ready",
+    "revision": 2
+  },
+  "at": "2026-11-27T11:16:37.464Z"
+}

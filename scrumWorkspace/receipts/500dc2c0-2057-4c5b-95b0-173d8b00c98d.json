@@ -1,0 +1,27 @@
+{
+  "requestId": "500dc2c0-2057-4c5b-95b0-173d8b00c98d",
+  "operation": "update",
+  "id": "WI-080",
+  "submitted": {
+    "id": "WI-080",
+    "revision": 3,
+    "changes": {
+      "status": "review",
+      "evidence": "The server stores the theme and other preferences per account; the browser applied Dark, reloaded, stayed dark, and the local cache holds a copy. The server response shows the saved preferences."
+    }
+  },
+  "result": {
+    "id": "WI-080",
+    "kind": "item",
+    "parent": "S-03-2",
+    "title": "Sync member preferences through the server",
+    "acceptance": "**Expected behaviour** · Store each member's preferences in the v0.3 server store, keyed by immutable account ID. The client keeps a local cache for startup and offline display, imports the existing local file on first sign-in, and writes the server before the cache. Last write wins per key.\n\n**Verify** · Save each setting, reopen the client, and confirm the values return. Edit offline, reconnect and confirm the newer value wins. Wipe the client data directory and confirm the server restores the values. Close an account and confirm its preferences are purged with it.\n\n**Delivery dependencies** · WI-056, WI-061\n\n**Queue** · Follows WI-061 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "effort": 2,
+    "priority": 1,
+    "type": "enabler",
+    "status": "review",
+    "revision": 4,
+    "evidence": "The server stores the theme and other preferences per account; the browser applied Dark, reloaded, stayed dark, and the local cache holds a copy. The server response shows the saved preferences."
+  },
+  "at": "2026-11-27T11:16:54.165Z"
+}

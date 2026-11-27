@@ -1,0 +1,124 @@
+import { getMenuOptions } from '@svar-ui/react-filemanager';
+import type { IFileMenuOption, TContextMenuType } from '@svar-ui/react-filemanager';
+import type { Entry } from '../api/types';
+
+// Member-relative POSIX ids for SVAR: '/' is the member root, '/Projects/alpha'
+// a nested child. The v0.1 path is the same string without the leading slash
+// ('' for the root), which is what `api.list`/`api.read` expect.
+export function toSvarId(memberPath: string): string {
+  const clean = memberPath
+    .split('/')
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .join('/');
+  return clean ? `/${clean}` : '/';
+}
+
+export function fromSvarId(id: string): string {
+  return id
+    .split('/')
+    .map((part) => part.trim())
+    .filter(Boolean)
+    .join('/');
+}
+
+export interface SvarItem {
+  id: string;
+  type: 'file' | 'folder';
+}
+
+// The v0.1 server only reports names and types, so items carry no invented
+// sizes or dates: unknown metadata is omitted, never faked.
+export function toSvarEntries(memberPath: string, entries: Entry[]): SvarItem[] {
+  const base = toSvarId(memberPath);
+  return entries.map((entry) => ({
+    id: base === '/' ? `/${entry.name}` : `${base}/${entry.name}`,
+    type: entry.type,
+  }));
+}
+
+// Local vivid icons vendored under public/icons/filemanager (see
+// scripts/vendor-svar-icons.mjs). The store lowercases extensions, so the
+// lookup matches that; anything unlisted falls back to the generic file icon
+// and non-file/folder pseudo types to the CSS icon font (return false).
+const VIVID_EXTS = new Set([
+  '7z', 'rar', 'zip', 'css', 'html', 'js', 'php', 'md', 'xml', 'sql',
+  'aif', 'mid', 'mp3', 'waw', 'wma', 'doc', 'docx', 'txt', 'avi', 'mov',
+  'mp4', 'mpeg', 'mpg', 'pdf', 'xls', 'xlsx', 'gif', 'jpg', 'jpeg', 'png',
+  'psd', 'tiff', 'svg',
+]);
+
+export interface SvarFilePreview {
+  type?: string;
+  ext?: string;
+}
+
+export function svarIconUrl(file: SvarFilePreview, size: 'big' | 'small'): string | false {
+  if (file.type === 'folder') return `/icons/filemanager/${size}/folder.svg`;
+  if (file.type === 'file') {
+    const ext = (file.ext ?? '').toLowerCase();
+    const name = VIVID_EXTS.has(ext) ? ext : 'file';
+    return `/icons/filemanager/${size}/${name}.svg`;
+  }
+  return false;
+}
+
+// The vendored grid registers its sort-rows handler once at mount, closing
+// over that render's (empty) sort state, so every header click recomputes
+// "descending" and the toggle never engages. We own the correction at our
+// init hook instead: track the last applied order per folder and column,
+// then rewrite the event in place (no re-emit, no remount, no loop).
+export type SortOrder = 'asc' | 'desc';
+
+export function nextSortOrder(previous: SortOrder | undefined, incoming: unknown): SortOrder {
+  if (previous === undefined) {
+    return incoming === 'asc' ? 'asc' : 'desc';
+  }
+  return previous === 'desc' ? 'asc' : 'desc';
+}
+
+// v0.2 exposes no download, upload, creation, rename, deletion, copy or move.
+export const UNSUPPORTED_MENU_IDS: ReadonlySet<string> = new Set([  'download',
+  'upload',
+  'add-file',
+  'add-folder',
+  'rename',
+  'delete',
+  'copy',
+  'move',
+  'paste',
+]);
+
+// Filter the default menu factory: unsupported operations disappear from the
+// body and item menus while any future supported items (preview, info) pass
+// through. Always returns an array: this build's AddNew toolbar calls `.map`
+// on the "add" menu without checking for `false`, so returning `false` when
+// nothing remains unmounts the whole app. An empty array suppresses the menu
+// safely instead.
+export function explorerMenuOptions(mode: TContextMenuType): IFileMenuOption[] {
+  let options: IFileMenuOption[] | false;
+  try {
+    options = getMenuOptions(mode);
+  } catch {
+    return [];
+  }
+  if (!Array.isArray(options)) return [];
+  const kept = options.filter((option) => {
+    if (!option || typeof option !== 'object') return false;
+    if (option.comp === 'separator') return true;
+    if (option.id === undefined || option.id === null) return true;
+    return !UNSUPPORTED_MENU_IDS.has(String(option.id));
+  });
+  // Drop separators left orphaned at the edges or doubled up by the filter.
+  const trimmed: IFileMenuOption[] = [];
+  for (const option of kept) {
+    const isSeparator = option.comp === 'separator';
+    const previousIsSeparator = trimmed.length > 0 && trimmed[trimmed.length - 1].comp === 'separator';
+    if (isSeparator && (trimmed.length === 0 || previousIsSeparator)) continue;
+    trimmed.push(option);
+  }
+  while (trimmed.length > 0 && trimmed[trimmed.length - 1].comp === 'separator') {
+    trimmed.pop();
+  }
+  return trimmed;
+}

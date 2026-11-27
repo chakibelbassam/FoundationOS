@@ -1,0 +1,27 @@
+{
+  "requestId": "8ca806a9-c686-4869-834b-217d15e15ef0",
+  "operation": "update",
+  "id": "WI-077",
+  "submitted": {
+    "id": "WI-077",
+    "revision": 3,
+    "changes": {
+      "status": "active",
+      "evidence": "The Muse Spark 1.3 hands-on tester is running the release journeys against PR #12 and will write versions/0.3 FoundationOS/qa/tester-report.md."
+    }
+  },
+  "result": {
+    "id": "WI-077",
+    "kind": "item",
+    "parent": "S-03-6",
+    "title": "Test the release journeys in real browsers",
+    "type": "task",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Assign a dedicated Muse Spark 1.3 Contributor tester separate from implementation. Drive the built pair in real Chrome and OpenCode's built-in browser with disposable accounts.\n\n**Verify** · Record candidate SHA, versions and actual interactions for first run, older-store refusal, invites, reopen, sign-out, recovery, profile edits and account closure. Record limitations where a browser cannot exercise a scenario.\n\n**Delivery dependencies** · WI-075, WI-076\n\n**Queue** · Follows WI-076 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "active",
+    "revision": 4,
+    "evidence": "The Muse Spark 1.3 hands-on tester is running the release journeys against PR #12 and will write versions/0.3 FoundationOS/qa/tester-report.md."
+  },
+  "at": "2026-11-27T11:17:27.408Z"
+}

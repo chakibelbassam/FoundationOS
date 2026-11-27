@@ -1,0 +1,25 @@
+{
+  "requestId": "34474558-a3ce-498b-a481-26e5de0410ca",
+  "operation": "update",
+  "id": "WI-060",
+  "submitted": {
+    "id": "WI-060",
+    "revision": 2,
+    "changes": {
+      "status": "ready"
+    }
+  },
+  "result": {
+    "id": "WI-060",
+    "kind": "item",
+    "parent": "S-03-1",
+    "title": "Refuse an older store with a clear message",
+    "type": "enabler",
+    "priority": 1,
+    "effort": 2,
+    "acceptance": "**Expected behaviour** · Detect a v0.1 or v0.2 store and any schema newer than supported. Stop with a clear message naming the supported client 0.3 and server 0.3 pair and the data root. Leave the older store untouched.\n\n**Verify** · Point v0.3 at a copied v0.1 and v0.2 store and observe the refusal. Start a fresh v0.3 store afterwards. Confirm the older files and hashes are unchanged.\n\n**Delivery dependencies** · WI-056\n\n**Queue** · Follows WI-057 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "ready",
+    "revision": 3
+  },
+  "at": "2026-11-27T11:16:37.495Z"
+}
