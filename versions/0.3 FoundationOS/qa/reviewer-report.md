@@ -192,3 +192,49 @@ Investigated and **disproven** (for the record): an apparent hang of keyboard-En
 **Pass with findings.**
 
 The candidate `9252141` met every release-acceptance observation I could reach with three independent browser jars, an API jar set and the automated suites (21 server + 88 client + 16 host/launcher, all green, plus the controlled-clock 30-day purge test and both version-boundary directions). The six findings are Sev-4 or lower; F-1 (join error copy) is the only one I would want fixed and re-verified before the owner merges, and it is a small, contained change. Because the PR head has moved six commits past the reviewed candidate, the final head needs at least a delta pass covering those commits (the goal requires both browser reports to cover the final candidate) — this report does not by itself clear the PR for "ready".
+
+**Update after the delta review:** that delta pass has now been performed at the final head `d0b74ac` (see the section below). F-1 and F-5 are verified fixed in the browser, the menu fix and the regression checks pass, and the suites are green at the final head (21 server / 90 client). The remaining findings are the Sev-5 notes F-2/F-3/F-4/F-5-remainder only. **The final head `d0b74ac` is acceptable for owner review.**
+
+## Delta review at d0b74ac
+
+Short delta pass on the final head, appended on 27 November 2026 (19:00–19:15 local). Scope: the commits after `9252141` — the hands-on tester report (`0cfd68d`), CodeSlots entry-state tests (`474a890`), client-host pairing (`a1351a1`), tester closure evidence (`a26e21c`), the profile-menu grow-transition fix (`96c2bd4`), the evidence-table update (`77ebcc2`), the tester sign-out retest (`f742ba2`), the F-1 join-message fix (`271f13d` WI-065) and the F-5 offline-popover fix (`953d261` WI-075), plus `d0b74ac` (this report under Git). The full journey was **not** repeated; the multi-jar session matrix was not re-run (per instructions).
+
+| Item | Value |
+|---|---|
+| Reviewed head | `d0b74ac` (`d0b74ac4379b853b0ef5c51f17516d67ddf313e5`) — verified as the local working-tree HEAD **and** the remote PR head (`git ls-remote`) |
+| Pair used | **The same review pair**, still running and untouched: client `http://127.0.0.1:63464/`, server `http://127.0.0.1:63462/` (same process PIDs as the full pass). The client `dist` was rebuilt and served by the host, as stated by the coordinator. Store state carried over: owner `reviewer-lead` (renamed from `reviewer`), closed member `otter` retained until 27/12/2026, prior invitations in used/revoked states. |
+| Browser / jar | The browse-driven real Chrome (jar 1), signed in as `reviewer-lead` with the owner password from the earlier pass. |
+
+### F-1 — join error copy (fixed) — ✅ PASS
+
+1. Signed in as owner → Settings → Accounts → **Create invitation** (code shown; redacted in `d2-invite-created-REDACT.png`; invitation list `pending` at capture time).
+2. Clicked **Revoke** → the invitation flips to `revoked` (`d3-invite-revoked.png`; API states `[revoked, revoked, used]`).
+3. Signed out, opened **Join by invitation**, entered the revoked six digits (counter "6 of 6 digits entered") with fresh credentials (username `puma`, password set; the account was **not** created) and submitted.
+
+Exact observed error at **`/join`**: `That invitation is not valid. Ask the owner for a new one.` — the invitation message, **not** "The username or password is not correct." The slot counter resets to "0 of 6 digits entered" and the join form stays usable. Evidence: `d4-join-revoked-code-error.png` (slots empty, no digits visible).
+
+### F-5 — offline popover copy (fixed) — ✅ PASS
+
+Loaded the app signed in, emulated offline: header button becomes "Server offline", status line "Server is not reachable." The Server connection popover now reads `Expected v0.3 · found not reachable` (previously `found none`) plus "Last check: 19:08:59" and a "Check connection" button. Evidence: `d5-offline-popover.png`. Restored online and clicked Check connection → status returns to "Server v0.3 is ready.".
+
+### Menu delta — ✅ PASS
+
+On `/settings/profile`, opened the header profile menu and clicked **Sign out** with the first click — signed out immediately (Sign in page reached), repeated three times across the delta pass (after the profile page and twice after the accounts page) with no missed click. Signed back in afterwards.
+
+### No regression on the changed screens — ✅ PASS
+
+- Reloaded `/join`, `/signin`, `/settings/profile`, `/settings/accounts`: all render correctly; the accounts page still lists `otter member closed … retained until 27/12/2026`, `reviewer-lead owner`, and pending/revoked/used invitation states.
+- Browser console: the only error-type entries were the **expected** signed-out session probes (`GET /api/profile → 401` logged by the browser as failed resource loads while on public pages). Zero application errors or uncaught exceptions during the delta pass.
+- Automated suites at the final head (run from the working tree at `d0b74ac`): server `node --test server.test.mjs account-extra.test.mjs` → **21/21 pass**; client `npm test` → **90/90 pass** (17 files; the +2 over the full pass are the new CodeSlots entry-state tests).
+
+### Earlier-pass flows still behave — ✅ PASS
+
+Home renders with the persisted server-side preferences (theme `dark`, surface `glass` — unchanged since the full pass, same account ID), the reader opens `owner-note.txt`, and Back returns to the previous workspace entry (`d6-reader-back.png`). The multi-jar session matrix was deliberately not repeated.
+
+### New findings
+
+None. One note, not a defect and not new to this head: while signed out, the app's session probes log 401 resource errors in the browser console; this is expected polling behaviour, handled by the app.
+
+### Delta verdict
+
+**The final head `d0b74ac` is acceptable for owner review.** F-1 and F-5 are fixed and verified in the browser; the menu first-click fix and the regression checks pass; both suites are green at this head. The open items from the full report remain the Sev-5 notes (F-2 `/files/<file>` dead end, F-3 unlabeled explorer toolbar buttons, F-4 no service worker on first offline load, plus the unexercised Edge journeys and the other scope limits listed above) — none blocks owner review.
