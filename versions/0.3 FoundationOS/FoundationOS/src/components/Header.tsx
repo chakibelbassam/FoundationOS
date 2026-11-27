@@ -189,8 +189,12 @@ export function Header() {
             Address: <code>{config?.serverUrl ?? 'unknown'}</code>
           </Typography>
           <Typography variant="body2" component="p">
-            Expected v{config?.expectedServerVersion ?? '0.1'} · found{' '}
-            {config?.check.version ? `v${config.check.version}` : 'none'}
+            Expected v{config?.expectedServerVersion ?? '0.3'} · found{' '}
+            {config?.check.version
+              ? `v${config.check.version}`
+              : config?.check.status === 'unreachable'
+                ? 'not reachable'
+                : 'none'}
             {config?.check.schema ? ` · schema ${config.check.schema}` : ''}
           </Typography>
           <Typography variant="body2" component="p" sx={{ mt: 1, opacity: 0.8 }}>
