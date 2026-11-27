@@ -49,6 +49,7 @@ export function Header() {
   const userRef = useRef<HTMLButtonElement | null>(null);
   const chipRef = useRef<HTMLButtonElement | null>(null);
 
+  const accountPage = ['/signin', '/setup', '/join', '/recover'].includes(location.pathname);
   const serverOk = config?.check.ok ?? false;
   const state = !serverOk ? 'offline' : profile ? 'connected' : 'signin';
   const label = state === 'connected' ? 'Connected' : state === 'signin' ? 'Sign in' : 'Server offline';
@@ -76,20 +77,22 @@ export function Header() {
         <Box className="fo-header-spacer" />
         <Box className="fo-header-controls">
           <span className="fo-clock" aria-label={`Local time ${clock}`}>{clock}</span>
-          <Button
-            ref={chipRef}
-            size="small"
-            color={state === 'connected' ? 'success' : state === 'signin' ? 'warning' : 'error'}
-            startIcon={icon}
-            onClick={(event) => {
-              event.currentTarget.focus();
-              setPanelAnchor(event.currentTarget);
-            }}
-            aria-haspopup="dialog"
-            aria-expanded={Boolean(panelAnchor)}
-          >
-            {label}
-          </Button>
+          {!accountPage ? (
+            <Button
+              ref={chipRef}
+              size="small"
+              color={state === 'connected' ? 'success' : state === 'signin' ? 'warning' : 'error'}
+              startIcon={icon}
+              onClick={(event) => {
+                event.currentTarget.focus();
+                setPanelAnchor(event.currentTarget);
+              }}
+              aria-haspopup="dialog"
+              aria-expanded={Boolean(panelAnchor)}
+            >
+              {label}
+            </Button>
+          ) : null}
           {profile ? (
             <>
               <Button
@@ -116,11 +119,11 @@ export function Header() {
                 <SettingsIcon fontSize="small" />
               </Button>
             </>
-          ) : (
+          ) : !accountPage ? (
             <Button size="small" onClick={() => void check()} aria-label="Settings unavailable until connected" disabled>
               <SettingsIcon fontSize="small" />
             </Button>
-          )}
+          ) : null}
         </Box>
       </Toolbar>
 

@@ -27,6 +27,7 @@ export function SignInView() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const notice = location.state as { message?: string; warning?: string } | null;
 
   useEffect(() => {
     inputRef.current?.focus();
@@ -58,6 +59,16 @@ export function SignInView() {
         </div>
       }
     >
+      {notice?.message ? (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          {notice.message}
+        </Alert>
+      ) : null}
+      {notice?.warning ? (
+        <Alert severity="warning" sx={{ mb: 2 }}>
+          {notice.warning}
+        </Alert>
+      ) : null}
       <form onSubmit={submit} noValidate>
         <TextField
           inputRef={inputRef}
