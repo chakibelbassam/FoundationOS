@@ -2,6 +2,14 @@
 
 [Agent Output · scrumWorkSpace](Agent%20Output/scrumWorkSpace.md) defines the Markdown components Edge uses in conversation.
 
+## Library sources
+
+These are the two component libraries for the versioned client.
+
+- **MUI v6** for application controls, forms, dialogs, navigation, layout and feedback.
+- **React Bits** for distinctive visual and motion components. Vendor the official source under `src/vendor/reactbits/` with its licence notice.
+- **Tailwind v4** is the styling layer for React Bits components. Import it with preflight disabled so it does not reset MUI or the app stylesheet. MUI and Emotion remain the styling layer for application surfaces.
+
 Proposed building blocks for the versioned client. Use MUI ButtonBase for a selectable card, IconButton for labelled actions, Menu for contextual actions and Drawer for Edge chat. Use React Bits visual components where they support the interaction. Record the actual component and usage here when the version ships.
 
 ## v0.2 client foundation
