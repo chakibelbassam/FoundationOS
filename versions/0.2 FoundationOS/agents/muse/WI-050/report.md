@@ -1,5 +1,7 @@
 # Interim tester report · WI-050 (functional only — visual pass superseded)
 
+## Retest at e1cfa29
+
 Candidate: PR #9 head `e1cfa29` ("WI-049 Rebuild the Home and explorer to the owner's design
 bar"). Fresh disposable stack `%TEMP%\wi050-retest\` (server :62567, client :53391,
 reseeded alice + blair). Dist rebuilt 01:19 contains the new design (`wxi` present).
@@ -130,3 +132,30 @@ returned inline; one 390-px frame capture exported via browser files).
 - Ports 54574/63976 free (only TIME_WAIT remnants, no owners). `%TEMP%\wi050-tester`
   deleted in full (store, client data, fixtures/tokens, logs). `blair.tok` gone with it.
 - Closed all 3 built-in tabs and the Chrome `wi050` tab group.
+
+## Retest at f3de003 (targeted: narrow explorer + sort)
+
+Candidate: PR #9 head `f3de003` ("WI-049 Make the explorer usable at narrow widths").
+Fresh disposable stack `%TEMP%\wi050-r2\` (server :64368, client :57433, reseeded
+alice + blair). Dist rebuilt 02:47. Built-in `tools.browser.*` only (desktop tab +
+390 and 320 `viewport.html` frames). No tokens recorded. Curated PNGs `f-*.png`.
+
+| # | Item | Result | Evidence |
+|---|---|---|---|
+| T1 | /files at real 390x600: list + search + toolbar on load, no h-scroll | PASS | All 8 entries, full names, search + 3 view toggles visible; sw==cw==375 (`f-390-list`) |
+| T2 | /files at real 320x600: same | PASS | List renders, sw==cw==305 |
+| T3 | Single tap file → details pane | PASS | loose-note.txt → icon + miniature + Information/Type; "Hide details" in a11y tree |
+| T4 | Hide details and × return to list | PASS | Both restore the list; × is a mouse-only `<i>` (no tabindex/role) but the Hide button is keyboard-accessible — Sev-3 note |
+| T5 | Double tap file → reader /file/… | PASS | `/file/loose-note.txt` with content |
+| T6 | Back → /files | PASS | Route returns (focus BODY, same pre-existing behaviour as before — not a regression) |
+| T7 | Desktop unchanged: tree + side-by-side preview + eye | PASS | Tree with expanders, vivid icons, preview pane, eye toggles it off/on (`f-desktop-explorer`) |
+| T8 | Name sort mouse toggle | PASS (fixed) | Clicks cycle desc → asc → desc |
+| T9 | Name sort keyboard toggle | PASS (fixed) | Enter and Space toggle with focus kept on the columnheader |
+
+Retest counts: 9 PASS, 0 FAIL, 0 BLOCKED. Prior FAILs F10/F17/F24 stay fixed (sort
+verified here both mouse and keyboard). No new Sev-1. Sev-3 notes carried: toolbar
+glyph buttons and the pane × expose no accessible names (SVAR-library pattern; the
+Hide-details button covers keyboard users).
+
+### Cleanup — confirmed
+
