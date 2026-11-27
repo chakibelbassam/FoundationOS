@@ -1,6 +1,6 @@
-// Host tests for the FoundationOS 0.2 client host (host/serve.mjs).
+// Host tests for the FoundationOS 0.3 client host (host/serve.mjs).
 //
-// Spins up a stub v0.1 server (Node http) and the host on port 0, then
+// Spins up a stub v0.3 server (Node http) and the host on port 0, then
 // asserts the brief contract: SPA fallback, /api proxying, asset 404,
 // incompatible/unreachable reporting, and preferences save/load including
 // validation and failed-write safety. All processes are stopped in `finally`.
@@ -22,15 +22,15 @@ const BLAIR_TOKEN = 'blair-session-token';
 const EXPIRED_TOKEN = 'expired-session-token';
 const GOOD_PREFS = { theme: 'dark', surface: 'glass', density: 'compact', motion: 'off', cursor: 'target' };
 const BLAIR_PREFS = { theme: 'light', surface: 'solid', density: 'comfortable', motion: 'on', cursor: 'system' };
-const INDEX_MARKER = 'host-test-index-0.2';
+const INDEX_MARKER = 'host-test-index-0.3';
 
-function startStub({ version = '0.1', status = 'ready', schema = 2, files = [{ name: 'a.txt', type: 'file' }] } = {}) {
+function startStub({ version = '0.3', status = 'ready', schema = 3, setup = 'ready', files = [{ name: 'a.txt', type: 'file' }] } = {}) {
   const tokens = { [ALICE_TOKEN]: MEMBER, [BLAIR_TOKEN]: OTHER_MEMBER };
   const server = http.createServer((req, res) => {
     const url = new URL(req.url || '/', 'http://127.0.0.1');
     if (url.pathname === '/status' && req.method === 'GET') {
       res.writeHead(200, { 'content-type': 'application/json' });
-      res.end(JSON.stringify({ version, status, schema }));
+      res.end(JSON.stringify({ version, status, schema, setup }));
       return;
     }
     if (url.pathname === '/profile' && req.method === 'GET') {
@@ -119,7 +119,7 @@ async function postJson(url, value, headers = {}) {
   return { status: response.status, headers: response.headers, body: await response.json().catch(() => null) };
 }
 
-test('v0.2 host serves the build, proxies the server and stores preferences', async (t) => {
+test('v0.3 host serves the build, proxies the server and stores preferences', async (t) => {
   const tmp = await mkdtemp(path.join(os.tmpdir(), 'founds-host-test-'));
   const buildDir = path.join(tmp, 'build');
   const dataDir = path.join(tmp, 'data');
@@ -130,7 +130,7 @@ test('v0.2 host serves the build, proxies the server and stores preferences', as
   await writeFile(badDataFile, 'not a directory');
 
   const readyStub = await startStub();
-  const incompatibleStub = await startStub({ version: '0.2', status: 'ready', schema: 1 });
+  const incompatibleStub = await startStub({ version: '0.2', status: 'ready', schema: 2 });
   const closedProbe = await startStub();
   const closedPort = stubPort(closedProbe);
   await closeServer(closedProbe);
@@ -199,11 +199,11 @@ test('v0.2 host serves the build, proxies the server and stores preferences', as
       assert.match(incompatible.output(), /incompatible/);
       assert.match(incompatible.output(), /0\.1/);
       const config = await (await fetch(`${incompatibleUrl}client-config`)).json();
-      assert.equal(config.clientVersion, '0.2');
-      assert.equal(config.expectedServerVersion, '0.1');
+      assert.equal(config.clientVersion, '0.3');
+      assert.equal(config.expectedServerVersion, '0.3');
       assert.equal(config.check.ok, false);
       assert.equal(config.check.status, 'incompatible');
-      assert.ok(String(config.check.error).includes('0.1'), 'error shows the expected version');
+      assert.ok(String(config.check.error).includes('0.3'), 'error shows the expected version');
       assert.ok(String(config.check.error).includes('0.2'), 'error shows the found version');
     });
 
@@ -365,3 +365,4 @@ test('v0.2 host serves the build, proxies the server and stores preferences', as
     await rm(tmp, { recursive: true, force: true });
   }
 });
+

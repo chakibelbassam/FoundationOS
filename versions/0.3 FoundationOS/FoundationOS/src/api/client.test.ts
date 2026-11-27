@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { api, ApiError, setToken } from './client';
+import { api, ApiError, bumpGeneration } from './client';
 import type { Entry } from './types';
 
 function response(status: number, body: unknown, contentType = 'application/json') {
@@ -11,7 +11,7 @@ describe('api client', () => {
 
   beforeEach(() => {
     vi.stubGlobal('fetch', fetchMock);
-    setToken('session-token');
+    bumpGeneration();
   });
 
   afterEach(() => {
@@ -19,13 +19,14 @@ describe('api client', () => {
     vi.unstubAllGlobals();
   });
 
-  it('reads a folder listing through the /api prefix with the bearer token', async () => {
+  it('reads a folder listing through the /api prefix with the browser cookie', async () => {
     fetchMock.mockResolvedValueOnce(response(200, [{ name: 'Weather', type: 'folder' }]));
     const entries = await api.list('Projects/alpha');
     expect(entries).toEqual([{ name: 'Weather', type: 'folder' }]);
     const [url, init] = fetchMock.mock.calls[0];
     expect(url).toBe('/api/files/Projects/alpha');
-    expect((init.headers as Headers).get('authorization')).toBe('Bearer session-token');
+    expect(init.credentials).toBe('same-origin');
+    expect((init.headers as Headers).get('authorization')).toBeNull();
   });
 
   it('encodes path segments but keeps the separator', async () => {
@@ -54,7 +55,7 @@ describe('api client', () => {
     await expect(api.list('')).rejects.toMatchObject({ failure: { kind: 'invalid' } });
   });
 
-  it('keeps a silent connect 401 off the global unauthorized channel', async () => {
+  it('keeps a silent sign-in 401 off the global unauthorized channel', async () => {
     const { onUnauthorized } = await import('./client');
     const listener = vi.fn();
     const unsubscribe = onUnauthorized(listener);
@@ -75,14 +76,13 @@ describe('api client', () => {
     const listener = vi.fn();
     const unsubscribe = onUnauthorized(listener);
     try {
-      setToken('token-alice');
       let resolveStale!: (value: Response) => void;
       fetchMock.mockImplementationOnce(() => new Promise<Response>((resolve) => {
         resolveStale = resolve;
       }));
       const stale = api.profile();
       // The member switches before the first request answers.
-      setToken('token-blair');
+      bumpGeneration();
       resolveStale(response(401, { error: 'Sign in' }));
       await expect(stale).rejects.toMatchObject({ failure: { kind: 'unauthorized' } });
       expect(listener).not.toHaveBeenCalled();
@@ -101,7 +101,6 @@ describe('api client', () => {
     const listener = vi.fn();
     const unsubscribe = onUnauthorized(listener);
     try {
-      setToken('token-alice');
       fetchMock.mockImplementationOnce(
         (_url: string, init?: RequestInit) =>
           new Promise<Response>((_resolve, reject) => {
@@ -120,7 +119,6 @@ describe('api client', () => {
   it('honours a caller AbortSignal for directory and file reads', async () => {
     const { abortActiveRequests } = await import('./client');
     abortActiveRequests();
-    setToken('token-alice');
     const controller = new AbortController();
     fetchMock.mockImplementationOnce(
       (_url: string, init?: RequestInit) =>
@@ -136,7 +134,6 @@ describe('api client', () => {
   it('notifies server-reachable listeners on success but not on failure', async () => {
     const { abortActiveRequests, onServerReachable } = await import('./client');
     abortActiveRequests();
-    setToken('token-alice');
     const listener = vi.fn();
     const unsubscribe = onServerReachable(listener);
     try {
@@ -154,27 +151,21 @@ describe('api client', () => {
   it('notifies server-unreachable on offline failures but not on aborts or answers', async () => {
     const { abortActiveRequests, onServerUnreachable } = await import('./client');
     abortActiveRequests();
-    setToken('token-alice');
     const listener = vi.fn();
     const unsubscribe = onServerUnreachable(listener);
     try {
-      // The network drops: unreachable.
       fetchMock.mockRejectedValueOnce(new Error('connection reset'));
       await expect(api.list('')).rejects.toMatchObject({ failure: { kind: 'offline' } });
       expect(listener).toHaveBeenCalledTimes(1);
-      // The host answers for a dead server: unreachable.
       fetchMock.mockResolvedValueOnce(response(502, { error: 'Server unreachable' }));
       await expect(api.list('')).rejects.toMatchObject({ failure: { kind: 'offline' } });
       expect(listener).toHaveBeenCalledTimes(2);
-      // A 401 proves the host answered: silent.
       fetchMock.mockResolvedValueOnce(response(401, { error: 'Sign in' }));
       await expect(api.profile()).rejects.toMatchObject({ failure: { kind: 'unauthorized' } });
       expect(listener).toHaveBeenCalledTimes(2);
-      // Success proves reachability the other way: silent here.
       fetchMock.mockResolvedValueOnce(response(200, [{ name: 'Weather', type: 'folder' }]));
       await api.list('');
       expect(listener).toHaveBeenCalledTimes(2);
-      // Aborting is navigation, not an outage: silent.
       fetchMock.mockImplementationOnce(
         (_url: string, init?: RequestInit) =>
           new Promise<Response>((_resolve, reject) => {

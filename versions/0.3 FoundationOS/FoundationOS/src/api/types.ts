@@ -1,9 +1,14 @@
-export type Role = 'admin' | 'member';
+export type Role = 'owner' | 'member';
 
 export interface Profile {
   id: string;
   name: string;
+  username: string;
   role: Role;
+  email: string | null;
+  bio: string | null;
+  avatarUrl: string | null;
+  createdAt: string;
 }
 
 export interface Entry {
@@ -44,6 +49,7 @@ export interface ClientConfig {
   clientVersion: string;
   expectedServerVersion: string;
   serverUrl: string;
+  setup: 'required' | 'ready';
   check: ServerCheck;
 }
 
@@ -64,6 +70,36 @@ export interface Preferences {
   background: BackgroundChoice;
   projects: string[];
   recentApps: string[];
+}
+
+export interface Invitation {
+  id: string;
+  state: 'pending' | 'used' | 'revoked' | 'expired';
+  createdAt: string;
+  expiresAt: string;
+  usedAt: string | null;
+}
+
+export interface AccountSummary {
+  id: string;
+  username: string;
+  role: Role;
+  email: string | null;
+  created_at: string;
+  closed_at: string | null;
+  retained_until: string | null;
+}
+
+export interface NewInvitation {
+  id: string;
+  code: string;
+  expiresAt: string;
+}
+
+export interface ResetCode {
+  id: string;
+  code: string;
+  expiresAt: string;
 }
 
 export type ApiFailure =

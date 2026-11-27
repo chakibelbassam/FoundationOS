@@ -3,6 +3,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Divider from '@mui/material/Divider';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
@@ -13,10 +18,10 @@ import Typography from '@mui/material/Typography';
 import CheckIcon from '@mui/icons-material/Check';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import CloudOffIcon from '@mui/icons-material/CloudOff';
+import LoginIcon from '@mui/icons-material/Login';
 import PersonIcon from '@mui/icons-material/Person';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import SettingsIcon from '@mui/icons-material/Settings';
-import SyncProblemIcon from '@mui/icons-material/SyncProblem';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useServer } from '../app/ServerContext';
 import { useSession } from '../app/SessionContext';
@@ -32,7 +37,7 @@ function useClock() {
 }
 
 export function Header() {
-  const { profile, disconnect } = useSession();
+  const { profile, signOut, signOutAll } = useSession();
   const { config, check } = useServer();
   const { effective } = usePreferences();
   const navigate = useNavigate();
@@ -40,13 +45,21 @@ export function Header() {
   const clock = useClock();
   const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
   const [panelAnchor, setPanelAnchor] = useState<HTMLElement | null>(null);
+  const [confirmAll, setConfirmAll] = useState(false);
   const userRef = useRef<HTMLButtonElement | null>(null);
   const chipRef = useRef<HTMLButtonElement | null>(null);
 
   const serverOk = config?.check.ok ?? false;
-  const state = !serverOk ? 'offline' : profile ? 'connected' : 'reconnect';
-  const label = state === 'connected' ? 'Connected' : state === 'reconnect' ? 'Reconnect' : 'Server offline';
-  const icon = state === 'connected' ? <CloudDoneIcon fontSize="small" /> : state === 'reconnect' ? <SyncProblemIcon fontSize="small" /> : <CloudOffIcon fontSize="small" />;
+  const state = !serverOk ? 'offline' : profile ? 'connected' : 'signin';
+  const label = state === 'connected' ? 'Connected' : state === 'signin' ? 'Sign in' : 'Server offline';
+  const icon = state === 'connected' ? <CloudDoneIcon fontSize="small" /> : state === 'signin' ? <LoginIcon fontSize="small" /> : <CloudOffIcon fontSize="small" />;
+
+  const endSession = async (all: boolean) => {
+    setMenuAnchor(null);
+    setConfirmAll(false);
+    const result = all ? await signOutAll() : await signOut();
+    navigate('/signin', { replace: true, state: result.warning ? { warning: result.warning } : undefined });
+  };
 
   const goSettings = (page: string) => {
     setMenuAnchor(null);
@@ -58,7 +71,7 @@ export function Header() {
       <Toolbar disableGutters sx={{ minHeight: 48, gap: 1 }}>
         <Typography component="div" className="fo-brand">
           FoundationOS
-          <Typography component="span" variant="caption" sx={{ opacity: 0.6, fontWeight: 500 }}>0.2</Typography>
+          <Typography component="span" variant="caption" sx={{ opacity: 0.6, fontWeight: 500 }}>0.3</Typography>
         </Typography>
         <Box className="fo-header-spacer" />
         <Box className="fo-header-controls">
@@ -66,7 +79,7 @@ export function Header() {
           <Button
             ref={chipRef}
             size="small"
-            color={state === 'connected' ? 'success' : state === 'reconnect' ? 'warning' : 'error'}
+            color={state === 'connected' ? 'success' : state === 'signin' ? 'warning' : 'error'}
             startIcon={icon}
             onClick={(event) => {
               event.currentTarget.focus();
@@ -126,17 +139,34 @@ export function Header() {
           {profile?.name} (active)
         </MenuItem>
         <MenuItem onClick={() => goSettings('profile')}>Profile settings</MenuItem>
+        {profile?.role === 'owner' ? (
+          <MenuItem onClick={() => goSettings('accounts')}>Accounts and invitations</MenuItem>
+        ) : null}
         <Divider />
-        <MenuItem
-          onClick={() => {
-            setMenuAnchor(null);
-            disconnect();
-          }}
-        >
+        <MenuItem onClick={() => void endSession(false)}>
           <ListItemIcon><LogoutIcon fontSize="small" /></ListItemIcon>
-          Disconnect
+          Sign out
+        </MenuItem>
+        <MenuItem onClick={() => { setMenuAnchor(null); setConfirmAll(true); }}>
+          Sign out of all sessions
         </MenuItem>
       </Menu>
+
+      <Dialog open={confirmAll} onClose={() => setConfirmAll(false)} aria-labelledby="sign-out-all-title">
+        <DialogTitle id="sign-out-all-title">Sign out of all sessions?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            This ends every session for {profile?.name} on this server, including this browser. Other members stay
+            signed in. Your files, settings and password are unchanged.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmAll(false)}>Cancel</Button>
+          <Button color="error" variant="contained" onClick={() => void endSession(true)}>
+            Sign out of all sessions
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Popover
         open={Boolean(panelAnchor)}
@@ -160,8 +190,8 @@ export function Header() {
           </Typography>
           <Typography variant="body2" component="p" sx={{ mt: 1, opacity: 0.8 }}>
             {profile
-              ? `Signed in as ${profile.name} (${profile.role}). A ready server and a member session are separate: if the token expires, reconnect without restarting the server.`
-              : 'The server is reachable. Connect with an existing member session token.'}
+              ? `Signed in as ${profile.name} (${profile.role}). The server owns this session and can revoke it at any time.`
+              : 'The server is reachable. Sign in with your username and password.'}
           </Typography>
           <Typography variant="caption" display="block" sx={{ mt: 1, opacity: 0.7 }}>
             Last check: {config?.check.checkedAt ? new Date(config.check.checkedAt).toLocaleTimeString() : 'not yet'}
@@ -169,8 +199,8 @@ export function Header() {
           <Box sx={{ display: 'flex', gap: 8, mt: 2 }}>
             <Button size="small" startIcon={<RefreshIcon />} onClick={() => void check()}>Check connection</Button>
             {!profile ? (
-              <Button size="small" variant="contained" onClick={() => { setPanelAnchor(null); void check(); }}>
-                Reconnect
+              <Button size="small" variant="contained" onClick={() => { setPanelAnchor(null); navigate('/signin'); }}>
+                Sign in
               </Button>
             ) : null}
           </Box>

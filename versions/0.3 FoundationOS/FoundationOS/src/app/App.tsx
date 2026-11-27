@@ -1,11 +1,16 @@
 import { Suspense, lazy, useEffect, useMemo, useState } from 'react';
-import { Navigate, Route, Routes } from 'react-router-dom';import CssBaseline from '@mui/material/CssBaseline';
+import { Navigate, Route, Routes } from 'react-router-dom';
+import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider, useMediaQuery } from '@mui/material';
 import { buildTheme } from '../theme';
 import { Header } from '../components/Header';
 import { TargetCursor } from '../components/TargetCursor';
 import { StatePanel } from '../components/StatePanel';
-import { ConnectView } from '../connect/ConnectView';
+import { SignInView } from '../account/SignInView';
+import { SetupView } from '../account/SetupView';
+import { JoinView } from '../account/JoinView';
+import { RecoveryView } from '../account/RecoveryView';
+import { RecoveryCodeDialog } from '../account/RecoveryCodeDialog';
 import { FileReader } from '../workspace/FileReader';
 import { FolderView } from '../workspace/FolderView';
 import { AppOverview } from '../workspace/AppOverview';
@@ -27,6 +32,8 @@ const HomeView = lazy(() => import('../workspace/HomeView').then((module) => ({ 
 const FileExplorer = lazy(() =>
   import('../workspace/FileExplorer').then((module) => ({ default: module.FileExplorer })),
 );
+
+const ACCOUNT_PATHS = ['/setup', '/signin', '/join', '/recover'];
 
 function RouteFallback() {
   return <StatePanel title="Loading view" busy />;
@@ -52,10 +59,7 @@ function SwitchHome() {
   return <Navigate to="/" replace />;
 }
 
-function Protected() {
-  const { profile, wasReplaced } = useSession();
-  if (!profile) return <ConnectView />;
-  if (wasReplaced) return <SwitchHome />;
+function WorkspaceRoutes() {
   return (
     <Routes>
       <Route
@@ -88,10 +92,53 @@ function Protected() {
       <Route path="/app/*" element={<AppOverview />} />
       <Route path="/file/*" element={<FileReader />} />
       <Route path="/settings/:page" element={<SettingsView />} />
-      <Route path="/connect" element={<Navigate to="/" replace />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
+}
+
+function AccountRoutes() {
+  const { config, loading } = useServer();
+  const location = useLocation();
+  if (loading && !config) return <StatePanel title="Checking the server" busy />;
+  const setup = config?.setup ?? 'ready';
+  const isAccountPath = ACCOUNT_PATHS.includes(location.pathname);
+  if (!isAccountPath) {
+    return (
+      <Navigate
+        to={setup === 'required' ? '/setup' : '/signin'}
+        replace
+        state={{ from: location }}
+      />
+    );
+  }
+  if (setup === 'required' && location.pathname !== '/setup') {
+    return <Navigate to="/setup" replace state={{ from: location }} />;
+  }
+  if (setup === 'ready' && location.pathname === '/setup') {
+    return <Navigate to="/signin" replace />;
+  }
+  return (
+    <Routes>
+      <Route path="/setup" element={<SetupView />} />
+      <Route path="/signin" element={<SignInView />} />
+      <Route path="/join" element={<JoinView />} />
+      <Route path="/recover" element={<RecoveryView />} />
+      <Route path="*" element={<Navigate to={setup === 'required' ? '/setup' : '/signin'} replace />} />
+    </Routes>
+  );
+}
+
+function Protected() {
+  const { status, profile, wasReplaced } = useSession();
+  const location = useLocation();
+  if (status === 'loading') return <StatePanel title="Checking your session" busy />;
+  if (!profile) return <AccountRoutes />;
+  if (wasReplaced) return <SwitchHome />;
+  if (ACCOUNT_PATHS.includes(location.pathname)) {
+    return <Navigate to="/" replace />;
+  }
+  return <WorkspaceRoutes />;
 }
 
 function usePreviewSize(search: string) {
@@ -148,7 +195,7 @@ export function App() {
   }, [profile?.id]);
 
   useEffect(() => {
-    document.title = profile ? `${profile.name} · FoundationOS 0.2` : 'FoundationOS 0.2';
+    document.title = profile ? `${profile.name} · FoundationOS 0.3` : 'FoundationOS 0.3';
   }, [profile]);
 
   useEffect(() => {
@@ -188,6 +235,7 @@ export function App() {
           </div>
           <Protected />
         </main>
+        <RecoveryCodeDialog />
       </div>
     </ThemeProvider>
   );

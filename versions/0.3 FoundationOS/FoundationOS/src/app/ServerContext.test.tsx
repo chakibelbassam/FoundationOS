@@ -17,10 +17,11 @@ const mockedCheck = vi.mocked(checkServer);
 
 function okConfig() {
   return {
-    clientVersion: '0.2',
-    expectedServerVersion: '0.1',
+    clientVersion: '0.3',
+    expectedServerVersion: '0.3',
     serverUrl: 'http://127.0.0.1:1',
-    check: { ok: true as const, status: 'ready' as const, version: '0.1', schema: 2, checkedAt: new Date(0).toISOString() },
+    setup: 'ready' as const,
+    check: { ok: true as const, status: 'ready' as const, version: '0.3', schema: 3, checkedAt: new Date(0).toISOString() },
   };
 }
 

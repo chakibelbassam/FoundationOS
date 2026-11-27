@@ -80,6 +80,28 @@ interface PreferencesValue {
 
 const PreferencesContext = createContext<PreferencesValue | null>(null);
 
+const CACHE_PREFIX = 'foundationos.v0.3.preferences.';
+
+function readCached(memberId: string): Preferences | null {
+  try {
+    const raw = localStorage.getItem(`${CACHE_PREFIX}${memberId}`);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw) as Partial<Preferences>;
+    if (!parsed || typeof parsed !== 'object') return null;
+    return { ...DEFAULT_PREFERENCES, ...parsed };
+  } catch {
+    return null;
+  }
+}
+
+function writeCached(memberId: string, preferences: Preferences) {
+  try {
+    localStorage.setItem(`${CACHE_PREFIX}${memberId}`, JSON.stringify(preferences));
+  } catch {
+    /* the cache is best effort */
+  }
+}
+
 export function PreferencesProvider({ children }: { children: ReactNode }) {
   const { profile } = useSession();
   const [applied, setApplied] = useState<Preferences>(DEFAULT_PREFERENCES);
@@ -106,18 +128,21 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     const memberId = profile.id;
     const controller = new AbortController();
     let cancelled = false;
+    const cached = readCached(memberId);
     setLoading(true);
     loadPreferences({ signal: controller.signal })
       .then((stored) => {
         if (cancelled || memberRef.current !== memberId) return;
-        setApplied(stored ? { ...DEFAULT_PREFERENCES, ...stored } : DEFAULT_PREFERENCES);
+        const next = stored ? { ...DEFAULT_PREFERENCES, ...stored } : cached ?? DEFAULT_PREFERENCES;
+        setApplied(next);
+        writeCached(memberId, next);
       })
       .catch((error) => {
         if (cancelled || memberRef.current !== memberId) return;
         if (error && typeof error === 'object' && 'failure' in error) {
           if ((error as { failure: { kind: string } }).failure.kind === 'aborted') return;
         }
-        if (!cancelled) setApplied(DEFAULT_PREFERENCES);
+        if (!cancelled) setApplied(cached ?? DEFAULT_PREFERENCES);
       })
       .finally(() => {
         if (!cancelled && memberRef.current === memberId) setLoading(false);
@@ -152,7 +177,9 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
       const saved = await savePreferences(next);
       // A member switch during the save must not apply stale results.
       if (memberRef.current !== memberId) return false;
-      setApplied({ ...DEFAULT_PREFERENCES, ...saved });
+      const appliedNext = { ...DEFAULT_PREFERENCES, ...saved };
+      writeCached(memberId, appliedNext);
+      setApplied(appliedNext);
       setDraftState(null);
       setSaveState('saved');
       return true;
@@ -197,7 +224,9 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
       try {
         const saved = await savePreferences(outcome);
         if (memberRef.current !== memberId) return false;
-        setApplied({ ...DEFAULT_PREFERENCES, ...saved });
+        const appliedNext = { ...DEFAULT_PREFERENCES, ...saved };
+        writeCached(memberId, appliedNext);
+        setApplied(appliedNext);
         setSaveState('saved');
         return true;
       } catch (error) {

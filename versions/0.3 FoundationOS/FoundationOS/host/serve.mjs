@@ -181,9 +181,16 @@ async function probeServer() {
       && version === EXPECTED_SERVER_VERSION
       && data?.status === 'ready'
       && Number.isInteger(schema)
-      && schema >= 1
+      && schema >= 3
     ) {
-      return { ok: true, status: 'ready', version, schema, checkedAt };
+      return {
+        ok: true,
+        status: 'ready',
+        version,
+        schema,
+        setup: data?.setup === 'required' ? 'required' : 'ready',
+        checkedAt,
+      };
     }
     const found = data === null || data === undefined
       ? `http status ${response.status}`
@@ -343,6 +350,9 @@ function forward(target, method, headers, body) {
         response.on('end', () => resolve({
           status: response.statusCode || 502,
           contentType: response.headers['content-type'],
+          setCookie: response.headers['set-cookie'],
+          retryAfter: response.headers['retry-after'],
+          cacheControl: response.headers['cache-control'],
           body: Buffer.concat(chunks),
         }));
         response.on('error', reject);
@@ -370,6 +380,12 @@ async function handleProxy(req, res, pathname, search) {
   if (req.headers.authorization) headers.authorization = req.headers.authorization;
   if (req.headers['content-type']) headers['content-type'] = req.headers['content-type'];
   if (req.headers.accept) headers.accept = req.headers.accept;
+  // The browser session is an HttpOnly cookie set by the server. The host
+  // forwards it unchanged and returns the server's Set-Cookie to the browser.
+  if (req.headers.cookie) headers.cookie = req.headers.cookie;
+  if (req.headers.origin) headers.origin = req.headers.origin;
+  if (req.headers.referer) headers.referer = req.headers.referer;
+  if (req.headers['sec-fetch-site']) headers['sec-fetch-site'] = req.headers['sec-fetch-site'];
   if (body.length > 0) headers['content-length'] = String(body.length);
   let upstream;
   try {
@@ -380,6 +396,9 @@ async function handleProxy(req, res, pathname, search) {
   }
   const outHeaders = {};
   if (upstream.contentType) outHeaders['content-type'] = upstream.contentType;
+  if (upstream.setCookie) outHeaders['set-cookie'] = upstream.setCookie;
+  if (upstream.retryAfter) outHeaders['retry-after'] = upstream.retryAfter;
+  if (upstream.cacheControl) outHeaders['cache-control'] = upstream.cacheControl;
   res.writeHead(upstream.status, outHeaders);
   res.end(req.method === 'HEAD' ? undefined : upstream.body);
 }
@@ -625,6 +644,7 @@ async function handle(req, res) {
         clientVersion: CLIENT_VERSION,
         expectedServerVersion: EXPECTED_SERVER_VERSION,
         serverUrl: SERVER_URL,
+        setup: check.ok ? check.setup ?? 'ready' : 'ready',
         check,
       });
       return;
@@ -687,7 +707,7 @@ async function main() {
     const address = server.address();
     const actual = typeof address === 'object' && address ? address.port : PORT;
     const url = `http://127.0.0.1:${actual}/`;
-    console.log(`FoundationOS 0.2 client ready at ${url}`);
+    console.log(`FoundationOS ${CLIENT_VERSION} client ready at ${url}`);
     if (CONFIG.openBrowser) {
       try {
         const child = spawn('cmd', ['/c', 'start', '', url], { stdio: 'ignore', detached: true });

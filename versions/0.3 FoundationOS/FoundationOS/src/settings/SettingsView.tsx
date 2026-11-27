@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import Alert from '@mui/material/Alert';
 import Button from '@mui/material/Button';
-import Divider from '@mui/material/Divider';
 import Typography from '@mui/material/Typography';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import SaveIcon from '@mui/icons-material/Save';
@@ -13,10 +12,13 @@ import { FolderWidget } from '../components/FolderWidget';
 import { usePreferences, DEFAULT_PREFERENCES, motionIsReduced } from '../app/PreferencesContext';
 import { useSession } from '../app/SessionContext';
 import { useServer } from '../app/ServerContext';
+import { ProfilePanel } from '../account/ProfilePanel';
+import { AccountsPanel } from '../account/AccountsPanel';
 import type { Preferences } from '../api/types';
 
 const PAGES = [
   { id: 'profile', label: 'Profile' },
+  { id: 'accounts', label: 'Accounts' },
   { id: 'appearance', label: 'Appearance' },
   { id: 'workspace', label: 'Workspace' },
 ] as const;
@@ -97,11 +99,13 @@ export function SettingsView() {
     reset,
   } = usePreferences();
 
-  const page = (PAGES.some((item) => item.id === params.page) ? params.page : 'profile') as PageId;
+  const allowedPages = PAGES.filter((item) => item.id !== 'accounts' || profile?.role === 'owner');
+  const page = (allowedPages.some((item) => item.id === params.page) ? params.page : 'profile') as PageId;
+  const prefersPage = page === 'appearance' || page === 'workspace';
 
   useEffect(() => {
-    if (!PAGES.some((item) => item.id === params.page)) navigate('/settings/profile', { replace: true });
-  }, [params.page, navigate]);
+    if (!allowedPages.some((item) => item.id === params.page)) navigate('/settings/profile', { replace: true });
+  }, [params.page, navigate, profile?.role]);
 
   useEffect(() => () => cancel(), [cancel]);
 
@@ -114,7 +118,7 @@ export function SettingsView() {
         Back to workspace
       </Button>
       <div className="fo-settings-nav" role="tablist" aria-label="Settings pages">
-        {PAGES.map((item) => (
+        {allowedPages.map((item) => (
           <button
             key={item.id}
             type="button"
@@ -129,25 +133,12 @@ export function SettingsView() {
         ))}
       </div>
 
-      {loading ? <Alert severity="info">Loading your saved preferences…</Alert> : null}
+      {loading && prefersPage ? <Alert severity="info">Loading your saved preferences…</Alert> : null}
 
       {page === 'profile' ? (
-        <section aria-label="Profile">
-          <div className="fo-panel">
-            <Typography variant="h2" component="h2" sx={{ mb: 1 }}>Profile</Typography>
-            <Typography variant="body1">Username: <strong>{profile?.name}</strong></Typography>
-            <Typography variant="body1">Role: <strong>{profile?.role}</strong></Typography>
-            <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-              Your identity comes from the connected v0.1 server. Profile editing and a profile picker belong to later
-              increments; v0.2 uses one active member at a time.
-            </Typography>
-            <Divider sx={{ my: 2 }} />
-            <Typography variant="body2" color="text.secondary">
-              One active profile per client session. Refresh returns to Connect. Use Disconnect in the username menu to
-              end this session; the server keeps running.
-            </Typography>
-          </div>
-        </section>
+        <ProfilePanel />
+      ) : page === 'accounts' ? (
+        <AccountsPanel />
       ) : page === 'appearance' ? (
         <section aria-label="Appearance">
           <Typography variant="body1" color="text.secondary" sx={{ mb: 2, maxWidth: '62ch' }}>
@@ -217,7 +208,7 @@ export function SettingsView() {
         </section>
       )}
 
-      <div className="fo-settings-actions">
+      {prefersPage ? (<div className="fo-settings-actions">
         <Button
           variant="contained"
           startIcon={<SaveIcon />}
@@ -249,7 +240,7 @@ export function SettingsView() {
                   ? 'Previewing unsaved changes.'
                   : 'Showing your saved settings.'}
         </Typography>
-      </div>
+      </div>) : null}
       {saveState === 'error' && saveError ? (
         <Alert severity="error" sx={{ mt: 2 }}>
           Failed save: {saveError} Your last saved settings are unchanged on disk.
@@ -257,9 +248,9 @@ export function SettingsView() {
       ) : null}
 
       <div className="fo-about">
-        FoundationOS client {config?.clientVersion ?? '0.2'} · server{' '}
+        FoundationOS client {config?.clientVersion ?? '0.3'} · server{' '}
         {config?.check.version ? `v${config.check.version}` : 'not reachable'} · expected v
-        {config?.expectedServerVersion ?? '0.1'}
+        {config?.expectedServerVersion ?? '0.3'}
       </div>
     </div>
   );

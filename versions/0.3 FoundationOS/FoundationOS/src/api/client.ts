@@ -1,15 +1,25 @@
-import type { ApiFailure, ClientConfig, Entry, Preferences, Profile, ServerCheck } from './types';
+import type {
+  AccountSummary,
+  ApiFailure,
+  ClientConfig,
+  Entry,
+  Invitation,
+  NewInvitation,
+  Preferences,
+  Profile,
+  ResetCode,
+  ServerCheck,
+} from './types';
 
-let sessionToken: string | null = null;
 let generation = 0;
 const unauthorizedListeners = new Set<() => void>();
 const activeControllers = new Set<AbortController>();
 const reachListeners = new Set<() => void>();
 const unreachableListeners = new Set<() => void>();
 
-export function setToken(token: string | null) {
-  sessionToken = token;
+export function bumpGeneration() {
   generation += 1;
+  return generation;
 }
 
 export function currentGeneration() {
@@ -32,9 +42,6 @@ export function onUnauthorized(listener: () => void) {
   return () => unauthorizedListeners.delete(listener);
 }
 
-// Fires after any successful (2xx) API response. The server chip uses it to
-// recheck immediately when traffic already proves the server is reachable,
-// instead of waiting for the next poll.
 export function onServerReachable(listener: () => void) {
   reachListeners.add(listener);
   return () => {
@@ -43,7 +50,6 @@ export function onServerReachable(listener: () => void) {
 }
 
 function notifyReachable() {
-  if (reachListeners.size === 0) return;
   for (const listener of reachListeners) {
     try {
       listener();
@@ -53,10 +59,6 @@ function notifyReachable() {
   }
 }
 
-// Mirrors onServerReachable: fires after a request fails because the server
-// (or the client host in front of it) did not answer. Aborts, 401s and other
-// answered failures prove nothing about reachability and stay silent, so a
-// navigation or a sign-in can never flip the announcement by itself.
 export function onServerUnreachable(listener: () => void) {
   unreachableListeners.add(listener);
   return () => {
@@ -65,7 +67,6 @@ export function onServerUnreachable(listener: () => void) {
 }
 
 function notifyUnreachable() {
-  if (unreachableListeners.size === 0) return;
   for (const listener of unreachableListeners) {
     try {
       listener();
@@ -99,18 +100,10 @@ function isAbortError(error: unknown) {
 
 interface RequestOptions {
   signal?: AbortSignal | null;
-  // The connect request authenticates the attempt itself: its 401 belongs to
-  // the caller (invalid or revoked token) and must not fire the global
-  // unauthorized listeners, which would end the session and bump the
-  // generation before the connect catch maps the failure to its copy.
   notifyUnauthorized?: boolean;
 }
 
 async function request<T>(path: string, init: RequestInit = {}, expect: 'json' | 'text' = 'json', options: RequestOptions = {}): Promise<T> {
-  // Capture the token and generation for this request. A 401 only ends the
-  // session when it belongs to the still-active token: a late 401 from the
-  // previous member's request after a switch must not clear the new session.
-  const requestToken = sessionToken;
   const requestGeneration = generation;
   const controller = new AbortController();
   activeControllers.add(controller);
@@ -120,11 +113,15 @@ async function request<T>(path: string, init: RequestInit = {}, expect: 'json' |
     else options.signal.addEventListener('abort', onExternalAbort, { once: true });
   }
   const headers = new Headers(init.headers);
-  if (requestToken) headers.set('authorization', `Bearer ${requestToken}`);
   headers.set('accept', 'application/json');
   let response: Response;
   try {
-    response = await fetch(`/api${path}`, { ...init, headers, signal: controller.signal });
+    response = await fetch(`/api${path}`, {
+      ...init,
+      headers,
+      credentials: 'same-origin',
+      signal: controller.signal,
+    });
   } catch (error) {
     if (controller.signal.aborted || isAbortError(error)) {
       throw new ApiError({ kind: 'aborted' });
@@ -139,12 +136,7 @@ async function request<T>(path: string, init: RequestInit = {}, expect: 'json' |
     throw new ApiError({ kind: 'aborted' });
   }
   if (response.status === 401) {
-    if (
-      options.notifyUnauthorized !== false &&
-      requestToken !== null &&
-      requestGeneration === generation &&
-      requestToken === sessionToken
-    ) {
+    if (options.notifyUnauthorized !== false && requestGeneration === generation) {
       notifyUnauthorized();
     }
     throw new ApiError({ kind: 'unauthorized' });
@@ -189,6 +181,82 @@ export const api = {
   profile: (options?: RequestOptions) => request<Profile>('/profile', {}, 'json', options),
   list: (path: string, options?: RequestOptions) => request<Entry[] | { text: string }>(filesPath(path), {}, 'json', options),
   read: (path: string, options?: RequestOptions) => request<{ text: string } | Entry[]>(filesPath(path), {}, 'json', options),
+  signIn: (username: string, password: string, remember: boolean) =>
+    request<{ profile: Profile }>(
+      '/sessions',
+      { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ username, password, remember }) },
+      'json',
+      { notifyUnauthorized: false },
+    ),
+  setupOwner: (claim: string, username: string, password: string, email: string) =>
+    request<{ profile: Profile; recoveryCode: string }>(
+      '/setup',
+      { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ claim, username, password, email: email || null }) },
+      'json',
+      { notifyUnauthorized: false },
+    ),
+  join: (code: string, username: string, password: string, email: string) =>
+    request<{ profile: Profile }>(
+      '/accounts/join',
+      { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ code, username, password, email: email || null }) },
+      'json',
+      { notifyUnauthorized: false },
+    ),
+  signOut: () => request<{ signedOut: boolean }>('/sessions/current', { method: 'DELETE' }, 'json', { notifyUnauthorized: false }),
+  signOutAll: () =>
+    request<{ signedOut: boolean }>(
+      '/sessions/sign-out-all',
+      { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ confirm: true }) },
+      'json',
+      { notifyUnauthorized: false },
+    ),
+  updateProfile: (changes: { username?: string; email?: string | null; bio?: string | null }) =>
+    request<Profile>('/profile', { method: 'PATCH', headers: { 'content-type': 'application/json' }, body: JSON.stringify(changes) }),
+  changePassword: (current: string, next: string) =>
+    request<{ changed: boolean }>(
+      '/profile/password',
+      { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ current, next }) },
+      'json',
+      { notifyUnauthorized: false },
+    ),
+  closeAccount: (password: string) =>
+    request<{ closedAt: string; retainedUntil: string }>(
+      '/profile/close',
+      { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ password }) },
+      'json',
+      { notifyUnauthorized: false },
+    ),
+  uploadAvatar: async (file: File) =>
+    request<{ avatarUrl: string }>(
+      '/profile/avatar',
+      { method: 'POST', headers: { 'content-type': file.type || 'application/octet-stream' }, body: await file.arrayBuffer() },
+      'json',
+    ),
+  removeAvatar: () => request<{ removed: boolean }>('/profile/avatar', { method: 'DELETE' }),
+  accounts: () => request<AccountSummary[]>('/accounts'),
+  invitations: () => request<Invitation[]>('/invitations'),
+  createInvitation: () => request<NewInvitation>('/invitations', { method: 'POST' }),
+  revokeInvitation: (id: string) => request<{ revoked: boolean }>(`/invitations/${encodeURIComponent(id)}`, { method: 'DELETE' }),
+  createResetCode: (accountId: string) =>
+    request<ResetCode>('/reset-codes', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ accountId }),
+    }),
+  recoverOwner: (username: string, code: string, password: string) =>
+    request<{ recoveryCode: string }>(
+      '/recovery/owner',
+      { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ username, code, password }) },
+      'json',
+      { notifyUnauthorized: false },
+    ),
+  resetMember: (code: string, password: string) =>
+    request<{ reset: boolean }>(
+      '/recovery/member',
+      { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ code, password }) },
+      'json',
+      { notifyUnauthorized: false },
+    ),
 };
 
 export async function checkServer(options?: RequestOptions): Promise<ClientConfig> {
@@ -201,27 +269,14 @@ export async function getServerCheck(options?: RequestOptions): Promise<ServerCh
 }
 
 export async function loadPreferences(options?: RequestOptions): Promise<Preferences | null> {
-  const result = await request<{ preferences: Preferences | null }>(
-    '/preferences/load',
-    {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({}),
-    },
-    'json',
-    options,
-  );
+  const result = await request<{ preferences: Preferences | null }>('/preferences', { method: 'GET' }, 'json', options);
   return result.preferences;
 }
 
 export async function savePreferences(preferences: Preferences, options?: RequestOptions): Promise<Preferences> {
   const result = await request<{ preferences: Preferences }>(
-    '/preferences/save',
-    {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ preferences }),
-    },
+    '/preferences',
+    { method: 'PUT', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ preferences }) },
     'json',
     options,
   );

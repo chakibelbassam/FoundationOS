@@ -15,7 +15,7 @@ test('Start.cmd passes a positional server URL to the host', { skip: !isWindows 
   const stub = createServer((request, response) => {
     if (request.url === '/status') {
       response.writeHead(200, { 'content-type': 'application/json' });
-      response.end(JSON.stringify({ version: '0.1', status: 'ready', schema: 2 }));
+      response.end(JSON.stringify({ version: '0.3', status: 'ready', schema: 3, setup: 'ready' }));
       return;
     }
     response.writeHead(404, { 'content-type': 'application/json' });
@@ -23,7 +23,7 @@ test('Start.cmd passes a positional server URL to the host', { skip: !isWindows 
   });
   await new Promise((resolve) => stub.listen(0, '127.0.0.1', resolve));
   const port = stub.address().port;
-  const child = spawn('cmd.exe', ['/c', path.join(versionRoot, 'Start.cmd'), `http://127.0.0.1:${port}`, '--no-open', '--port', '0'], {
+  const child = spawn('cmd.exe', ['/c', path.join(versionRoot, 'Start Client.cmd'), `http://127.0.0.1:${port}`, '--no-open', '--port', '0'], {
     cwd: versionRoot,
     windowsHide: true,
   });
@@ -53,3 +53,4 @@ test('Start.cmd passes a positional server URL to the host', { skip: !isWindows 
     await new Promise((resolve) => stub.close(resolve));
   }
 });
+
