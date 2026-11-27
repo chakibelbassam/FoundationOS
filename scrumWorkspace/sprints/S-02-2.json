@@ -4,7 +4,7 @@
   "parent": "PI-02",
   "title": "Browse a private home",
   "acceptance": "Browse two folder levels and return to the originating widget. Distinguish a server outage from session expiry and recover without exposing another member’s content.",
-  "status": "review",
-  "revision": 4,
-  "evidence": "Connected as two members, verified identity and server state, browsed nested folders and returned to the same widget. Arrows moved one neighbour, Back restored the origin, and empty, loading, missing, unreachable and revoked-session paths each showed distinct feedback. Target Cursor ownership and keyboard takeover were measured. Evidence: qa/sprint-2/."
+  "status": "done",
+  "revision": 5,
+  "evidence": "Connected as two members, verified identity and server state, browsed nested folders and returned to the same widget. Arrows moved one neighbour, Back restored the origin, and empty, loading, missing, unreachable and revoked-session paths each showed distinct feedback. Target Cursor ownership and keyboard takeover were measured. Evidence: qa/sprint-2/. Owner accepted PI-02 on 27 November 2026."
 }

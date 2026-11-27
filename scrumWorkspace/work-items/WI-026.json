@@ -6,8 +6,8 @@
   "type": "enabler",
   "priority": 1,
   "effort": 4,
-  "revision": 4,
-  "status": "review",
+  "revision": 5,
+  "status": "done",
   "acceptance": "**Story or goal** · Enable the built client to reach the selected local installation.\n\n**Expected behaviour** · Accept an explicit loopback server address. Check status and version, forward API calls and open the browser.\n\n**Scope boundary** · The operator starts and stops the backend independently.\n\n**Previous in delivery queue** · WI-025\n\n**Depends on** · WI-025\n\n**Verify** · Exercise ready, unreachable and incompatible servers. Stop the client and verify the same server still responds.\n\n**Effort basis** · Windows process lifecycle and integration across the host boundary.",
-  "evidence": "Host tests cover ready, unreachable (502 `Server unreachable`) and incompatible servers (expected 0.1, found reported) and the v0.1 server stayed up when the client stopped (separate process). Launch lines observed: `Server ready: version 0.1 schema 2 at http://127.0.0.1:49674` and `FoundationOS 0.2 client ready at http://127.0.0.1:55296/`. The separate v0.1 server on 49674 continued answering after the client host was stopped and restarted on 61686."
+  "evidence": "Host tests cover ready, unreachable (502 `Server unreachable`) and incompatible servers (expected 0.1, found reported) and the v0.1 server stayed up when the client stopped (separate process). Launch lines observed: `Server ready: version 0.1 schema 2 at http://127.0.0.1:49674` and `FoundationOS 0.2 client ready at http://127.0.0.1:55296/`. The separate v0.1 server on 49674 continued answering after the client host was stopped and restarted on 61686. Owner accepted PI-02 on 27 November 2026."
 }

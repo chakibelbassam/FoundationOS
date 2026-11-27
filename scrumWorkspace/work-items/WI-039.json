@@ -6,8 +6,8 @@
   "type": "task",
   "priority": 3,
   "effort": 2,
-  "revision": 4,
-  "status": "review",
+  "revision": 5,
+  "status": "done",
   "acceptance": "**Story or goal** · Make the release reproducible for operators and component maintainers.\n\n**Expected behaviour** · Document prerequisites, startup/shutdown, supported version pair, storage/reset and component inputs, focus, motion and failure states.\n\n**Scope boundary** · Use the version README and shared component inventory. Label unverified observations.\n\n**Previous in delivery queue** · WI-038\n\n**Depends on** · WI-026, WI-035, WI-036, WI-037, WI-038\n\n**Verify** · Follow the startup instructions and resolve each component’s evidence link and usage example.\n\n**Effort basis** · Documentation from recorded implementation evidence.",
-  "evidence": "The version README documents the pair, build and launch commands, options, connect sequence, defaults, storage and reset, disposable fixtures and known gaps. The component inventory records each v0.2 control with usage, focus, narrow layout, reduced motion and evidence links, plus the motion token table. Followed the startup instructions from a clean client launch at http://127.0.0.1:64617/. Evidence: versions/0.2 FoundationOS/README.md and Product Information/Interface/Components/README.md."
+  "evidence": "The version README documents the pair, build and launch commands, options, connect sequence, defaults, storage and reset, disposable fixtures and known gaps. The component inventory records each v0.2 control with usage, focus, narrow layout, reduced motion and evidence links, plus the motion token table. Followed the startup instructions from a clean client launch at http://127.0.0.1:64617/. Evidence: versions/0.2 FoundationOS/README.md and Product Information/Interface/Components/README.md. Owner accepted PI-02 on 27 November 2026."
 }
