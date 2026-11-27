@@ -1,0 +1,24 @@
+[
+  {
+    "submitted": {
+      "id": "WI-060",
+      "revision": 2,
+      "requestId": "34522630-bbd5-40f2-98dd-7c70297dd393",
+      "kind": "decision",
+      "body": "Repurposed from password enrollment to refusing an older store. The owner decided there is no legacy support before v1.0: v0.3 opens only a fresh 0.3 store and stops clearly on a v0.1 or v0.2 store.",
+      "documentRefs": [
+        "PI-03/owner-decisions.md"
+      ]
+    },
+    "note": {
+      "id": "34522630-bbd5-40f2-98dd-7c70297dd393",
+      "recordId": "WI-060",
+      "at": "2026-11-27T00:01:40.778Z",
+      "kind": "decision",
+      "body": "Repurposed from password enrollment to refusing an older store. The owner decided there is no legacy support before v1.0: v0.3 opens only a fresh 0.3 store and stops clearly on a v0.1 or v0.2 store.",
+      "documentRefs": [
+        "PI-03/owner-decisions.md"
+      ]
+    }
+  }
+]

@@ -6,6 +6,7 @@ import DeleteIcon from '@mui/icons-material/DeleteOutline';
 import { usePreferences } from '../app/PreferencesContext';
 import { Breadcrumbs } from '../components/Breadcrumbs';
 import { StatePanel } from '../components/StatePanel';
+import { rowSecondary } from './HomeView';
 
 function leaf(path: string): string {
   const parts = path.split('/').filter(Boolean);
@@ -55,7 +56,9 @@ export function ProjectsView() {
                   <span className="fo-home-row-label">
                     <FolderOpenIcon fontSize="small" aria-hidden="true" /> {leaf(entry)}
                   </span>
-                  <span className="fo-home-row-sub">{entry}</span>
+                  {rowSecondary(leaf(entry), entry) ? (
+                    <span className="fo-home-row-sub">{rowSecondary(leaf(entry), entry)}</span>
+                  ) : null}
                 </span>
               </button>
               <Button

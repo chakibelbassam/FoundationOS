@@ -1,0 +1,26 @@
+{
+  "requestId": "518ee32b-78ad-4d32-a05d-bf8c94ac2cce",
+  "operation": "update",
+  "id": "WI-078",
+  "submitted": {
+    "id": "WI-078",
+    "revision": 1,
+    "changes": {
+      "title": "Independently review the release in real browsers",
+      "acceptance": "**Expected behaviour** · Assign a separate GLM 5.3 Flash QA reviewer. Run an independent pass against the same built candidate in real Edge and the built-in browser, covering account boundaries, offline Home retention, profile polish and existing workspace journeys.\n\n**Verify** · Attach an independent report with real Windows launcher evidence, actual viewport sizes, browser actions, defects and reproducible results. Include Projects, Apps, SVAR, reader, Back, appearance and a second account.\n\n**Delivery dependencies** · WI-075, WI-076\n\n**Queue** · Follows WI-077 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3."
+    }
+  },
+  "result": {
+    "id": "WI-078",
+    "kind": "item",
+    "parent": "S-03-6",
+    "title": "Independently review the release in real browsers",
+    "type": "task",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Assign a separate GLM 5.3 Flash QA reviewer. Run an independent pass against the same built candidate in real Edge and the built-in browser, covering account boundaries, offline Home retention, profile polish and existing workspace journeys.\n\n**Verify** · Attach an independent report with real Windows launcher evidence, actual viewport sizes, browser actions, defects and reproducible results. Include Projects, Apps, SVAR, reader, Back, appearance and a second account.\n\n**Delivery dependencies** · WI-075, WI-076\n\n**Queue** · Follows WI-077 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "proposed",
+    "revision": 2
+  },
+  "at": "2026-11-27T00:02:11.203Z"
+}

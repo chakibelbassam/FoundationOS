@@ -1,5 +1,5 @@
 ---
-revision: 1
+revision: 4
 ---
 # 📦 PI-3 (Accounts and connection) · v0.3 sprint buckets
 
@@ -9,29 +9,30 @@ revision: 1
 
 **Target v0.3** · 💭 Proposed · [Sprint record](../../sprints/S-03-1.json)
 
-Record the accepted baseline and policy choices, exercise rollback on a copied store, and launch the v0.3 pair independently on loopback.
+Record the accepted baseline and policy choices, create the fresh v0.3 store, refuse an older store, and launch the v0.3 pair independently on loopback.
 
 | Work item | Type | Status | Priority | Effort |
 |---|---|---|---|---|
 | ☐ [WorkItem-54 (Capture the accepted workspace baseline)](../../work-items/WI-054.json) | ⚙️ Enabler | 💭 Proposed | 🔴 P-1 | 🟡 Ef-2 |
 | ☐ [WorkItem-55 (Set the session and account lifecycle policies)](../../work-items/WI-055.json) | ⚙️ Enabler | 💭 Proposed | 🔴 P-1 | 🟠 Ef-3 |
-| ☐ [WorkItem-56 (Migrate a copy of the account store)](../../work-items/WI-056.json) | ⚙️ Enabler | 💭 Proposed | 🔴 P-1 | 🟠 Ef-4 |
+| ☐ [WorkItem-56 (Create the versioned v0.3 account store)](../../work-items/WI-056.json) | ⚙️ Enabler | 💭 Proposed | 🔴 P-1 | 🟠 Ef-4 |
 | ☐ [WorkItem-57 (Launch the paired v0.3 client and server)](../../work-items/WI-057.json) | ⚙️ Enabler | 💭 Proposed | 🔴 P-1 | 🟠 Ef-3 |
+| ☐ [WorkItem-60 (Refuse an older store with a clear message)](../../work-items/WI-060.json) | ⚙️ Enabler | 💭 Proposed | 🔴 P-1 | 🟡 Ef-2 |
 
-0 of 4 completed at planning.
+0 of 5 completed at planning.
 
 ## 🏁 Sprint-2 (Create accounts and sign in)
 
 **Target v0.3** · 💭 Proposed · [Sprint record](../../sprints/S-03-2.json)
 
-Create one owner on an empty store, enroll legacy users and sign in to an authorized private file through the MUI account screens.
+Create one owner on an empty store, sign in to an authorized private file through the MUI account screens, and load member preferences from the server.
 
 | Work item | Type | Status | Priority | Effort |
 |---|---|---|---|---|
 | ☐ [WorkItem-58 (Build the shared MUI account forms)](../../work-items/WI-058.json) | ⚙️ Enabler | 💭 Proposed | 🔴 P-1 | 🟡 Ef-2 |
 | ☐ [WorkItem-59 (Create the first owner from the server link)](../../work-items/WI-059.json) | ✨ Feature | 💭 Proposed | 🔴 P-1 | 🟠 Ef-4 |
-| ☐ [WorkItem-60 (Enroll existing accounts with a password)](../../work-items/WI-060.json) | ✨ Feature | 💭 Proposed | 🔴 P-1 | 🟠 Ef-4 |
 | ☐ [WorkItem-61 (Sign in and open a private file)](../../work-items/WI-061.json) | ✨ Feature | 💭 Proposed | 🔴 P-1 | 🟠 Ef-4 |
+| ☐ [WorkItem-80 (Sync member preferences through the server)](../../work-items/WI-080.json) | ⚙️ Enabler | 💭 Proposed | 🔴 P-1 | 🟡 Ef-2 |
 
 0 of 4 completed at planning.
 
@@ -46,7 +47,7 @@ Restore a valid browser session, prove account isolation across tabs and browser
 | ☐ [WorkItem-62 (Remember a valid session after browser close)](../../work-items/WI-062.json) | ✨ Feature | 💭 Proposed | 🔴 P-1 | 🟠 Ef-4 |
 | ☐ [WorkItem-63 (Restore authorized routes on reconnect)](../../work-items/WI-063.json) | 🔧 Enhancement | 💭 Proposed | 🔴 P-1 | 🟠 Ef-3 |
 | ☐ [WorkItem-64 (End one session or all my sessions)](../../work-items/WI-064.json) | ✨ Feature | 💭 Proposed | 🔴 P-1 | 🟠 Ef-3 |
-| ☐ [WorkItem-65 (Invite and enroll a member)](../../work-items/WI-065.json) | ✨ Feature | 💭 Proposed | 🔴 P-1 | 🟠 Ef-4 |
+| ☐ [WorkItem-65 (Invite and create a member account)](../../work-items/WI-065.json) | ✨ Feature | 💭 Proposed | 🔴 P-1 | 🟠 Ef-4 |
 
 0 of 4 completed at planning.
 
@@ -90,9 +91,9 @@ Deliver a reproducible final candidate with polished account and profile screens
 | Work item | Type | Status | Priority | Effort |
 |---|---|---|---|---|
 | ☐ [WorkItem-75 (Polish account and profile interactions)](../../work-items/WI-075.json) | 🔧 Enhancement | 💭 Proposed | 🔴 P-1 | 🟠 Ef-3 |
-| ☐ [WorkItem-76 (Document launch, upgrade and account operations)](../../work-items/WI-076.json) | 🛠️ Task | 💭 Proposed | 🔴 P-1 | 🟡 Ef-2 |
-| ☐ [WorkItem-77 (Test the release journeys in the built-in browser)](../../work-items/WI-077.json) | 🛠️ Task | 💭 Proposed | 🔴 P-1 | 🟠 Ef-4 |
-| ☐ [WorkItem-78 (Independently review the release in the browser)](../../work-items/WI-078.json) | 🛠️ Task | 💭 Proposed | 🔴 P-1 | 🟠 Ef-4 |
+| ☐ [WorkItem-76 (Document launch, store and account operations)](../../work-items/WI-076.json) | 🛠️ Task | 💭 Proposed | 🔴 P-1 | 🟡 Ef-2 |
+| ☐ [WorkItem-77 (Test the release journeys in real browsers)](../../work-items/WI-077.json) | 🛠️ Task | 💭 Proposed | 🔴 P-1 | 🟠 Ef-4 |
+| ☐ [WorkItem-78 (Independently review the release in real browsers)](../../work-items/WI-078.json) | 🛠️ Task | 💭 Proposed | 🔴 P-1 | 🟠 Ef-4 |
 | ☐ [WorkItem-79 (Fix findings and assemble release evidence)](../../work-items/WI-079.json) | 🛠️ Task | 💭 Proposed | 🔴 P-1 | 🟠 Ef-3 |
 
 0 of 5 completed at planning.

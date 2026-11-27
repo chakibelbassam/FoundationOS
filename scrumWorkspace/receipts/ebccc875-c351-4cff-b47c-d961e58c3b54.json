@@ -1,0 +1,22 @@
+{
+  "requestId": "ebccc875-c351-4cff-b47c-d961e58c3b54",
+  "operation": "update",
+  "id": "S-03-2",
+  "submitted": {
+    "id": "S-03-2",
+    "revision": 1,
+    "changes": {
+      "acceptance": "Create one owner on an empty store, sign in to an authorized private file through the MUI account screens, and load member preferences from the server."
+    }
+  },
+  "result": {
+    "id": "S-03-2",
+    "kind": "sprint",
+    "parent": "PI-03",
+    "title": "Create accounts and sign in",
+    "acceptance": "Create one owner on an empty store, sign in to an authorized private file through the MUI account screens, and load member preferences from the server.",
+    "revision": 2,
+    "status": "proposed"
+  },
+  "at": "2026-11-27T00:00:57.066Z"
+}

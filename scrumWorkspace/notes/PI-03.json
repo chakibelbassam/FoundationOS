@@ -134,5 +134,27 @@
         "PI-03/sprint-buckets.md"
       ]
     }
+  },
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 4,
+      "requestId": "cb040463-3811-4075-bc61-f9a09d1498bf",
+      "kind": "decision",
+      "body": "Owner settled the PI-3 delivery decisions. **No legacy:** v0.3 opens only a fresh v0.3 store; a v0.1 or v0.2 store is refused. **Supported pair:** client 0.3 with server 0.3, both copied into versions/0.3 FoundationOS. **Sessions:** the HttpOnly cookie carries the server token, bound to the installation; the host only proxies. **Control:** server console with O/R/Q, and a one-time client pairing. **Profile:** SQLite is authoritative and profile.json is deleted. **Retention:** reserve the username and Home for 30 days, then hard delete. **Credentials:** 6-character minimum, scrypt, the 5/1/3/5/15-minute rate ladder, six-digit invite and member-reset codes, 16-character owner recovery code. **Delivery:** two PRs, PR 1 after Sprint 3, no waiting between them, Edge never merges.\n\nThe full table, the adopted defaults and the record edits that follow are in [PI-3 owner decisions](PI-03/owner-decisions.md). WI-060 is repurposed to refuse older stores; WI-056 becomes store creation rather than migration; the PI acceptance loses the upgrade promise; a preferences-sync item is added.",
+      "documentRefs": [
+        "PI-03/owner-decisions.md"
+      ]
+    },
+    "note": {
+      "id": "cb040463-3811-4075-bc61-f9a09d1498bf",
+      "recordId": "PI-03",
+      "at": "2026-11-26T23:59:25.796Z",
+      "kind": "decision",
+      "body": "Owner settled the PI-3 delivery decisions. **No legacy:** v0.3 opens only a fresh v0.3 store; a v0.1 or v0.2 store is refused. **Supported pair:** client 0.3 with server 0.3, both copied into versions/0.3 FoundationOS. **Sessions:** the HttpOnly cookie carries the server token, bound to the installation; the host only proxies. **Control:** server console with O/R/Q, and a one-time client pairing. **Profile:** SQLite is authoritative and profile.json is deleted. **Retention:** reserve the username and Home for 30 days, then hard delete. **Credentials:** 6-character minimum, scrypt, the 5/1/3/5/15-minute rate ladder, six-digit invite and member-reset codes, 16-character owner recovery code. **Delivery:** two PRs, PR 1 after Sprint 3, no waiting between them, Edge never merges.\n\nThe full table, the adopted defaults and the record edits that follow are in [PI-3 owner decisions](PI-03/owner-decisions.md). WI-060 is repurposed to refuse older stores; WI-056 becomes store creation rather than migration; the PI acceptance loses the upgrade promise; a preferences-sync item is added.",
+      "documentRefs": [
+        "PI-03/owner-decisions.md"
+      ]
+    }
   }
 ]

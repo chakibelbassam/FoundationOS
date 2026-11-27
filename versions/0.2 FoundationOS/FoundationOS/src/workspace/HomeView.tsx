@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { useMediaQuery } from '@mui/material';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import AppsIcon from '@mui/icons-material/Apps';
 import MagicBento from '../vendor/reactbits/MagicBento';
@@ -38,6 +39,12 @@ function leaf(path: string): string {
   return parts.length > 0 ? parts[parts.length - 1] : path;
 }
 
+export function rowSecondary(label: string, secondary?: string | null): string | null {
+  if (!secondary) return null;
+  // A root entry's path is its display name; showing it twice wastes a line.
+  return secondary === label ? null : secondary;
+}
+
 interface TileButtonProps {
   control: string;
   label: string;
@@ -46,6 +53,7 @@ interface TileButtonProps {
 }
 
 function TileButton({ control, label, secondary, onGo }: TileButtonProps) {
+  const sub = rowSecondary(label, secondary);
   return (
     <button
       type="button"
@@ -56,7 +64,7 @@ function TileButton({ control, label, secondary, onGo }: TileButtonProps) {
     >
       <span className="fo-home-row-text">
         <span className="fo-home-row-label">{label}</span>
-        {secondary ? <span className="fo-home-row-sub">{secondary}</span> : null}
+        {sub ? <span className="fo-home-row-sub">{sub}</span> : null}
       </span>
     </button>
   );
@@ -72,7 +80,8 @@ export function HomeView() {
   const projects = effective.projects ?? [];
   const recentApps = effective.recentApps ?? [];
   const reduced = motionIsReduced(effective.motion);
-  const dark = effective.theme === 'dark';
+  const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
+  const dark = effective.theme === 'system' ? prefersDark : effective.theme === 'dark';
 
   const go = (to: string, tile: string, control?: string) => {
     rememberTile(control ?? tile);
@@ -127,7 +136,7 @@ export function HomeView() {
         description: 'Folders you pinned for quick access.',
         visual: 'collaboration',
         colSpan: 2,
-        rowSpan: 1,
+        rowSpan: 2,
         content: (
           <div className="fo-home-tile">
             <div className="fo-home-tile-head">
@@ -166,7 +175,7 @@ export function HomeView() {
         description: 'Apps you opened recently.',
         visual: 'analytics',
         colSpan: 2,
-        rowSpan: 1,
+        rowSpan: 2,
         content: (
           <div className="fo-home-tile">
             <div className="fo-home-tile-head">
@@ -238,7 +247,7 @@ export function HomeView() {
       <MagicBento
         items={items}
         columns={4}
-        rowHeight={150}
+        rowHeight={160}
         theme={dark ? 'dark' : 'light'}
         glowColor={undefined}
         textAutoHide={false}
