@@ -40,7 +40,11 @@ function rememberMember(profile: Profile) {
 
 function messageOf(error: unknown): string {
   if (error instanceof ApiError) {
-    if (error.failure.kind === 'unauthorized') return 'The username or password is not correct.';
+    if (error.failure.kind === 'unauthorized') {
+      // Prefer the server's actionable message: an invite or setup claim is
+      // not a password failure and needs a different next step.
+      return error.failure.message ?? 'The username or password is not correct.';
+    }
     if (error.failure.kind === 'offline') return 'The server is unreachable. Start the v0.3 server and try again.';
     if (error.failure.kind === 'aborted') return 'The attempt was superseded.';
     if (error.failure.kind === 'server') return error.failure.message;

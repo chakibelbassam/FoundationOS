@@ -45,6 +45,13 @@ describe('api client', () => {
     unsubscribe();
   });
 
+  it('keeps the server message on a 401 so a join can explain the code', async () => {
+    fetchMock.mockResolvedValueOnce(response(401, { error: 'That invitation is not valid. Ask the owner for a new one.' }));
+    await expect(api.join('123456', 'maya', 'secret12', '')).rejects.toMatchObject({
+      failure: { kind: 'unauthorized', message: 'That invitation is not valid. Ask the owner for a new one.' },
+    });
+  });
+
   it('treats 502 as the server being unreachable', async () => {
     fetchMock.mockResolvedValueOnce(response(502, { error: 'Server unreachable' }));
     await expect(api.list('')).rejects.toMatchObject({ failure: { kind: 'offline' } });

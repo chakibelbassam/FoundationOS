@@ -136,10 +136,17 @@ async function request<T>(path: string, init: RequestInit = {}, expect: 'json' |
     throw new ApiError({ kind: 'aborted' });
   }
   if (response.status === 401) {
+    let message: string | undefined;
+    try {
+      const body = (await response.json()) as { error?: string };
+      if (body?.error) message = body.error;
+    } catch {
+      /* keep the caller's fallback copy */
+    }
     if (options.notifyUnauthorized !== false && requestGeneration === generation) {
       notifyUnauthorized();
     }
-    throw new ApiError({ kind: 'unauthorized' });
+    throw new ApiError({ kind: 'unauthorized', message });
   }
   if (response.status === 404) throw new ApiError({ kind: 'not-found' });
   if (response.status === 502) {

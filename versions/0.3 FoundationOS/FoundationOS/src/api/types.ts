@@ -103,7 +103,7 @@ export interface ResetCode {
 }
 
 export type ApiFailure =
-  | { kind: 'unauthorized' }
+  | { kind: 'unauthorized'; message?: string }
   | { kind: 'not-found' }
   | { kind: 'aborted' }
   | { kind: 'offline'; message: string }

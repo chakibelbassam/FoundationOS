@@ -54,6 +54,24 @@ describe('session provider', () => {
     hook.unmount();
   });
 
+  it('surfaces the invitation message instead of the password copy', async () => {
+    fetchMock.mockResolvedValueOnce(jsonResponse(401, { error: 'Sign in' }));
+    const hook = renderHook(() => useSession(), { wrapper: SessionProvider });
+    await waitFor(() => expect(hook.result.current.status).toBe('none'));
+    fetchMock.mockResolvedValueOnce(jsonResponse(401, {
+      error: 'That invitation is not valid. Ask the owner for a new one.',
+    }));
+    let result!: { ok: boolean; error?: string };
+    await act(async () => {
+      result = await hook.result.current.join('123456', 'maya', 'secret12', '');
+    });
+    expect(result).toEqual({
+      ok: false,
+      error: 'That invitation is not valid. Ask the owner for a new one.',
+    });
+    hook.unmount();
+  });
+
   it('signs in and keeps the profile in memory', async () => {
     fetchMock.mockResolvedValueOnce(jsonResponse(401, { error: 'Sign in' }));
     const hook = renderHook(() => useSession(), { wrapper: SessionProvider });
