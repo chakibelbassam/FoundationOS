@@ -71,3 +71,17 @@ Sprint-6 replaces the shelf Home with a Bento workspace and a real explorer. The
 - Descriptor budget (200 entries, 40 folders, 12 probes): `versions/0.2 FoundationOS/qa/sprint-3/WI-032/`
 - Settings defaults, Apply/Cancel/Reset, failed save, two-member restart: `versions/0.2 FoundationOS/qa/sprint-4/WI-036/` and `qa/release/`
 - Narrow layouts at 390 px and 320 × 600: `versions/0.2 FoundationOS/qa/release/`
+
+## v0.3 account screens
+
+Delivered in `versions/0.3 FoundationOS/FoundationOS/`. MUI owns the forms, feedback and dialogs; React Bits `CodeSlots` owns six-digit entry. Tailwind v4 is imported in `src/tailwind.css` without preflight so it cannot reset MUI or `styles.css`.
+
+| Component | Where it appears | Behaviour and focus | Narrow / reduced motion | Evidence |
+| --- | --- | --- | --- | --- |
+| **Account shell** (`src/account/AccountShell.tsx`, MUI) | Create owner, Sign in, Join, Recover | Shows the paired server and its version, keeps the Retry action beside an unreachable server, and puts the form in one panel. | Single column at 390 px and 320 × 600; focus starts in the first field. | `versions/0.3 FoundationOS/qa/` |
+| **CodeSlots** (`src/vendor/reactbits/CodeSlots.tsx`, React Bits) | Join by invitation, member reset | Six slots, 44 px, 8 px gap, 12 px radius. Digits land with the cascade, paste fills from the first hole, Backspace/Delete/arrows/Home/End work, error drains last to first and clears, success washes and locks. | Reduced motion removes the spring and blink but keeps every state. Fits at 320 px without overflow. | `versions/0.3 FoundationOS/qa/` |
+| **Profile panel** (`src/account/ProfilePanel.tsx`, MUI) | `/settings/profile` | Avatar, username, 500-character introduction, optional email, password change, account-wide sign-out and member deletion. The destructive dialogs explain the consequence and restore focus. | Fields stack; the avatar row wraps; the delete and sign-out dialogs are keyboard reachable. | `versions/0.3 FoundationOS/qa/` |
+| **Accounts panel** (`src/account/AccountsPanel.tsx`, MUI) | `/settings/accounts`, owner only | Create a six-digit invitation, copy it, list pending/used/revoked/expired states, revoke, and issue a member reset code. | Cards stack; the code stays on one line; copy uses the clipboard API. | `versions/0.3 FoundationOS/qa/` |
+| **Sign-in and recovery feedback** (`src/account/SignInView.tsx`, `RecoveryView.tsx`, MUI) | `/signin`, `/recover` | Generic invalid-credential copy, password-change and sign-out notices, owner and member recovery tabs. Six-digit recovery uses CodeSlots. | Tabs and fields stack; errors are announced with `role="alert"`. | `versions/0.3 FoundationOS/qa/` |
+
+The final v0.3 independent reports and retests are linked from PI-3 in Scrum and stored under `versions/0.3 FoundationOS/qa/`.
