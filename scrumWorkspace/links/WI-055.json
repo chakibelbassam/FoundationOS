@@ -1,9 +1,13 @@
 {
-  "revision": 1,
+  "revision": 2,
   "references": [
     {
       "relativePath": "PI-03/accounts-and-connection-plan.md",
       "purpose": "requirement"
+    },
+    {
+      "relativePath": "PI-03/session-and-retention-policy.md",
+      "purpose": "decision"
     }
   ]
 }
