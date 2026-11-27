@@ -135,7 +135,9 @@ export function Header() {
           if (reason === 'escapeKeyDown') window.setTimeout(() => userRef.current?.focus(), 0);
         }}
         MenuListProps={{ 'aria-label': 'Profile menu' }}
-        transitionDuration={effective.motion === 'off' ? 0 : 160}
+        // Open without the grow transition: a fast pointer click must not land
+        // on the backdrop while the paper is still moving. The exit still animates.
+        transitionDuration={{ enter: 0, exit: effective.motion === 'off' ? 0 : 160 }}
       >
         <MenuItem onClick={() => goSettings('profile')}>
           <ListItemIcon><CheckIcon fontSize="small" /></ListItemIcon>
