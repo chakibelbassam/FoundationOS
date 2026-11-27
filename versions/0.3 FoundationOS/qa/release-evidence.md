@@ -1,6 +1,6 @@
 # PI-3 release evidence · v0.3
 
-Candidate: PR #12, branch `edge-opencode/pi-03-accounts-and-connection`, head `a1351a1`.
+Candidate: PR #12, branch `edge-opencode/pi-03-accounts-and-connection`, head `96c2bd4`.
 Version pair: client 0.3 with server 0.3. Store schema 3.
 Date: 27 November 2026.
 
@@ -9,7 +9,7 @@ Date: 27 November 2026.
 | Check | Command | Result |
 |---|---|---|
 | Server | `node --test "versions/0.3 FoundationOS/FoundationOS Server/server.test.mjs" "versions/0.3 FoundationOS/FoundationOS Server/account-extra.test.mjs"` | 21/21 pass |
-| Client | `npm test` in `versions/0.3 FoundationOS/FoundationOS` | 83/83 pass |
+| Client | `npm test` in `versions/0.3 FoundationOS/FoundationOS` | 88/88 pass |
 | Host and launcher | `node --test tests/host.test.mjs tests/launcher.test.mjs` | 16/16 pass |
 | Production build | `npm run build` | pass |
 | Scrum store | `scrumWorkSpace validate` | ok, 0 errors, 0 warnings |
@@ -17,8 +17,8 @@ Date: 27 November 2026.
 
 ## Browser reports
 
-- Hands-on tester: `qa/tester/tester-report.md` (Muse Spark 1.3 Contributor, separate session).
-- Independent reviewer: `qa/reviewer/reviewer-report.md` (GLM 5.3 Flash, separate session, separate browser jar and fresh store).
+- Hands-on tester: `qa/tester/tester-report.md` (Muse Spark 1.3 Contributor, separate session). Pass with findings on `66ddc0b`; no Sev-1; the sign-out menu fix is being retested at `96c2bd4`.
+- Independent reviewer: `qa/reviewer/reviewer-report.md` (GLM 5.3 Flash, separate session, separate browser jar and fresh store). Pending.
 
 ## Work items
 
@@ -58,5 +58,7 @@ Date: 27 November 2026.
 - Backups are outside the 30-day purge; a restored backup can contain a retained Home.
 - The 30-day value is a constant in v0.3, structured for a later server setting.
 - The client host keeps the v0.2 preferences endpoints as dead code while the server owns preferences; removing them is follow-up cleanup.
+- The tester observed that the header Sign out item occasionally needed a second click. The menu now opens without its grow transition; the retest is recorded in the tester report.
 
 The owner merges. Edge does not merge.
+
