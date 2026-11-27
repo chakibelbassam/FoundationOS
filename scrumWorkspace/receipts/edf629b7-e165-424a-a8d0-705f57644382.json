@@ -1,0 +1,30 @@
+{
+  "requestId": "edf629b7-e165-424a-a8d0-705f57644382",
+  "operation": "create",
+  "id": "WI-050",
+  "submitted": {
+    "status": "proposed",
+    "revision": 0,
+    "id": "WI-050",
+    "kind": "item",
+    "parent": "S-02-6",
+    "title": "Run independent browser acceptance on PR 9",
+    "type": "task",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Have the independent reviewer drive the built v0.2 client through OpenCode's built-in browser at the launcher-printed URL on the final PR #9 head. Compare the new fixes with the prototype replay and retest actionable acceptance failures.\n\n**Related earlier work** · WI-040 and WI-041\n\n**Delivery dependencies** · WI-045 through WI-049.\n\n**Verify** · Run Weather through nested browse, actions, README, refresh, reconnect and Back. Exercise member changes, persistence, stale results, scroll dwell, Solid and Glass, cursor, keyboard and reduced motion at desktop, 390 px and 320 x 600 actual browser viewports. Record the exact candidate, viewports, frame evidence for flip jitter or an explicit unresolved gap, and physical input limitations. Use disposable stores only, track exact child processes and await their exit, and verify the Windows launcher in a Windows job. Record check outcomes and link the updated PR and evidence.\n\n**Delivery** · v0.2 client, existing PR #9."
+  },
+  "result": {
+    "status": "proposed",
+    "revision": 1,
+    "id": "WI-050",
+    "kind": "item",
+    "parent": "S-02-6",
+    "title": "Run independent browser acceptance on PR 9",
+    "type": "task",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Have the independent reviewer drive the built v0.2 client through OpenCode's built-in browser at the launcher-printed URL on the final PR #9 head. Compare the new fixes with the prototype replay and retest actionable acceptance failures.\n\n**Related earlier work** · WI-040 and WI-041\n\n**Delivery dependencies** · WI-045 through WI-049.\n\n**Verify** · Run Weather through nested browse, actions, README, refresh, reconnect and Back. Exercise member changes, persistence, stale results, scroll dwell, Solid and Glass, cursor, keyboard and reduced motion at desktop, 390 px and 320 x 600 actual browser viewports. Record the exact candidate, viewports, frame evidence for flip jitter or an explicit unresolved gap, and physical input limitations. Use disposable stores only, track exact child processes and await their exit, and verify the Windows launcher in a Windows job. Record check outcomes and link the updated PR and evidence.\n\n**Delivery** · v0.2 client, existing PR #9."
+  },
+  "at": "2026-11-26T22:11:57.789Z"
+}

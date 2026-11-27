@@ -19,7 +19,7 @@ const properties = {
   title: { type: 'string' },
   targetVersion: { type: 'string', description: 'PI product release, such as 0.1, or none for development setup. Sprints and items inherit the PI target.' },
   acceptance: { type: 'string' },
-  effort: { type: 'integer', minimum: 2, maximum: 5, description: 'Ef-2 through Ef-5. Split Ef-1.' },
+  effort: { type: 'integer', minimum: 1, maximum: 5, description: 'Ef-1 is lowest effort and Ef-5 is highest.' },
   priority: { type: 'integer', minimum: 1, maximum: 5, description: 'P-1 is highest, P-5 is lowest' },
   severity: { type: 'string', description: 'Bug severity from Sev-1 (highest impact) to Sev-5. Proposed changes need written evidence.' },
   type: { type: 'string', enum: ['feature', 'enhancement', 'bug', 'enabler', 'task'] },
@@ -28,12 +28,16 @@ const properties = {
   revision: { type: 'integer', minimum: 0 }
 };
 
-const planningTransitions = { proposed: ['ready'], ready: ['proposed'] };
-const itemTransitions = {
-  ...planningTransitions,
+// One linear lifecycle shared by PIs, sprints and work items. Every step can be
+// taken backwards and a done record reopens to review, so the same agent that
+// records delivery can also close or reopen it. No status is reserved for a
+// separate owner-only interface.
+const transitions = {
+  proposed: ['ready'],
   ready: ['proposed', 'active'],
   active: ['ready', 'review'],
-  review: ['active']
+  review: ['active', 'done'],
+  done: ['review']
 };
 const editable = Object.fromEntries(
   Object.entries(properties).filter(([key]) => !['id', 'revision', 'kind'].includes(key))
@@ -79,7 +83,7 @@ const tools = [
   },
   {
     name: 'update',
-    description: 'Query the record first, then send its exact revision and only the fields to change or clear. Other values stay in place. Owner approval controls PI and sprint activation and all final acceptance. Supply an optional requestId UUID to recover a lost response by repeating the same call.',
+    description: 'Query the record first, then send its exact revision and only the fields to change or clear. Other values stay in place. The lifecycle is agent-managed end to end: proposed to ready to active to review to done, with any step reversible and done reopening to review. Review and done need evidence. Supply an optional requestId UUID to recover a lost response by repeating the same call.',
     inputSchema: schema(updateInput, requiredUpdate)
   },
   {
@@ -124,7 +128,6 @@ function read(id) {
 }
 
 function checkArtifactScope(record) {
-  if (record.status === 'done') throw Error('Accepted records and their workspace are owner-controlled');
   if (record.kind !== 'pi') checkParent(record, record);
 }
 
@@ -142,9 +145,6 @@ function checkParent(record, previous) {
   }
   const pi = parent.kind === 'sprint' ? read(parent.parent) : parent;
   if (pi.kind !== 'pi') throw Error('Sprint parent is not a PI');
-  if (parent.status === 'done' || pi.status === 'done') {
-    throw Error('An accepted parent closes its scope to agent edits');
-  }
   if (previous && previous.parent !== record.parent &&
       (previous.status !== 'proposed' || record.status !== 'proposed')) {
     throw Error('Only proposed work can move between sprints');
@@ -155,17 +155,15 @@ function checkParent(record, previous) {
 }
 
 function checkLifecycle(record, previous) {
-  if (previous?.status === 'done' || record.status === 'done') {
-    throw Error('Final acceptance and accepted records are owner-controlled');
-  }
   if (!previous && record.status !== 'proposed') throw Error('Create new work as proposed');
   if (previous && record.status !== previous.status) {
-    const allowed = record.kind === 'item' ? itemTransitions : planningTransitions;
-    if (!allowed[previous.status]?.includes(record.status)) {
+    if (!transitions[previous.status]?.includes(record.status)) {
       throw Error('Invalid agent transition from ' + previous.status + ' to ' + record.status);
     }
   }
-  if (record.status === 'review' && !record.evidence) throw Error('Review requires evidence');
+  if ((record.status === 'review' || record.status === 'done') && !record.evidence) {
+    throw Error('Review and done records require evidence');
+  }
 }
 
 function checkSeverity(record, previous) {
@@ -186,6 +184,8 @@ function checkSeverity(record, previous) {
 function checkRecord(record, previous) {
   checkFields(record, properties, requiredRecord);
   if (record.kind !== kinds[idPrefix(record.id)]) throw Error('ID and kind disagree');
+  if (record.kind === 'pi' && !record.targetVersion) throw Error('A PI requires targetVersion');
+  if (previous?.targetVersion && previous.targetVersion !== record.targetVersion && (!record.evidence || previous.evidence === record.evidence)) throw Error('Record the owner decision in evidence when changing the PI target');
   if (record.targetVersion !== undefined && (record.kind !== 'pi' ||
       !(record.id === 'PI-00' ? record.targetVersion === 'none' : /^\d+\.\d+(?:\.\d+)?$/.test(record.targetVersion)))) {
     throw Error('Use a release version on product PIs and none on the setup PI');

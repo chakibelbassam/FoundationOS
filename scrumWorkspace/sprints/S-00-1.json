@@ -4,6 +4,7 @@
   "parent": "PI-00",
   "title": "setup",
   "acceptance": "development setup",
-  "status": "active",
-  "revision": 1
+  "status": "done",
+  "revision": 3,
+  "evidence": "Owner accepted the development setup sprint on 26 November 2026. WI-001 published the verified Manual, WI-008 rebuilt the Scrum workspace and workflows, and WI-009 put Git operations in the visible terminal. All three items are closed."
 }

@@ -1,0 +1,20 @@
+[
+  {
+    "submitted": {
+      "id": "S-02-5",
+      "revision": 3,
+      "requestId": "a6cbe88f-e3b2-40b6-a9d3-34b9d9a191bb",
+      "kind": "progress",
+      "body": "Release QA starts. Candidate b8459c6 (client) with the released v0.1 server, schema 2. GLM 5.3 Flash runs independent QA and visual review; Edge operates the built-in browser and fixes confirmed defects.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "a6cbe88f-e3b2-40b6-a9d3-34b9d9a191bb",
+      "recordId": "S-02-5",
+      "at": "2026-11-26T21:03:50.661Z",
+      "kind": "progress",
+      "body": "Release QA starts. Candidate b8459c6 (client) with the released v0.1 server, schema 2. GLM 5.3 Flash runs independent QA and visual review; Edge operates the built-in browser and fixes confirmed defects.",
+      "documentRefs": []
+    }
+  }
+]

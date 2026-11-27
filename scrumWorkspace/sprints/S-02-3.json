@@ -1,0 +1,10 @@
+{
+  "id": "S-02-3",
+  "kind": "sprint",
+  "parent": "PI-02",
+  "title": "Recognize an app and inspect its files",
+  "acceptance": "Complete Weather → reveal actions → Open → README → refresh → reconnect → Back. Preserve navigation during delayed metadata and card animation. Judge the card transition against the recorded motion timings and WI-044.",
+  "status": "review",
+  "revision": 5,
+  "evidence": "Completed Weather -> reveal -> Open -> README -> refresh -> reconnect -> Back with focus restored. Run explains availability, More starts with Browse files, malformed descriptors stay folders, the descriptor budget held at 12 per view, and the turn was captured without bleed. Motion tokens and frame timings recorded. Evidence: qa/release/ and qa/sprint-3/."
+}

@@ -1,0 +1,13 @@
+{
+  "status": "review",
+  "revision": 5,
+  "id": "WI-049",
+  "kind": "item",
+  "parent": "S-02-6",
+  "title": "Review and polish the integrated v0.2 workspace",
+  "type": "task",
+  "priority": 1,
+  "effort": 4,
+  "acceptance": "**Expected behaviour** · Walk the current built client, record and fix UI and interaction defects in the Sprint-6 scope. Review spacing, typography, contrast, navigation, toolbars, empty and error states, keyboard and narrow layouts. Recheck app-card animation, cursor, focus and Settings across the integrated workspace.\n\n**Delivery dependencies** · Start baseline inspection immediately. Retest after WI-045 through WI-048 and WI-051 through WI-053 land.\n\n**Verify** · Record before/after examples and resolved issues from the current candidate. Exercise desktop and actual narrow browser viewports with both Solid and Glass. Refresh the version notes and component inventory.\n\n**Delivery** · v0.2 client, existing PR #9.",
+  "evidence": "Redesigned the integrated workspace to the owner's bar. Home is a composed Bento (1x1 Files app square, 2x1 Projects, 3x1 Recent apps, 1x2 Activity) with single-line rows and inline paths for nested entries; measured no tile overflow and Show all visible at 1307/1024 and stacked 390/320. Explorer adopts the SVAR demo (local vivid icons, local wxi toolbar font, tree, Name-only table, info/preview pane, hidden duplicate heading, no tree horizontal scroll) and remains read-only. Also fixed narrow explorer (list primary, Show/Hide details, double-tap reader), keyboard sort, empty Date row, return focus from an app overview and live Follow-system motion, with tests. Client 75/75, host + launcher 16/16, fixtures 3/3, clean build. Evidence: agents/muse/WI-049/, agents/muse/WI-050/report.md, qa/sprint-6/WI-049/."
+}

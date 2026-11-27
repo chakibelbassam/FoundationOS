@@ -1,0 +1,13 @@
+{
+  "id": "WI-033",
+  "kind": "item",
+  "parent": "S-02-3",
+  "title": "Open the app overview and text reader",
+  "type": "feature",
+  "priority": 1,
+  "effort": 3,
+  "revision": 4,
+  "status": "review",
+  "acceptance": "**Story or goal** · Inspect an app and find its files.\n\n**Expected behaviour** · Show the name, path and optional brief. Offer Browse files and Open README when present. Give both overview and reader direct routes.\n\n**Scope boundary** · Read text from the member’s private home.\n\n**Previous in delivery queue** · WI-032\n\n**Depends on** · WI-028, WI-032\n\n**Verify** · Open a direct overview URL, read the README, refresh/reconnect and press Back. Verify absent README and focus restoration.\n\n**Effort basis** · Reuses established routes and file client.",
+  "evidence": "/app/Weather and /file/Weather/README.md load directly after reconnect; Back focuses Open README, then Open on the revealed card. An app without a README (Bulk-01) offers Browse files as the only content action. A deleted file shows `This file is not available`; deleting it while open and pressing Back focuses the parent heading with a reachable Home. Evidence: qa/sprint-3/WI-033/."
+}

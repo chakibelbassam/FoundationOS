@@ -1,0 +1,13 @@
+{
+  "status": "review",
+  "revision": 4,
+  "id": "WI-047",
+  "kind": "item",
+  "parent": "S-02-6",
+  "title": "Recognize apps in nested folders",
+  "type": "bug",
+  "priority": 1,
+  "effort": 3,
+  "acceptance": "**Expected behaviour** · Use the full member-relative path for each descriptor request, cache entry and shelf lookup. Keep folder navigation, focus and order stable as metadata arrives. Keep the existing request budget and concurrency limit.\n\n**Related earlier work** · WI-032\n\n**Delivery dependencies** · Can begin on the current PR head. \n\n**Verify** · Use two nested Weather folders in different parents and a root-level namesake. Verify distinct descriptors, app actions, malformed descriptor fallback, stable focus and the 12-probe and three-concurrent limits during input and navigation.\n\n**Delivery** · v0.2 client, existing PR #9.",
+  "evidence": "useApps probes the fullPath/app.json descriptor and caches by memberId:fullPath, so root Weather, Projects/Weather, Archive/Weather and Blair's Journal/Weather resolve to distinct names and briefs; /apps lists root apps plus pinned nested apps, and a folder with an empty descriptor stays a folder. Budget of 12 reads with 3 concurrent unchanged and tested. Evidence: qa/sprint-6/WI-047/."
+}

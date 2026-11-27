@@ -1,0 +1,20 @@
+[
+  {
+    "submitted": {
+      "id": "WI-032",
+      "revision": 4,
+      "requestId": "fc5b3699-de39-4180-bd81-15588b315f70",
+      "kind": "progress",
+      "body": "Assumption (Edge judgement): the 12-request budget is counted per view including the focused item, so one slot is reserved until a focus or activation arrives. Without the reservation an initial 12 probes left no room for the activated item.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "fc5b3699-de39-4180-bd81-15588b315f70",
+      "recordId": "WI-032",
+      "at": "2026-11-26T21:03:34.121Z",
+      "kind": "progress",
+      "body": "Assumption (Edge judgement): the 12-request budget is counted per view including the focused item, so one slot is reserved until a focus or activation arrives. Without the reservation an initial 12 probes left no room for the activated item.",
+      "documentRefs": []
+    }
+  }
+]

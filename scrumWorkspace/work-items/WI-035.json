@@ -1,0 +1,13 @@
+{
+  "id": "WI-035",
+  "kind": "item",
+  "parent": "S-02-3",
+  "title": "Polish the flip and cursor handoff",
+  "type": "enhancement",
+  "priority": 2,
+  "effort": 4,
+  "revision": 5,
+  "status": "review",
+  "acceptance": "**Story or goal** · Keep the card readable and its target stable throughout the turn.\n\n**Expected behaviour** · Compare Solid and Glass mid-flip. Remove background bleed, text jitter and shelf movement. Keep the outline on the stable face until actions are ready.\n\n**Scope boundary** · Support an immediate face change under reduced motion and as a fallback for an unreliable flip.\n\n**Previous in delivery queue** · WI-044\n\n**Depends on** · WI-024, WI-030, WI-034, WI-044\n\n**Verify** · Capture intermediate frames on a busy background. Replay rapid reversals, repeat input and a disappearing target.\n\n**Effort basis** · Visual judgement and intermediate-frame verification.",
+  "evidence": "The mid-turn page bleed was reproduced and fixed: opaque backing for the whole turn, a face swap at edge-on, and opaque faces without backdrop-filter during the turn. Paused frames at 25%, 51% and 69% show one readable face at a time, no page bleed, and identical neighbour rectangles. Evidence: qa/release/05..07 and qa/sprint-3/WI-035/README.md."
+}

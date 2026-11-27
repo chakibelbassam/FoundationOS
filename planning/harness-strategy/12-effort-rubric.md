@@ -41,7 +41,7 @@ adversarial tests it rarely invents on its own.
 
 ## 3. The rubric
 
-### Ef-1 — hardest
+### Ef-5 — hardest
 
 New subsystem, new algorithm, or a change that is cross-cutting **and**
 ambiguous, **or** impossible to verify without human judgement.
@@ -54,7 +54,7 @@ Examples from our backlog:
 - "Embed a third-party harness UI with auth brokering" (unknowns + security)
 - "Design and build the agent MCP protocol" (spec + multi-layer)
 
-### Ef-2 — hard
+### Ef-4 — hard
 
 A real feature with new logic, several files, some ambiguity, but a test or a
 visible result can prove it.
@@ -73,7 +73,7 @@ Examples:
 - "Auto-switch modes with undo banner"
 - "Add `unblocks[]` to enablers and show it"
 
-### Ef-4 — easy but wide
+### Ef-2 — easy but wide
 
 Mechanical work: rename through the stack, add a field everywhere, copy a
 pattern into one more place, update docs and fixtures.
@@ -82,7 +82,7 @@ Examples:
 - "Rename P0-P3 to P-1..P-5 across schema, UI, tests and docs"
 - "Add `effort` to every existing record and form"
 
-### Ef-5 — trivial
+### Ef-1 — trivial
 
 One line, one constant, one label, one config value.
 
@@ -95,7 +95,7 @@ Examples:
 
 Apply after the base score, one step each, maximum two steps total.
 
-**Harder (toward Ef-1):**
+**Harder (toward Ef-5):**
 
 - No automated verification exists and none can be added cheaply.
 - Touches auth, data migration, publish, or deletion.
@@ -103,7 +103,7 @@ Apply after the base score, one step each, maximum two steps total.
 - Estimate confidence is low ("we think it is 3 files…").
 - The agent must invent acceptance criteria.
 
-**Easier (toward Ef-5):**
+**Easier (toward Ef-1):**
 
 - An existing implementation can be copied almost verbatim.
 - Tests already cover the behaviour and will fail loudly.
@@ -130,7 +130,7 @@ Effort is only useful if it predicts. Track per item:
 - human interventions
 - whether acceptance passed first time
 
-Then check: do Ef-2s actually take twice an Ef-3? If not, the rubric is
+Then check: do Ef-4s actually take twice an Ef-3? If not, the rubric is
 decoration. Recalibrate the dimensions, not the labels.
 
 ## 7. Anti-patterns
@@ -139,7 +139,7 @@ decoration. Recalibrate the dimensions, not the labels.
   buried. Priority orders; effort sizes.
 - **Averaging the dimensions.** A one-file change with an unverifiable outcome
   is not "medium".
-- **Ef-1 in a sprint.** Split it, or admit the sprint contains a design task
+- **Ef-5 in a sprint.** Split it, or admit the sprint contains a design task
   that may not finish.
 - **Estimating in hours.** Agents do not experience hours; they experience
   turns, retries and context. Keep the five-step scale.

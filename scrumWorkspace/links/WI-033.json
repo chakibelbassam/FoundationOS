@@ -1,0 +1,13 @@
+{
+  "revision": 2,
+  "references": [
+    {
+      "relativePath": "PI-02/client-increment-plan.md",
+      "purpose": "requirement"
+    },
+    {
+      "relativePath": "drafts/pi-02-workspace-interaction.md",
+      "purpose": "investigation"
+    }
+  ]
+}

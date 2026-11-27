@@ -1,0 +1,126 @@
+[
+  {
+    "submitted": {
+      "id": "PI-02",
+      "revision": 5,
+      "requestId": "0f6c2d7a-4b8e-4f5a-9c31-7a2e6b8d4c10",
+      "kind": "decision",
+      "body": "**Owner decisions recorded 26 November 2026.** Settings default to System theme, Glass surface, Comfortable density, motion on and Target cursor. Motion stays on when Windows requests reduced motion unless the member chooses Off or Follow system. WI-044 is added to Sprint-3 between WI-034 and WI-035 for the motion token table and timings. Only Sev-1 blocks the release; a failed PI acceptance criterion counts as Sev-1. Edge owns the Scrum lifecycle and may resequence or move proposed work with a recorded reason. Session tokens stay in memory; account keys, invitation tokens and tokens stay out of the repository, notes, logs and screenshots. QA uses disposable stores via FOUNDATIONOS_DATA and a client data-directory override. Evidence lives under `versions/0.2 FoundationOS/qa/`; contributor artifacts under `agents/{role}/{WI-ID}/`.",
+      "documentRefs": [
+        "PI-02/client-increment-plan.md",
+        "PI-02/owner-decisions.md"
+      ]
+    },
+    "note": {
+      "id": "0f6c2d7a-4b8e-4f5a-9c31-7a2e6b8d4c10",
+      "recordId": "PI-02",
+      "at": "2026-11-26T19:59:30.321Z",
+      "kind": "decision",
+      "body": "**Owner decisions recorded 26 November 2026.** Settings default to System theme, Glass surface, Comfortable density, motion on and Target cursor. Motion stays on when Windows requests reduced motion unless the member chooses Off or Follow system. WI-044 is added to Sprint-3 between WI-034 and WI-035 for the motion token table and timings. Only Sev-1 blocks the release; a failed PI acceptance criterion counts as Sev-1. Edge owns the Scrum lifecycle and may resequence or move proposed work with a recorded reason. Session tokens stay in memory; account keys, invitation tokens and tokens stay out of the repository, notes, logs and screenshots. QA uses disposable stores via FOUNDATIONOS_DATA and a client data-directory override. Evidence lives under `versions/0.2 FoundationOS/qa/`; contributor artifacts under `agents/{role}/{WI-ID}/`.",
+      "documentRefs": [
+        "PI-02/client-increment-plan.md",
+        "PI-02/owner-decisions.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-02",
+      "revision": 6,
+      "requestId": "2c48940a-33ff-4a1d-9e74-38a70a983a6b",
+      "kind": "progress",
+      "body": "26 Nov 2026. Edge (OpenCode, DeepSeek V4.1 Flash) takes the PI from proposed to ready under the owner decision that Edge owns Scrum transitions. Plan revision 3, 21 items, target v0.2 against the released v0.1 server.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "2c48940a-33ff-4a1d-9e74-38a70a983a6b",
+      "recordId": "PI-02",
+      "at": "2026-11-26T20:05:16.161Z",
+      "kind": "progress",
+      "body": "26 Nov 2026. Edge (OpenCode, DeepSeek V4.1 Flash) takes the PI from proposed to ready under the owner decision that Edge owns Scrum transitions. Plan revision 3, 21 items, target v0.2 against the released v0.1 server.",
+      "documentRefs": []
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-02",
+      "revision": 7,
+      "requestId": "31956ff1-dcb1-4780-8a49-011761bf7c17",
+      "kind": "progress",
+      "body": "Delivery starts. Sprinter order 1 to 5 per plan revision 3. Owner decisions adopted: System theme, Glass surface, Comfortable density, motion on, Target cursor; Sev-1 only blocks; descriptor budget 12 per view, 3 concurrent.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "31956ff1-dcb1-4780-8a49-011761bf7c17",
+      "recordId": "PI-02",
+      "at": "2026-11-26T20:05:19.282Z",
+      "kind": "progress",
+      "body": "Delivery starts. Sprinter order 1 to 5 per plan revision 3. Owner decisions adopted: System theme, Glass surface, Comfortable density, motion on, Target cursor; Sev-1 only blocks; descriptor budget 12 per view, 3 concurrent.",
+      "documentRefs": []
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-02",
+      "revision": 9,
+      "requestId": "7e354f3d-150f-43d9-aca2-630c170ca204",
+      "kind": "decision",
+      "body": "PI-2 returned to active because the owner requested six additional items on PR #9. Sprint-6 holds the four fixes, live prototype replay and independent browser acceptance. Topography is the default when the workspace background feature is introduced. Release placement of the navigation work is proposed in the linked draft.",
+      "documentRefs": [
+        "PI-02/pr-9-acceptance-follow-up.md",
+        "drafts/workspace-home-and-file-explorer.md"
+      ]
+    },
+    "note": {
+      "id": "7e354f3d-150f-43d9-aca2-630c170ca204",
+      "recordId": "PI-02",
+      "at": "2026-11-26T22:12:21.657Z",
+      "kind": "decision",
+      "body": "PI-2 returned to active because the owner requested six additional items on PR #9. Sprint-6 holds the four fixes, live prototype replay and independent browser acceptance. Topography is the default when the workspace background feature is introduced. Release placement of the navigation work is proposed in the linked draft.",
+      "documentRefs": [
+        "PI-02/pr-9-acceptance-follow-up.md",
+        "drafts/workspace-home-and-file-explorer.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-02",
+      "revision": 10,
+      "requestId": "e60a548f-2556-4f89-8af0-8c6dca8c6466",
+      "kind": "decision",
+      "body": "The owner expanded Sprint-6 on PR #9 to include SVAR File Explorer, Magic Bento Home, Topography and the background picker, and current-client polish. The live OneDrive replay is no longer required. A separate Muse tester and GLM Flash QA reviewer each drive the browser.",
+      "documentRefs": [
+        "PI-02/pr-9-acceptance-follow-up.md"
+      ]
+    },
+    "note": {
+      "id": "e60a548f-2556-4f89-8af0-8c6dca8c6466",
+      "recordId": "PI-02",
+      "at": "2026-11-26T22:30:45.975Z",
+      "kind": "decision",
+      "body": "The owner expanded Sprint-6 on PR #9 to include SVAR File Explorer, Magic Bento Home, Topography and the background picker, and current-client polish. The live OneDrive replay is no longer required. A separate Muse tester and GLM Flash QA reviewer each drive the browser.",
+      "documentRefs": [
+        "PI-02/pr-9-acceptance-follow-up.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-02",
+      "revision": 10,
+      "requestId": "f07454bf-f297-4af5-bfe7-f4f4d3c1c7c9",
+      "kind": "progress",
+      "body": "Sprint-6 starts on PR #9 from candidate c2e88a3. Reconcile the owner's follow-up: four fixes, SVAR File Explorer, Magic Bento Home, React Bits backgrounds with Topography default, polish and two independent browser passes.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "f07454bf-f297-4af5-bfe7-f4f4d3c1c7c9",
+      "recordId": "PI-02",
+      "at": "2026-11-26T22:34:43.887Z",
+      "kind": "progress",
+      "body": "Sprint-6 starts on PR #9 from candidate c2e88a3. Reconcile the owner's follow-up: four fixes, SVAR File Explorer, Magic Bento Home, React Bits backgrounds with Topography default, polish and two independent browser passes.",
+      "documentRefs": []
+    }
+  }
+]

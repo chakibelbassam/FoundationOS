@@ -13,18 +13,18 @@ const topics = {
   records: {
     summary: 'PI, sprint and work-item shapes, parentage and lifecycle.',
     fields: {
-      pi: 'id PI-##, kind pi, title, acceptance, status, revision',
+      pi: 'id PI-##, kind pi, targetVersion, title, acceptance, status, revision',
       sprint: 'id S-##-#, kind sprint, parent PI-##, title, acceptance, status, revision',
       item: 'id WI-###, kind item, parent S-##-#, title, acceptance, status, revision, type, priority, effort'
     },
     notes: [
       'Types: feature, enhancement, bug, enabler, task.',
-      'Priority is 1 (highest) through 5. Effort is 2 (hardest admitted) through 5.',
+      'Priority is 1 (highest) through 5. Effort is 1 (lowest) through 5 (highest).',
       'Only bugs carry severity Sev-1 through Sev-5.',
       'Statuses: proposed, ready, active, review, done.',
-      'Planning records move proposed to ready and back. Items also move ready to active, active to review, and review back to active.',
-      'Done, severity raising and PI or sprint activation are owner-controlled.',
-      'Review requires evidence. An accepted parent closes its scope to agent edits.'
+      'Every record moves proposed to ready to active to review to done. Each step can be taken backwards and a done record reopens to review.',
+      'Review and done require evidence, so closing a PI, sprint or work item records what was verified.',
+      'Severity changes on a bug carry their own evidence rule; the lifecycle has no owner-only gate.'
     ]
   },
   query: {

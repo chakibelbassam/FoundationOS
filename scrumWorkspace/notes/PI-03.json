@@ -1,0 +1,160 @@
+[
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 2,
+      "requestId": "833443a6-f716-4180-886c-a6ebd1fec87b",
+      "kind": "decision",
+      "body": "The owner chose username and password as the v0.3 sign-in experience. The linked draft proposes fresh setup and existing-account upgrade, sign-in and session behaviour, server invitations and recovery. Recovery fallback and session policy remain open.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    },
+    "note": {
+      "id": "833443a6-f716-4180-886c-a6ebd1fec87b",
+      "recordId": "PI-03",
+      "at": "2026-11-26T22:39:53.525Z",
+      "kind": "decision",
+      "body": "The owner chose username and password as the v0.3 sign-in experience. The linked draft proposes fresh setup and existing-account upgrade, sign-in and session behaviour, server invitations and recovery. Recovery fallback and session policy remain open.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 2,
+      "requestId": "fa25a74e-19ec-49a5-9e97-d8228e7d2e66",
+      "kind": "decision",
+      "body": "The owner approved first-run administrator setup by QR, optional email at signup, and local server-machine recovery if the owner loses both password and recovery code. The draft proposes keeping PI-3 local with a contained phone setup trial. Public access remains the v0.5 roadmap slice, and shared multi-server sign-in is later design work.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    },
+    "note": {
+      "id": "fa25a74e-19ec-49a5-9e97-d8228e7d2e66",
+      "recordId": "PI-03",
+      "at": "2026-11-26T22:50:19.535Z",
+      "kind": "decision",
+      "body": "The owner approved first-run administrator setup by QR, optional email at signup, and local server-machine recovery if the owner loses both password and recovery code. The draft proposes keeping PI-3 local with a contained phone setup trial. Public access remains the v0.5 roadmap slice, and shared multi-server sign-in is later design work.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 2,
+      "requestId": "d71f9541-05e6-4657-b96e-9c5d61d51435",
+      "kind": "decision",
+      "body": "The owner replaced the first-run QR proposal with an Open FoundationOS link from the local server control. The browser opens first-owner signup on an empty store or sign-in on an existing store, and valid sessions must survive refresh. The draft nominates the MUI v6 templates and proposes an HttpOnly cookie backed by session state held by the client host.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    },
+    "note": {
+      "id": "d71f9541-05e6-4657-b96e-9c5d61d51435",
+      "recordId": "PI-03",
+      "at": "2026-11-26T22:56:53.593Z",
+      "kind": "decision",
+      "body": "The owner replaced the first-run QR proposal with an Open FoundationOS link from the local server control. The browser opens first-owner signup on an empty store or sign-in on an existing store, and valid sessions must survive refresh. The draft nominates the MUI v6 templates and proposes an HttpOnly cookie backed by session state held by the client host.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 2,
+      "requestId": "7828713d-3e62-40c7-8675-db681cff842b",
+      "kind": "decision",
+      "body": "The owner approved the MUI sign-in and signup templates and requires valid sign-in to survive browser close as well as refresh. The updated draft plans a polished account experience, a focused review and cleanup of the current foundation, documentation and full end-to-end QA. Expiry and full local client-host restart behavior remain open.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    },
+    "note": {
+      "id": "7828713d-3e62-40c7-8675-db681cff842b",
+      "recordId": "PI-03",
+      "at": "2026-11-26T23:01:10.905Z",
+      "kind": "decision",
+      "body": "The owner approved the MUI sign-in and signup templates and requires valid sign-in to survive browser close as well as refresh. The updated draft plans a polished account experience, a focused review and cleanup of the current foundation, documentation and full end-to-end QA. Expiry and full local client-host restart behavior remain open.",
+      "documentRefs": [
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 3,
+      "requestId": "2edaec4d-b23c-4f42-a965-1260af4aed47",
+      "kind": "decision",
+      "body": "Promoted the account journeys to the v0.3 increment plan. The owner selected Sign out of all sessions for the signed-in account, including the initiating browser. The plan defines an independent-session and second-member acceptance check.",
+      "documentRefs": [
+        "PI-03/accounts-and-connection-plan.md",
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    },
+    "note": {
+      "id": "2edaec4d-b23c-4f42-a965-1260af4aed47",
+      "recordId": "PI-03",
+      "at": "2026-11-26T23:06:05.018Z",
+      "kind": "decision",
+      "body": "Promoted the account journeys to the v0.3 increment plan. The owner selected Sign out of all sessions for the signed-in account, including the initiating browser. The plan defines an independent-session and second-member acceptance check.",
+      "documentRefs": [
+        "PI-03/accounts-and-connection-plan.md",
+        "drafts/pi-03-accounts-and-connection.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 4,
+      "requestId": "a4ee1c88-9063-406b-babb-680e7ecb98dd",
+      "kind": "decision",
+      "body": "The owner added username availability and rename, password change, biography, profile picture and self-deletion to Profile. On member deletion, keep the private Home offline for 30 days ahead of permanent cleanup. The plan proposes last-owner protection and local operator-assisted recovery. Six ordered sprints cover the complete local v0.3 increment, with separate tester and QA passes.",
+      "documentRefs": [
+        "PI-03/accounts-and-connection-plan.md",
+        "PI-03/sprint-buckets.md"
+      ]
+    },
+    "note": {
+      "id": "a4ee1c88-9063-406b-babb-680e7ecb98dd",
+      "recordId": "PI-03",
+      "at": "2026-11-26T23:10:46.081Z",
+      "kind": "decision",
+      "body": "The owner added username availability and rename, password change, biography, profile picture and self-deletion to Profile. On member deletion, keep the private Home offline for 30 days ahead of permanent cleanup. The plan proposes last-owner protection and local operator-assisted recovery. Six ordered sprints cover the complete local v0.3 increment, with separate tester and QA passes.",
+      "documentRefs": [
+        "PI-03/accounts-and-connection-plan.md",
+        "PI-03/sprint-buckets.md"
+      ]
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-03",
+      "revision": 4,
+      "requestId": "cb040463-3811-4075-bc61-f9a09d1498bf",
+      "kind": "decision",
+      "body": "Owner settled the PI-3 delivery decisions. **No legacy:** v0.3 opens only a fresh v0.3 store; a v0.1 or v0.2 store is refused. **Supported pair:** client 0.3 with server 0.3, both copied into versions/0.3 FoundationOS. **Sessions:** the HttpOnly cookie carries the server token, bound to the installation; the host only proxies. **Control:** server console with O/R/Q, and a one-time client pairing. **Profile:** SQLite is authoritative and profile.json is deleted. **Retention:** reserve the username and Home for 30 days, then hard delete. **Credentials:** 6-character minimum, scrypt, the 5/1/3/5/15-minute rate ladder, six-digit invite and member-reset codes, 16-character owner recovery code. **Delivery:** two PRs, PR 1 after Sprint 3, no waiting between them, Edge never merges.\n\nThe full table, the adopted defaults and the record edits that follow are in [PI-3 owner decisions](PI-03/owner-decisions.md). WI-060 is repurposed to refuse older stores; WI-056 becomes store creation rather than migration; the PI acceptance loses the upgrade promise; a preferences-sync item is added.",
+      "documentRefs": [
+        "PI-03/owner-decisions.md"
+      ]
+    },
+    "note": {
+      "id": "cb040463-3811-4075-bc61-f9a09d1498bf",
+      "recordId": "PI-03",
+      "at": "2026-11-26T23:59:25.796Z",
+      "kind": "decision",
+      "body": "Owner settled the PI-3 delivery decisions. **No legacy:** v0.3 opens only a fresh v0.3 store; a v0.1 or v0.2 store is refused. **Supported pair:** client 0.3 with server 0.3, both copied into versions/0.3 FoundationOS. **Sessions:** the HttpOnly cookie carries the server token, bound to the installation; the host only proxies. **Control:** server console with O/R/Q, and a one-time client pairing. **Profile:** SQLite is authoritative and profile.json is deleted. **Retention:** reserve the username and Home for 30 days, then hard delete. **Credentials:** 6-character minimum, scrypt, the 5/1/3/5/15-minute rate ladder, six-digit invite and member-reset codes, 16-character owner recovery code. **Delivery:** two PRs, PR 1 after Sprint 3, no waiting between them, Edge never merges.\n\nThe full table, the adopted defaults and the record edits that follow are in [PI-3 owner decisions](PI-03/owner-decisions.md). WI-060 is repurposed to refuse older stores; WI-056 becomes store creation rather than migration; the PI acceptance loses the upgrade promise; a preferences-sync item is added.",
+      "documentRefs": [
+        "PI-03/owner-decisions.md"
+      ]
+    }
+  }
+]

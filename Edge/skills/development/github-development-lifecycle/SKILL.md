@@ -153,7 +153,7 @@ gh release create v0.1 --target <merge-sha> --title "0.1 <plain name>" --notes-f
 | WI-008 Enhance Scrum tooling | WI-008 Add manual, validate and receipt to scrumWorkSpace |
 | WI-009 Streamline QA | WI-009 Run server and browser QA from one launcher |
 
-Use the short form in prose, titles and commit messages: WI-10, S5, PI 1, with the title in parentheses when referring to a record, like WI-10 (Move the server to one versioned store). Stored IDs keep their padded form inside records, trailers and receipts.
+Use the PR title format above and canonical IDs in branch names, trailers and receipts. For conversation with the owner follow [present-scrum-workspace](../../planning/present-scrum-workspace/SKILL.md).
 
 ## Pull request body
 

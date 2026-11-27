@@ -130,18 +130,18 @@ a demo; that is normal and correct.
 
 ## 6. Effort — Ef-1 to Ef-5 (all types)
 
-How hard the item is **for an agent**, where **Ef-1 is the hardest** and
-**Ef-5 the easiest**. Full rubric and reasoning: `12-effort-rubric.md`.
+How hard the item is **for an agent**, where **Ef-5 is the hardest** and
+**Ef-1 the easiest**. Full rubric and reasoning: `12-effort-rubric.md`.
 
 | Ef | One line |
 | --- | --- |
-| **1** | New subsystem or algorithm, cross-cutting, ambiguous, hard to verify |
-| **2** | Multi-file feature with new logic and some ambiguity |
+| **5** | New subsystem or algorithm, cross-cutting, ambiguous, hard to verify |
+| **4** | Multi-file feature with new logic and some ambiguity |
 | **3** | Contained change following an existing pattern; tests can prove it |
-| **4** | Mechanical but wide: rename a field through the stack, copy a pattern |
-| **5** | One line, one constant, one label |
+| **2** | Mechanical but wide: rename a field through the stack, copy a pattern |
+| **1** | One line, one constant, one label |
 
-Effort is required at triage. An **Ef-1 must be split** into pieces of Ef-3 or
+Effort is required at triage. An **Ef-5 must be split** into pieces of Ef-3 or
 easier before it enters a sprint. Effort never sets order; priority does.
 
 ## 7. The intake form
@@ -188,7 +188,7 @@ the current screen and the app, then the user confirms.
 - [ ] Scope explicit: FoundationOS or a named app
 - [ ] Acceptance testable (bugs: expected vs actual is enough)
 - [ ] Priority P-1..P-5 set; bugs also have severity Sev 1-5
-- [ ] Effort Ef-1-Ef-5 set; Ef-1 split first
+- [ ] Effort Ef-1-Ef-5 set; Ef-5 split first
 - [ ] Evidence or reproduction exists for bugs
 - [ ] No dependency on an open decision
 

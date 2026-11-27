@@ -1,0 +1,30 @@
+{
+  "requestId": "9ad1b9ff-9306-4cb8-90cf-ce2575c2de0c",
+  "operation": "create",
+  "id": "WI-046",
+  "submitted": {
+    "status": "proposed",
+    "revision": 0,
+    "id": "WI-046",
+    "kind": "item",
+    "parent": "S-02-6",
+    "title": "Ignore stale requests after a member switch",
+    "type": "bug",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Bind in-flight requests, auth failures and state updates to the session that started them. Abort obsolete work where supported. Reconnecting as the same member restores the URL. A different member starts at their own Home.\n\n**Related earlier work** · WI-028\n\n**Delivery dependencies** · Can begin on the current PR head. Coordinate the shared session boundary with the companion fix.\n\n**Verify** · With disposable members, control response order across disconnect and reconnect. Check that stale directory, descriptor and settings results are discarded, and only an unauthorized response from the currently active session returns that session to Connect.\n\n**Delivery** · v0.2 client, existing PR #9."
+  },
+  "result": {
+    "status": "proposed",
+    "revision": 1,
+    "id": "WI-046",
+    "kind": "item",
+    "parent": "S-02-6",
+    "title": "Ignore stale requests after a member switch",
+    "type": "bug",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Bind in-flight requests, auth failures and state updates to the session that started them. Abort obsolete work where supported. Reconnecting as the same member restores the URL. A different member starts at their own Home.\n\n**Related earlier work** · WI-028\n\n**Delivery dependencies** · Can begin on the current PR head. Coordinate the shared session boundary with the companion fix.\n\n**Verify** · With disposable members, control response order across disconnect and reconnect. Check that stale directory, descriptor and settings results are discarded, and only an unauthorized response from the currently active session returns that session to Connect.\n\n**Delivery** · v0.2 client, existing PR #9."
+  },
+  "at": "2026-11-26T22:11:57.732Z"
+}

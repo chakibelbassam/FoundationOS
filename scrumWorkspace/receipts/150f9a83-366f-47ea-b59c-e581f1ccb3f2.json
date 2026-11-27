@@ -1,0 +1,30 @@
+{
+  "requestId": "150f9a83-366f-47ea-b59c-e581f1ccb3f2",
+  "operation": "create",
+  "id": "WI-049",
+  "submitted": {
+    "status": "proposed",
+    "revision": 0,
+    "id": "WI-049",
+    "kind": "item",
+    "parent": "S-02-6",
+    "title": "Replay the original OneDrive interface",
+    "type": "task",
+    "priority": 1,
+    "effort": 3,
+    "acceptance": "**Expected behaviour** · Replay the OneDrive prototype against the built v0.2 candidate. Compare the Glass flip, folder graphic and label, nested Back, directional navigation and Target Cursor including keyboard focus. Record the actual reuse, adapt or replace decision for each.\n\n**Related earlier work** · WI-024\n\n**Delivery dependencies** · Can begin on the current PR head. \n\n**Verify** · Record source and running version, input, expected and observed results, and side-by-side evidence. Note unavailable physical inputs separately. Update the original prototype replay and link back to the original work item.\n\n**Delivery** · v0.2 client, existing PR #9."
+  },
+  "result": {
+    "status": "proposed",
+    "revision": 1,
+    "id": "WI-049",
+    "kind": "item",
+    "parent": "S-02-6",
+    "title": "Replay the original OneDrive interface",
+    "type": "task",
+    "priority": 1,
+    "effort": 3,
+    "acceptance": "**Expected behaviour** · Replay the OneDrive prototype against the built v0.2 candidate. Compare the Glass flip, folder graphic and label, nested Back, directional navigation and Target Cursor including keyboard focus. Record the actual reuse, adapt or replace decision for each.\n\n**Related earlier work** · WI-024\n\n**Delivery dependencies** · Can begin on the current PR head. \n\n**Verify** · Record source and running version, input, expected and observed results, and side-by-side evidence. Note unavailable physical inputs separately. Update the original prototype replay and link back to the original work item.\n\n**Delivery** · v0.2 client, existing PR #9."
+  },
+  "at": "2026-11-26T22:11:57.774Z"
+}

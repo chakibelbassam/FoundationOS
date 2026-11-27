@@ -137,7 +137,7 @@ into it without changing any hostname.
 
 - DNS cutover: **Ef-3** (config, verify).
 - Tunnel + service: **Ef-3**.
-- Host routing + cookie scope + trust proxy: **Ef-2** (security-sensitive).
+- Host routing + cookie scope + trust proxy: **Ef-4** (security-sensitive).
 - Remote test from cellular: **Ef-3** (manual steps).
 
 ## 10. Open questions

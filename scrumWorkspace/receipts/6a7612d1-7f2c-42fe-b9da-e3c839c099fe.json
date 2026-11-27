@@ -1,0 +1,24 @@
+{
+  "requestId": "6a7612d1-7f2c-42fe-b9da-e3c839c099fe",
+  "operation": "create",
+  "id": "S-02-6",
+  "submitted": {
+    "status": "proposed",
+    "revision": 0,
+    "kind": "sprint",
+    "id": "S-02-6",
+    "parent": "PI-02",
+    "title": "Close the PR #9 acceptance gaps",
+    "acceptance": "Finish the four v0.2 fixes and the original OneDrive prototype replay. Independently drive the built client against the v0.1 server and record the browser journey and CI outcome for the final PR #9 head before requesting owner acceptance."
+  },
+  "result": {
+    "status": "proposed",
+    "revision": 1,
+    "kind": "sprint",
+    "id": "S-02-6",
+    "parent": "PI-02",
+    "title": "Close the PR #9 acceptance gaps",
+    "acceptance": "Finish the four v0.2 fixes and the original OneDrive prototype replay. Independently drive the built client against the v0.1 server and record the browser journey and CI outcome for the final PR #9 head before requesting owner acceptance."
+  },
+  "at": "2026-11-26T22:11:57.709Z"
+}

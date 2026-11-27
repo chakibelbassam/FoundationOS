@@ -5,7 +5,7 @@ description: Answer natural-language PI and sprint questions, propose capacity-a
 
 # read and plan sprints
 
-Interpret “first sprint” in the current conversation’s PI. If the user means the first product version, use PI-01; PI-00 is workspace setup. Say which PI you used. For “what is in the first sprint?”, call scrumWorkSpace query with {"pi":"PI-01","sprint":1}. Display a compact table of ID, title, status, priority and effort. Keep the sprint’s recorded state separate from its items’ states. If the query is empty, say whether the sprint exists and has zero items.
+Interpret “first sprint” in the current conversation’s PI. If the user means the first product version, use PI-01; PI-00 is workspace setup. Say which PI you used. For “what is in the first sprint?”, call scrumWorkSpace query with {"pi":"PI-01","sprint":1}. Render the bucket using [present-scrum-workspace](../present-scrum-workspace/SKILL.md). Keep the sprint’s recorded state separate from its items’ states. If the query is empty, say whether the sprint exists and has zero items.
 
 For a PI list, filter kind=pi. For a PI’s sprints use parent=PI-01 and kind=sprint. For a proposed bucket, inspect readiness and dependency evidence, order by priority, then compare effort grades and stated capacity. Grades are ordinal: do not sum Ef-2 and Ef-4 as hours or points. Explain any carryover.
 

@@ -1,0 +1,10 @@
+{
+  "status": "review",
+  "revision": 6,
+  "kind": "sprint",
+  "id": "S-02-6",
+  "parent": "PI-02",
+  "title": "Stabilize and polish the v0.2 workspace",
+  "acceptance": "On PR #9, fix the four v0.2 review defects, integrate SVAR File Explorer and Magic Bento Home, add React Bits background choices with Topography as default, and polish the built client. A separate Muse tester and GLM Flash QA reviewer independently drive the final candidate in OpenCode’s built-in browser.",
+  "evidence": "Sprint-6 is delivered on PR #9 head 7f4df29. WI-045..WI-048 fixed with regression tests; WI-051 SVAR explorer read-only with deep links, vivid icons and a narrow single pane; WI-052 composed Magic Bento Home with real pinned projects and recents; WI-053 five backgrounds with Topography default, fallback and per-member persistence; WI-049 polish (return focus, live Follow-system, local icon assets, narrow fixes); WI-050 two independent passes, both in the built-in browser and both retested, 20/20 built-in QA with no Sev-1. Client 80/80, host + launcher 16/16, fixtures 3/3, v0.1 contract 14/14, build clean, validate ok, CI green. Evidence: versions/0.2 FoundationOS/qa/sprint-6/ and the two agents/WI-050 reports."
+}

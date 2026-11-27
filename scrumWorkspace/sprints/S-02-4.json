@@ -1,0 +1,10 @@
+{
+  "id": "S-02-4",
+  "kind": "sprint",
+  "parent": "PI-02",
+  "title": "Refine and document the workspace",
+  "acceptance": "Two members using the same Windows login apply distinct settings. After a full client restart on a different port, each sees their own choices.",
+  "status": "review",
+  "revision": 4,
+  "evidence": "Three Settings pages with live previews on real widgets; Apply, Cancel, Reset and a failed save; two members' distinct preferences survived a different-port client restart, with defaults for a new member. Cursor behaviour checked across pointer, keyboard and menu dismissal; launcher and component documentation updated. Pen, controller and physical phone were unavailable and are recorded as gaps. Evidence: qa/sprint-4/."
+}

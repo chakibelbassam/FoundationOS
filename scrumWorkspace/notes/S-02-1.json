@@ -1,0 +1,38 @@
+[
+  {
+    "submitted": {
+      "id": "S-02-1",
+      "revision": 2,
+      "requestId": "8a810fc5-7eae-416a-999b-3344f73e0c1b",
+      "kind": "progress",
+      "body": "Sprint 1 opened for delivery: prototype replay, versioned client build and host, server connection, first private file read.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "8a810fc5-7eae-416a-999b-3344f73e0c1b",
+      "recordId": "S-02-1",
+      "at": "2026-11-26T20:05:16.272Z",
+      "kind": "progress",
+      "body": "Sprint 1 opened for delivery: prototype replay, versioned client build and host, server connection, first private file read.",
+      "documentRefs": []
+    }
+  },
+  {
+    "submitted": {
+      "id": "S-02-1",
+      "revision": 3,
+      "requestId": "b0a60c12-4f61-42f3-bba1-6dfd53e87d93",
+      "kind": "progress",
+      "body": "First item WI-024 prototype replay. The OneDrive FoundationOS-Interface is not present on this checkout; replay will use the recorded source-inspection notes and the v0.2 candidate, and the gap is recorded.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "b0a60c12-4f61-42f3-bba1-6dfd53e87d93",
+      "recordId": "S-02-1",
+      "at": "2026-11-26T20:05:19.378Z",
+      "kind": "progress",
+      "body": "First item WI-024 prototype replay. The OneDrive FoundationOS-Interface is not present on this checkout; replay will use the recorded source-inspection notes and the v0.2 candidate, and the gap is recorded.",
+      "documentRefs": []
+    }
+  }
+]

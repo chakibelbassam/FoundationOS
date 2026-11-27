@@ -1,0 +1,13 @@
+{
+  "id": "WI-051",
+  "kind": "item",
+  "parent": "S-02-6",
+  "title": "Integrate SVAR File Explorer with the private workspace",
+  "type": "feature",
+  "priority": 1,
+  "effort": 4,
+  "status": "review",
+  "revision": 4,
+  "acceptance": "**Expected behaviour** · Use the SVAR React File Manager with the existing member session, directory API, routes and text reader. Provide a useful folder tree and file list, loading each directory on demand.\n\n**Delivery dependencies** · WI-045 and WI-046 for identity and stale-state handling.\n\n**Verify** · Verify list and folder opens, loaded-directory search and sort, deep links, refresh and reconnect, Back focus, and member switching. Verify unsupported actions including Download are absent or disabled even through menus and keyboard shortcuts.\n\n**Delivery** · v0.2 client, existing PR #9.",
+  "evidence": "SVAR File Manager 2.6 is integrated read-only at /files and /files/PATH with the member session, per-folder lazy loading through /api/files, deep links, Back, pin/unpin and the text reader. It renders the demo presentation: vivid folder/file SVGs, the official wxi toolbar font vendored locally, tree, breadcrumbs, Name-only table and info/preview pane. Add New, upload, download, rename, delete, copy and move are absent and intercepted; Size/Date hidden because v0.1 has neither. Narrow (390x600, 320x600) keeps list/search/toolbar primary with Show/Hide details, single tap preview and double tap opens the reader; desktop keeps tree plus side-by-side preview. Name sort toggles asc/desc/asc by mouse and keyboard. Tester retest at f3de003: 9 PASS, 0 FAIL. Evidence: qa/sprint-6/WI-051/."
+}

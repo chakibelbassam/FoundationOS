@@ -1,0 +1,12 @@
+{
+  "id": "WI-066",
+  "kind": "item",
+  "parent": "S-03-4",
+  "title": "Change my password from Profile",
+  "type": "feature",
+  "priority": 1,
+  "effort": 2,
+  "acceptance": "**Expected behaviour** · Open Settings → Profile → Account, verify the current password, choose a new password and sign in again. Reuse the existing account-form controls.\n\n**Verify** · A rejected change preserves the old login. A successful change revokes all prior sessions and the new password restores the same files and preferences.\n\n**Delivery dependencies** · WI-061, WI-064\n\n**Queue** · Follows WI-065 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+  "status": "proposed",
+  "revision": 1
+}

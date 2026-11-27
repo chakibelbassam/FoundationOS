@@ -3,7 +3,8 @@
   "kind": "sprint",
   "title": "Check persistence",
   "acceptance": "Repeat provisioning and restart with both profiles and their files intact.",
-  "status": "proposed",
-  "revision": 1,
-  "parent": "PI-01"
+  "status": "done",
+  "revision": 2,
+  "parent": "PI-01",
+  "evidence": "Accepted as part of the owner-confirmed completed PI-01. See the sprint work-item evidence and PI acceptance."
 }

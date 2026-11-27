@@ -1,0 +1,13 @@
+{
+  "id": "WI-052",
+  "kind": "item",
+  "parent": "S-02-6",
+  "title": "Build the Magic Bento workspace Home",
+  "type": "feature",
+  "priority": 1,
+  "effort": 4,
+  "status": "review",
+  "revision": 4,
+  "acceptance": "**Expected behaviour** · Build the four-section React Bits Home with up to three projects, up to three recently opened apps, a File Explorer entry and an Activity panel. Show-all actions open basic Projects and Apps views backed by real member data. Projects start as designated folders and Apps documents its inventory scope. Activity explains source availability.\n\n**Delivery dependencies** · WI-047 for nested discovery, WI-051 for the explorer entry, and the session boundary for member-owned state.\n\n**Verify** · Verify one-action opening, deliberate app recency, two-member isolation, stable focus and Back, mobile stacking and truthful empty/unavailable states.\n\n**Delivery** · v0.2 client, existing PR #9.",
+  "evidence": "Home is a composed Magic Bento: Files 1x1 app square, Projects 2x1, Recent apps 3x1, Activity 1x2, using real member data. Projects are pinned folders (cap 8), Recent apps are recorded only on a deliberate app-view open (cap 8, newest first, deduplicated), Show all opens /projects and /apps, and Activity is a truthful idle panel. With three pinned and three recent entries (two nested) every tile measured scrollHeight == clientHeight at 1307/1024 and stacked at 390/320 with no horizontal overflow. Evidence: qa/sprint-6/WI-052/."
+}

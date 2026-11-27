@@ -1,0 +1,10 @@
+{
+  "id": "S-02-5",
+  "kind": "sprint",
+  "parent": "PI-02",
+  "title": "Fix visual defects and verify the release",
+  "acceptance": "An independent reviewer repeats the built release journey and checks member isolation, settings persistence and visual/input behaviour. Trace each accepted fix to retest evidence.",
+  "status": "review",
+  "revision": 4,
+  "evidence": "Independent journey QA (22 PASS, 0 FAIL after retest, 0 Sev-1) and visual review (PASS after the boundary fix, 0 Sev-1). Two release-blocking findings were fixed and independently retested: the launcher positional URL and interface boundary contrast. Evidence: qa/sprint-5/, agents/qa/WI-040 and WI-041, qa/release/."
+}

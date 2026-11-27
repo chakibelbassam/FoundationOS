@@ -1,0 +1,12 @@
+{
+  "id": "WI-075",
+  "kind": "item",
+  "parent": "S-03-6",
+  "title": "Polish account and profile interactions",
+  "type": "enhancement",
+  "priority": 1,
+  "effort": 3,
+  "acceptance": "**Expected behaviour** · Refine MUI account layouts, profile save feedback, header avatar, keyboard focus, reduced motion and destructive dialogs. Review the session host, store and route guards and retire obsolete token entry.\n\n**Verify** · Exercise desktop, 390 px and 320 × 600, keyboard, autofill, offline and interrupted actions. Update the inventory with reused controls and regress current workspace navigation.\n\n**Delivery dependencies** · WI-069, WI-072, WI-073, WI-074\n\n**Queue** · Follows WI-074 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+  "status": "proposed",
+  "revision": 1
+}

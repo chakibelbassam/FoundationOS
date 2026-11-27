@@ -24,7 +24,7 @@ Types (one word, one meaning — `09` §3):
 Rules for every item:
 
 1. One sentence of intent, one testable acceptance, one evidence command.
-2. **No Ef-1 in the queue.** Ef-1 means "split me first"; every row is Ef-2 or
+2. **No Ef-5 in the queue.** Ef-5 means "split me first"; every row is Ef-4 or
    easier.
 3. Done = behaviour verified live + `npm run check` + `npm test` + docs updated
    + evidence attached. Not "code written".
@@ -36,17 +36,17 @@ Rules for every item:
 | Order | ID | Type | Title | P | Ef | Depends |
 | --- | --- | --- | --- | --- | --- | --- |
 | 1 | W-32 | Dev Task | Move the workspace to `C:\FoundationOS`; update paths, shortcuts, tests | P-1 | Ef-3 | — |
-| 2 | W-25 | Enabler | Baseline git commit, ignore rules, `git init` per new project | P-1 | Ef-4 | W-32 |
-| 3 | W-31a | Enabler | Identity + project schema (`workspaceId`, `createdBy`, `projectId`, `ownerUserId`, `kind`) | P-1 | Ef-2 | W-25 |
-| 4 | W-06a | Enabler | Store: atomic writes, bounded lock, dated backups | P-1 | Ef-2 | W-25 |
-| 5 | W-31b | Enabler | Auth backend: sign-in/out, sessions, revocation; no anonymous writes | P-1 | Ef-2 | W-31a |
-| 6 | W-34 | Feature | First-run: setup, login, join by invite (`/setup`, `/login`, `/join`, `/s`) | P-1 | Ef-2 | W-31b |
-| 7 | W-31c | Enabler | Grants, roles, ceiling rule, server-side 404 | P-1 | Ef-2 | W-31b |
-| 8 | W-06b | Enabler | Typed schema, `revision`, `requestId` receipts, project-scoped | P-1 | Ef-2 | W-06a, W-31a |
-| 9 | W-31d | Feature | Invites: server + project, link/QR, expiry, revoke, audit | P-1 | Ef-2 | W-31c |
+| 2 | W-25 | Enabler | Baseline git commit, ignore rules, `git init` per new project | P-1 | Ef-2 | W-32 |
+| 3 | W-31a | Enabler | Identity + project schema (`workspaceId`, `createdBy`, `projectId`, `ownerUserId`, `kind`) | P-1 | Ef-4 | W-25 |
+| 4 | W-06a | Enabler | Store: atomic writes, bounded lock, dated backups | P-1 | Ef-4 | W-25 |
+| 5 | W-31b | Enabler | Auth backend: sign-in/out, sessions, revocation; no anonymous writes | P-1 | Ef-4 | W-31a |
+| 6 | W-34 | Feature | First-run: setup, login, join by invite (`/setup`, `/login`, `/join`, `/s`) | P-1 | Ef-4 | W-31b |
+| 7 | W-31c | Enabler | Grants, roles, ceiling rule, server-side 404 | P-1 | Ef-4 | W-31b |
+| 8 | W-06b | Enabler | Typed schema, `revision`, `requestId` receipts, project-scoped | P-1 | Ef-4 | W-06a, W-31a |
+| 9 | W-31d | Feature | Invites: server + project, link/QR, expiry, revoke, audit | P-1 | Ef-4 | W-31c |
 | 10 | W-31e | Dev Task | Cross-project 404 tests: project, items, channel, workshop | P-1 | Ef-3 | W-31c |
 | 11 | W-31f | Dev Task | Migrate existing apps/items into projects | P-1 | Ef-3 | W-31a |
-| 12 | W-07 | Feature | Triage form + generated Triage Guide PDF | P-1 | Ef-2 | W-06b |
+| 12 | W-07 | Feature | Triage form + generated Triage Guide PDF | P-1 | Ef-4 | W-06b |
 
 W-31a-c and W-06a/b unblock every work-state feature and every agent write.
 Nothing else starts until 1-9 are true. W-31d/e/f can run alongside W-07.
@@ -55,14 +55,14 @@ Nothing else starts until 1-9 are true. W-31d/e/f can run alongside W-07.
 
 | Order | ID | Type | Title | P | Ef | Depends |
 | --- | --- | --- | --- | --- | --- | --- |
-| 13 | W-02 | Enabler | Harness supervisor: start/stop/status, scoped cwd, process tree | P-1 | Ef-2 | W-25 |
-| 14 | W-03 | Enabler | Host proxy on 4317: HTTP + WebSocket, one origin per instance | P-1 | Ef-2 | W-02 |
-| 15 | W-05 | Enabler | Safety rail: loopback bind, auth gate, kill switch, badge | P-1 | Ef-2 | W-03 |
-| 16 | W-04 | Feature | Workshop pane: chrome, starting/ready/crashed, pop-out | P-1 | Ef-2 | W-03, W-05 |
-| 17 | W-35 | Feature | Project members + invite dialog (link + QR); channel membership = grant | P-1 | Ef-2 | W-31d, W-04 |
-| 18 | W-36 | Feature | Project channel: messages, system cards, membership events | P-1 | Ef-2 | W-31c, W-35 |
-| 19 | W-40 | Feature | Admin console: accounts, server invites, suspend, reset | P-1 | Ef-2 | W-31c, W-31d |
-| 20 | W-09 | Feature | App Studio one page: Brief, Plan, Workshop + file handoff | P-1 | Ef-2 | W-04, W-07 |
+| 13 | W-02 | Enabler | Harness supervisor: start/stop/status, scoped cwd, process tree | P-1 | Ef-4 | W-25 |
+| 14 | W-03 | Enabler | Host proxy on 4317: HTTP + WebSocket, one origin per instance | P-1 | Ef-4 | W-02 |
+| 15 | W-05 | Enabler | Safety rail: loopback bind, auth gate, kill switch, badge | P-1 | Ef-4 | W-03 |
+| 16 | W-04 | Feature | Workshop pane: chrome, starting/ready/crashed, pop-out | P-1 | Ef-4 | W-03, W-05 |
+| 17 | W-35 | Feature | Project members + invite dialog (link + QR); channel membership = grant | P-1 | Ef-4 | W-31d, W-04 |
+| 18 | W-36 | Feature | Project channel: messages, system cards, membership events | P-1 | Ef-4 | W-31c, W-35 |
+| 19 | W-40 | Feature | Admin console: accounts, server invites, suspend, reset | P-1 | Ef-4 | W-31c, W-31d |
+| 20 | W-09 | Feature | App Studio one page: Brief, Plan, Workshop + file handoff | P-1 | Ef-4 | W-04, W-07 |
 
 W-05 ships **with** W-03, never after. W-35 and W-36 are one idea in two
 surfaces: the member list and the conversation are the same `grants.json`.
@@ -73,24 +73,24 @@ without editing a file.
 
 | Order | ID | Type | Title | P | Ef | Depends |
 | --- | --- | --- | --- | --- | --- | --- |
-| 21 | W-27 | Feature | Three intake doors over one schema, scope pre-filled | P-2 | Ef-2 | W-07 |
-| 22 | W-14a | Enabler | Durable job record + state machine (`running`, `review`, …) | P-1 | Ef-2 | W-02 |
+| 21 | W-27 | Feature | Three intake doors over one schema, scope pre-filled | P-2 | Ef-4 | W-07 |
+| 22 | W-14a | Enabler | Durable job record + state machine (`running`, `review`, …) | P-1 | Ef-4 | W-02 |
 | 23 | W-14b | Feature | Inbox, rail badge, project-card job status, Edge system note | P-1 | Ef-3 | W-14a |
-| 24 | W-14c | Enabler | Restart/resume: revision check, 3 resumes, backoff, crash guard | P-1 | Ef-2 | W-14a |
+| 24 | W-14c | Enabler | Restart/resume: revision check, 3 resumes, backoff, crash guard | P-1 | Ef-4 | W-14a |
 | 25 | W-14d | Feature | Browser/Windows notifications, escalation, quiet hours | P-2 | Ef-3 | W-14b |
-| 26 | W-08a | Enabler | Agent protocol read verbs + generated `STATE.md` | P-1 | Ef-2 | W-06b, W-31c |
-| 27 | W-08b | Enabler | Agent protocol write verbs: idempotency + revision checks | P-1 | Ef-2 | W-08a |
+| 26 | W-08a | Enabler | Agent protocol read verbs + generated `STATE.md` | P-1 | Ef-4 | W-06b, W-31c |
+| 27 | W-08b | Enabler | Agent protocol write verbs: idempotency + revision checks | P-1 | Ef-4 | W-08a |
 | 28 | W-24 | Dev Task | Prompt pack for agents with no MCP | P-2 | Ef-3 | W-08a |
-| 29 | W-10 | Feature | Agent registry + routing (pin > surface > job offer > default) | P-2 | Ef-2 | W-08a |
-| 30 | W-11 | Enabler | File-based memory + brief assembly (`BRIEF/PLAN/MEMORY/DECISIONS`) | P-2 | Ef-2 | W-06b, W-10 |
-| 31 | W-12 | Enabler | Lifecycle: job-aware reaper, boot orphan cleanup, concurrency cap | P-2 | Ef-2 | W-02 |
-| 32 | W-13a | Enabler | Pair-link injection into the embedded pane (happy path) | P-2 | Ef-2 | W-04 |
-| 33 | W-13b | Enabler | Session survival across refresh/device, revocation | P-2 | Ef-2 | W-13a |
-| 34 | W-26a | Enabler | Worktree per job in the supervisor | P-2 | Ef-2 | W-25, W-02 |
-| 35 | W-26b | Feature | Diff review / Apply / Discard, with stale-base refusal | P-2 | Ef-2 | W-26a, W-14a |
-| 36 | W-15 | Feature | Role templates (builder / QA / reviewer) + workshop status | P-2 | Ef-2 | W-04 |
-| 37 | W-19 | Feature | QA evidence loop: `system/qa/`, project-card summary, fail → item | P-2 | Ef-2 | W-13a, W-15 |
-| 38 | W-30 | Enabler | Cut Edge chat over to OpenCode (`edge-chat` + `studio`), recall gate | P-2 | Ef-2 | W-10, W-11 |
+| 29 | W-10 | Feature | Agent registry + routing (pin > surface > job offer > default) | P-2 | Ef-4 | W-08a |
+| 30 | W-11 | Enabler | File-based memory + brief assembly (`BRIEF/PLAN/MEMORY/DECISIONS`) | P-2 | Ef-4 | W-06b, W-10 |
+| 31 | W-12 | Enabler | Lifecycle: job-aware reaper, boot orphan cleanup, concurrency cap | P-2 | Ef-4 | W-02 |
+| 32 | W-13a | Enabler | Pair-link injection into the embedded pane (happy path) | P-2 | Ef-4 | W-04 |
+| 33 | W-13b | Enabler | Session survival across refresh/device, revocation | P-2 | Ef-4 | W-13a |
+| 34 | W-26a | Enabler | Worktree per job in the supervisor | P-2 | Ef-4 | W-25, W-02 |
+| 35 | W-26b | Feature | Diff review / Apply / Discard, with stale-base refusal | P-2 | Ef-4 | W-26a, W-14a |
+| 36 | W-15 | Feature | Role templates (builder / QA / reviewer) + workshop status | P-2 | Ef-4 | W-04 |
+| 37 | W-19 | Feature | QA evidence loop: `system/qa/`, project-card summary, fail → item | P-2 | Ef-4 | W-13a, W-15 |
+| 38 | W-30 | Enabler | Cut Edge chat over to OpenCode (`edge-chat` + `studio`), recall gate | P-2 | Ef-4 | W-10, W-11 |
 
 W-14c is the requirement you stated: resume automatically, retry up to 3 times,
 then notify. W-14b makes the result visible on a phone without opening a pane.
@@ -100,24 +100,24 @@ W-26a/b are the two-agent case: separate worktrees, one merge queue.
 
 | Order | ID | Type | Title | P | Ef | Depends |
 | --- | --- | --- | --- | --- | --- | --- |
-| 39 | W-37 | Feature | Friends + DMs: exact `@username`, accept, block, send | P-2 | Ef-2 | W-31c, W-36 |
-| 40 | W-38 | Feature | Agent messaging: draft/approve, trusted auto-send, system events | P-2 | Ef-2 | W-37, W-08b |
-| 41 | W-41 | Feature | Audit log UI: admin actions, visible to the affected user | P-2 | Ef-2 | W-40 |
-| 42 | W-42 | Feature | Home: My / Shared with me, role chips, member count, job pill | P-2 | Ef-2 | W-31c, W-14b |
+| 39 | W-37 | Feature | Friends + DMs: exact `@username`, accept, block, send | P-2 | Ef-4 | W-31c, W-36 |
+| 40 | W-38 | Feature | Agent messaging: draft/approve, trusted auto-send, system events | P-2 | Ef-4 | W-37, W-08b |
+| 41 | W-41 | Feature | Audit log UI: admin actions, visible to the affected user | P-2 | Ef-4 | W-40 |
+| 42 | W-42 | Feature | Home: My / Shared with me, role chips, member count, job pill | P-2 | Ef-4 | W-31c, W-14b |
 
 ## Phase 3 — catalog and reach
 
 | Order | ID | Type | Title | P | Ef | Depends |
 | --- | --- | --- | --- | --- | --- | --- |
-| 43 | W-39 | Feature | Catalog: submit snapshot, review checklist, install as a copy | P-2 | Ef-2 | W-26b, W-31c |
-| 44 | W-16 | Enabler | Host routing, cookie scope, trust proxy, per-host auth | P-2 | Ef-2 | W-05, W-13b, W-31c |
+| 43 | W-39 | Feature | Catalog: submit snapshot, review checklist, install as a copy | P-2 | Ef-4 | W-26b, W-31c |
+| 44 | W-16 | Enabler | Host routing, cookie scope, trust proxy, per-host auth | P-2 | Ef-4 | W-05, W-13b, W-31c |
 | 45 | W-28 | Dev Task | Cloudflare DNS cutover + tunnel service + cellular test | P-2 | Ef-3 | W-16 |
 | 46 | W-17 | Enhancement (improve) | Suggestion chips: static + contextual, three states | P-2 | Ef-3 | — |
 | 47 | W-18 | Enhancement (improve) | Mode auto-switch with undo + mismatch log | P-2 | Ef-3 | — |
-| 48 | W-20 | Enabler | Generalise launch to `static / dev / harness / external` | P-3 | Ef-2 | W-04 |
-| 49 | W-21 | Feature | Approval cards for `ask` mode (inbox + harness UI) | P-3 | Ef-2 | W-13b, W-14b |
-| 50 | W-01 | Dev Task | Remaining fact-finding: Hermes memory export, DSH embed probe | P-3 | Ef-4 | — |
-| 51 | W-22 | Enabler | Second harness (DSH) behind the same supervisor interface | P-4 | Ef-2 | W-08b |
+| 48 | W-20 | Enabler | Generalise launch to `static / dev / harness / external` | P-3 | Ef-4 | W-04 |
+| 49 | W-21 | Feature | Approval cards for `ask` mode (inbox + harness UI) | P-3 | Ef-4 | W-13b, W-14b |
+| 50 | W-01 | Dev Task | Remaining fact-finding: Hermes memory export, DSH embed probe | P-3 | Ef-2 | — |
+| 51 | W-22 | Enabler | Second harness (DSH) behind the same supervisor interface | P-4 | Ef-4 | W-08b |
 
 ## Why this order
 

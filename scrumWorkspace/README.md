@@ -41,13 +41,13 @@ Record the release in each PI's `targetVersion` (for example `0.1`), using `none
 
 | Kind | ID | Parent | Required fields |
 | --- | --- | --- | --- |
-| PI | `PI-00` | none | title, acceptance, status, revision |
+| PI | `PI-00` | none | title, targetVersion, acceptance, status, revision |
 | Sprint | `S-01-1` | PI | title, acceptance, status, revision |
 | Work item | `WI-001` | sprint | title, acceptance, status, revision, type, priority, effort |
 
-Work-item types are `feature`, `enhancement`, `bug`, `enabler` and `task`. Priority is 1 (highest) through 5 (lowest). Effort is 2 (hardest admitted) through 5 (easiest); split anything that would be Ef-1. Only bugs carry `severity`, written as `Sev-1` through `Sev-5`.
+Work-item types are `feature`, `enhancement`, `bug`, `enabler` and `task`. Priority is 1 (highest) through 5 (lowest). Effort is 1 (lowest) through 5 (highest). Existing estimates were converted using 6 minus the former grade. Only bugs carry `severity`, written as `Sev-1` through `Sev-5`.
 
-Statuses are `proposed`, `ready`, `active`, `review` and `done`. Planning records move between `proposed` and `ready`. Work items also move `ready` to `active`, `active` to `review`, and `review` back to `active`. Final acceptance, `done`, severity raising and PI/sprint activation are owner-controlled. A `review` item needs evidence. An accepted parent closes its scope to agent edits.
+Statuses are `proposed`, `ready`, `active`, `review` and `done`. Every record moves `proposed` → `ready` → `active` → `review` → `done`. Each step can be taken backwards, and a `done` record reopens to `review`, so a PI, sprint or work item can be closed or reopened by the agent that records the delivery. `review` and `done` need evidence. Severity raising on a bug keeps its own evidence rule. There is no owner-only status gate; the owner still reviews the result.
 
 ## Operations
 

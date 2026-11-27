@@ -1,0 +1,20 @@
+[
+  {
+    "submitted": {
+      "id": "WI-025",
+      "revision": 4,
+      "requestId": "3f295628-f121-432f-a405-d1a6fac6580a",
+      "kind": "progress",
+      "body": "Host and launcher were delivered by Muse Spark 1.3 Contributor (opencode-go/muse-spark-1.3-contributor, xhigh) under the WI-025/026 brief; Edge integrated and ran the browser journey.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "3f295628-f121-432f-a405-d1a6fac6580a",
+      "recordId": "WI-025",
+      "at": "2026-11-26T20:22:09.829Z",
+      "kind": "progress",
+      "body": "Host and launcher were delivered by Muse Spark 1.3 Contributor (opencode-go/muse-spark-1.3-contributor, xhigh) under the WI-025/026 brief; Edge integrated and ran the browser journey.",
+      "documentRefs": []
+    }
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "submitted": {
+      "id": "WI-030",
+      "revision": 4,
+      "requestId": "06e13c73-bde1-4ef2-a2bd-9969e378e788",
+      "kind": "progress",
+      "body": "Menu items showed a small bracket offset while the MUI menu was still animating; recorded as a Sev-4 visual observation, not a release blocker.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "06e13c73-bde1-4ef2-a2bd-9969e378e788",
+      "recordId": "WI-030",
+      "at": "2026-11-26T21:03:34.081Z",
+      "kind": "progress",
+      "body": "Menu items showed a small bracket offset while the MUI menu was still animating; recorded as a Sev-4 visual observation, not a release blocker.",
+      "documentRefs": []
+    }
+  }
+]
