@@ -137,9 +137,9 @@ test('v0.3 account, session, invitation, preference and retention journeys', asy
     });
 
     await t.test('owner setup consumes the claim and issues a recovery code', async () => {
-      insertClaim(dataDir, 'TESTCLAIM');
+      insertClaim(dataDir, 'Test-Claim_9');
       const response = await call(base, 'POST', '/setup', {
-        json: { claim: 'TESTCLAIM', username: 'sigma', password: 'secret12', email: 'sigma@example.test' },
+        json: { claim: 'Test-Claim_9', username: 'sigma', password: 'secret12', email: 'sigma@example.test' },
       });
       assert.equal(response.status, 200, JSON.stringify(response.data));
       assert.equal(response.data.profile.username, 'sigma');
@@ -153,7 +153,7 @@ test('v0.3 account, session, invitation, preference and retention journeys', asy
 
     await t.test('a used setup claim cannot create a second owner', async () => {
       const response = await call(base, 'POST', '/setup', {
-        json: { claim: 'TESTCLAIM', username: 'other', password: 'secret12' },
+        json: { claim: 'Test-Claim_9', username: 'other', password: 'secret12' },
       });
       assert.equal(response.status, 409);
     });

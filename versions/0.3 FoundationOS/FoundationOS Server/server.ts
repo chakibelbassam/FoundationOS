@@ -511,7 +511,8 @@ async function handle(req: any, res: any) {
       const username = normalizeUsername(input.username);
       if (!validUsername(username)) refuse(400, 'Use a lowercase username of 2 to 39 characters. Some names are reserved.');
       if (typeof input.password !== 'string' || input.password.length < 6) refuse(400, 'Use a password of at least 6 characters.');
-      const claim = compactCode(String(input.claim ?? '').replace(/-/g, ''));
+      // Setup tokens are base64url and case-sensitive; do not normalise them like a typed code.
+      const claim = String(input.claim ?? '').trim();
       const row = db.prepare('SELECT id, expires_at, used_at FROM setup_claims WHERE token_digest=?').get(digest(claim)) as { id: string; expires_at: string; used_at: string | null } | undefined;
       if (!row || row.used_at || Date.parse(row.expires_at) <= nowMs()) refuse(401, 'That setup link is no longer valid. Open FoundationOS from the server console again.');
       const email = input.email ? String(input.email).trim() : null;
@@ -1063,8 +1064,9 @@ async function recoverOwner() {
 
 async function menu() {
   if (process.env.FOUNDATIONOS_NO_MENU === '1' || !process.stdin.isTTY) return;
-  const owner = db.prepare("SELECT COUNT(*) AS n FROM accounts WHERE role='owner' AND closed_at IS NULL").get() as { n: number };
   for (;;) {
+    // Re-read on every turn: the owner can be created while this menu is open.
+    const owner = db.prepare("SELECT COUNT(*) AS n FROM accounts WHERE role='owner' AND closed_at IS NULL").get() as { n: number };
     console.log('');
     console.log(owner.n === 0
       ? '[O] Create the owner and open FoundationOS    [Q] Quit'
