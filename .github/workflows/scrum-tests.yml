@@ -25,6 +25,8 @@ jobs:
         run: node --input-type=module -e "import('./Edge/tools/scrum-workspace-validate.mjs').then(m => { const r = m.validate(); console.log(JSON.stringify(r, null, 2)); if (!r.ok) process.exit(1); })"
       - name: Run the FoundationOS 0.1 server and contract tests
         run: node --test "versions/0.1 FoundationOS/FoundationOS Server/server.test.mjs" "versions/0.1 FoundationOS/FoundationOS Server/openapi.test.mjs"
+      - name: Run the FoundationOS 0.3 server tests
+        run: node --test "versions/0.3 FoundationOS/FoundationOS Server/server.test.mjs" "versions/0.3 FoundationOS/FoundationOS Server/account-extra.test.mjs"
 
   client:
     runs-on: ubuntu-latest
@@ -50,3 +52,26 @@ jobs:
         run: node --test tests/host.test.mjs tests/launcher.test.mjs
       - name: Run the QA fixture tests
         run: node --test tests/fixtures/seed.test.mjs
+
+  client-0.3:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "versions/0.3 FoundationOS/FoundationOS"
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: "versions/0.3 FoundationOS/FoundationOS/package-lock.json"
+      - name: Install the client
+        run: npm ci --no-audit --no-fund
+      - name: Run the client unit tests
+        run: npm test
+      - name: Build the client
+        run: npm run build
+      - name: Run the host and launcher tests
+        run: node --test tests/host.test.mjs tests/launcher.test.mjs

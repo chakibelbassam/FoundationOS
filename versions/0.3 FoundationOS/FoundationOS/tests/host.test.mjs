@@ -88,7 +88,7 @@ function startHost({ serverUrl, dataDir, buildDir }) {
     const timer = setTimeout(() => reject(new Error(`host did not start (output: ${output})`)), 15000);
     proc.stdout.on('data', (chunk) => {
       output += chunk.toString();
-      const match = /FoundationOS 0\.2 client ready at (http:\/\/127\.0\.0\.1:\d+\/)/.exec(output);
+      const match = /FoundationOS 0\.3 client ready at (http:\/\/127\.0\.0\.1:\d+\/)/.exec(output);
       if (match) {
         clearTimeout(timer);
         resolve(match[1]);
@@ -166,7 +166,7 @@ test('v0.3 host serves the build, proxies the server and stores preferences', as
 
     await t.test('startup reports a ready server', () => {
       assert.match(main.output(), /ready/);
-      assert.match(main.output(), /FoundationOS 0\.2 client ready at http:\/\/127\.0\.0\.1:\d+\//);
+      assert.match(main.output(), /FoundationOS 0\.3 client ready at http:\/\/127\.0\.0\.1:\d+\//);
     });
 
     await t.test('direct SPA routes return index.html', async () => {

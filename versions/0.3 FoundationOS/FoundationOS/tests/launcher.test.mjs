@@ -44,7 +44,7 @@ test('Start.cmd passes a positional server URL to the host', { skip: !isWindows 
         reject(new Error(`launcher exited with ${code}. Output:\n${text}`));
       });
     });
-    assert.match(output, /FoundationOS 0\.2 client ready at http:\/\/127\.0\.0\.1:\d+\//);
+    assert.match(output, /FoundationOS 0\.3 client ready at http:\/\/127\.0\.0\.1:\d+\//);
     assert.doesNotMatch(output, /Unknown argument/);
   } finally {
     if (child.pid) {
