@@ -14,8 +14,9 @@ Both reviewers ran their own disposable stack, fixtures, browser tabs and cleanu
 ## GLM 5.3 Flash independent QA
 
 - Report: `../../agents/qa/WI-050/report.md` with screenshots in `../../agents/qa/WI-050/screens/`.
-- Built-in browser: **BLOCKED** in the child session (`Unknown tool 'browser.tabs.list'`, upstream limitation); the primary interactive pass ran on the connected Chrome `browse.*` integration and is labelled as such.
-- Rechecked at `d73e407` in the existing QA session and a fresh GLM child: still blocked. A child only gets the built-in browser when the desktop attaches a pane to that child; see `../../agents/qa/WI-050/browser-access.md`. The built-in requirement stays open until that pass runs.
+- Built-in browser at `e2e8995`/`b34bc25`: **BLOCKED** in the child session (`Unknown tool 'browser.tabs.list'`); those passes ran on the connected Chrome `browse.*` integration and are labelled as such. The desktop pane was later attached to this session.
+- **Built-in pass at `6397d26`: 20 PASS / 0 FAIL / 0 BLOCKED, no Sev-1** — Topography first run, Home, explorer desktop + real 390/320 viewports, nested Weather, malformed descriptor, reader/Back, Run, backgrounds and fallback, member switch, restart, revoked session, server death/recovery, keyboard. Rows 9, 10 and 19 were re-driven on the built-in surface in the follow-up. F1–F3 re-confirmed; F4 and F5 remain recorded.
+- Recheck evidence: `../../agents/qa/WI-050/browser-access.md`.
 - Product scenarios: **20 PASS / 0 FAIL / 0 BLOCKED** at `e2e8995`, desktop plus real 390×600 and 320×600 emulated viewports; no Sev-1.
 - Findings at `e2e8995`: F1 Sev-3 (invalid token message), F2 Sev-4 (320 search clip), F3 Sev-4 (stale server announcement), F4 Sev-4 (recent rows show the leaf), F5 tooling gap (scroll-cancel not stageable). No Sev-1.
 - F1–F3 were fixed at `b34bc25` and all three retested PASS (unknown and revoked tokens, search 239 px at 320 / 309 px at 390, server-death announcement and recovery). F4 and F5 remain recorded.
