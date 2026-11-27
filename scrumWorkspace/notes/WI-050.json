@@ -1,0 +1,38 @@
+[
+  {
+    "submitted": {
+      "id": "WI-050",
+      "revision": 3,
+      "requestId": "67fce544-b815-4245-9c43-08381a04ba76",
+      "kind": "progress",
+      "body": "Two independent browser passes on the final Sprint-6 candidate.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "67fce544-b815-4245-9c43-08381a04ba76",
+      "recordId": "WI-050",
+      "at": "2026-11-27T00:05:07.963Z",
+      "kind": "progress",
+      "body": "Two independent browser passes on the final Sprint-6 candidate.",
+      "documentRefs": []
+    }
+  },
+  {
+    "submitted": {
+      "id": "WI-050",
+      "revision": 4,
+      "requestId": "0c04d23c-ead1-42a6-910b-1bf66ccaaead",
+      "kind": "progress",
+      "body": "Muse hands-on tester and GLM 5.3 Flash QA run independent passes at 8eb1a9c; built-in browser access is checked first, browse-in-Chrome is the approved labelled fallback.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "0c04d23c-ead1-42a6-910b-1bf66ccaaead",
+      "recordId": "WI-050",
+      "at": "2026-11-27T00:05:08.107Z",
+      "kind": "progress",
+      "body": "Muse hands-on tester and GLM 5.3 Flash QA run independent passes at 8eb1a9c; built-in browser access is checked first, browse-in-Chrome is the approved labelled fallback.",
+      "documentRefs": []
+    }
+  }
+]

@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Typography from '@mui/material/Typography';
 import { useSession } from '../app/SessionContext';
 import { usePreferences, motionIsReduced } from '../app/PreferencesContext';
@@ -8,6 +8,7 @@ import { Breadcrumbs } from '../components/Breadcrumbs';
 import { AppCard } from '../components/AppCard';
 import { StatePanel } from '../components/StatePanel';
 import { APP_INVENTORY_SCOPE, useAppInventory } from './useAppInventory';
+import { clearResumeFocus, escapeSelector, readResumeFocus, setResumeFocus } from './focusReturn';
 
 function leaf(path: string): string {
   const parts = path.split('/').filter(Boolean);
@@ -16,6 +17,7 @@ function leaf(path: string): string {
 
 export function AppsView() {
   const navigate = useNavigate();
+  const location = useLocation();
   const { profile } = useSession();
   const { effective } = usePreferences();
   const memberId = profile?.id;
@@ -23,14 +25,27 @@ export function AppsView() {
   const scopeKey = pinned.join('|');
   const inventory = useAppInventory(memberId, pinned, scopeKey);
   const headingRef = useRef<HTMLHeadingElement | null>(null);
+  // The app path recorded on this entry before leaving for its overview.
+  const resumePath = readResumeFocus(location.state);
 
   useEffect(() => {
-    if (getLastInput() === 'keyboard') headingRef.current?.focus();
-  }, []);
+    if (getLastInput() === 'keyboard' && !resumePath) headingRef.current?.focus();
+  }, [resumePath]);
+
+  useEffect(() => {
+    if (!resumePath || inventory.status !== 'ready') return;
+    const card = document.querySelector(`[data-card-path="${escapeSelector(resumePath)}"]`);
+    const target = card?.querySelector('button');
+    if (target instanceof HTMLElement) target.focus();
+    else headingRef.current?.focus();
+    const timer = window.setTimeout(() => clearResumeFocus(), 600);
+    return () => window.clearTimeout(timer);
+  }, [resumePath, inventory.status]);
 
   const reducedMotion = motionIsReduced(effective.motion);
 
   const open = (target: string) => {
+    setResumeFocus(target);
     navigate(`/app/${target}`, { state: { from: { route: '/apps', path: target } } });
   };
 

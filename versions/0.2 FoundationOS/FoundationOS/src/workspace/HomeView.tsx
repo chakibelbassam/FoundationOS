@@ -12,6 +12,7 @@ import { usePreferences } from '../app/PreferencesContext';
 import { motionIsReduced } from '../app/PreferencesContext';
 import { getLastInput } from '../app/inputMode';
 import { fromState } from './useRememberReturn';
+import { clearResumeFocus, escapeSelector, readResumeFocus, setResumeFocus } from './focusReturn';
 import { APP_INVENTORY_SCOPE } from './useAppInventory';
 
 const HOME_TILE_KEY = 'foundationos.v0.2.home-tile';
@@ -49,22 +50,33 @@ interface TileButtonProps {
   control: string;
   label: string;
   secondary?: string;
+  path?: string;
+  icon?: 'folder' | 'app';
   onGo: () => void;
 }
 
-function TileButton({ control, label, secondary, onGo }: TileButtonProps) {
+function TileButton({ control, label, secondary, path, icon, onGo }: TileButtonProps) {
   const sub = rowSecondary(label, secondary);
+  const full = sub ? `${label} · ${sub}` : label;
   return (
     <button
       type="button"
       className="fo-home-row"
       data-home-control={control}
+      data-resume-path={path}
       data-target
+      title={full}
       onClick={onGo}
     >
       <span className="fo-home-row-text">
-        <span className="fo-home-row-label">{label}</span>
-        {sub ? <span className="fo-home-row-sub">{sub}</span> : null}
+        <span className="fo-home-row-label">
+          {icon === 'folder' ? <FolderOpenIcon fontSize="small" aria-hidden="true" /> : null}
+          {icon === 'app' ? <AppsIcon fontSize="small" aria-hidden="true" /> : null}
+          <span className="fo-home-row-single">
+            {label}
+            {sub ? <span className="fo-home-row-path"> · {sub}</span> : null}
+          </span>
+        </span>
       </span>
     </button>
   );
@@ -85,15 +97,27 @@ export function HomeView() {
 
   const go = (to: string, tile: string, control?: string) => {
     rememberTile(control ?? tile);
+    // Leaving for an overview records the app path on this entry, so Back
+    // can restore focus to the originating row.
+    if (to.startsWith('/app/')) setResumeFocus(to.replace(/^\/app\//, ''));
     navigate(to, { state: { from: { route: '/', path: tile } } });
   };
 
-  // Back restores its source tile: the control used on departure is stored,
-  // then focused once when Home mounts again.
+  // Back restores its source: an app row recorded on this entry wins, then
+  // the tile control used on departure, then the heading for keyboard users.
   useEffect(() => {
+    const resume = readResumeFocus(location.state);
+    if (resume) {
+      const row = document.querySelector(`[data-resume-path="${escapeSelector(resume)}"]`);
+      if (row instanceof HTMLElement) {
+        row.focus();
+        const timer = window.setTimeout(() => clearResumeFocus(), 600);
+        return () => window.clearTimeout(timer);
+      }
+    }
     const tile = takeTile();
     if (tile) {
-      const target = document.querySelector(`[data-home-control="${CSS.escape(tile)}"]`);
+      const target = document.querySelector(`[data-home-control="${escapeSelector(tile)}"]`);
       if (target instanceof HTMLElement) {
         target.focus();
         return;
@@ -110,15 +134,15 @@ export function HomeView() {
         title: 'File Explorer',
         description: 'Browse your private home, open folders and read files.',
         visual: 'dashboard',
-        colSpan: 2,
-        rowSpan: 2,
+        colSpan: 1,
+        rowSpan: 1,
         content: (
-          <div className="fo-home-tile">
-            <div className="fo-home-tile-head">
-              <FolderOpenIcon fontSize="small" aria-hidden="true" />
-              <h2>File Explorer</h2>
-            </div>
-            <p>Browse your private home, open folders and read files.</p>
+          <div className="fo-home-tile fo-home-tile-app">
+            <span className="fo-home-app-icon" aria-hidden="true">
+              <FolderOpenIcon fontSize="large" />
+            </span>
+            <h2>Files</h2>
+            <p>Your private home.</p>
             <Button
               variant="contained"
               size="small"
@@ -126,7 +150,7 @@ export function HomeView() {
               data-target
               onClick={() => go('/files', 'explorer', 'explorer-open')}
             >
-              Open File Explorer
+              Open
             </Button>
           </div>
         ),
@@ -136,11 +160,16 @@ export function HomeView() {
         description: 'Folders you pinned for quick access.',
         visual: 'collaboration',
         colSpan: 2,
-        rowSpan: 2,
+        rowSpan: 1,
         content: (
           <div className="fo-home-tile">
             <div className="fo-home-tile-head">
               <h2>Projects</h2>
+              {projects.length > 0 ? (
+                <span className="fo-home-count" aria-label={`${projects.length} pinned`}>
+                  {projects.length} pinned
+                </span>
+              ) : null}
             </div>
             {projects.length === 0 ? (
               <p>No pinned projects yet. Pin a folder from the File Explorer.</p>
@@ -152,6 +181,8 @@ export function HomeView() {
                       control={`project-${index}`}
                       label={leaf(entry)}
                       secondary={entry}
+                      path={entry}
+                      icon="folder"
                       onGo={() => go(`/files/${entry}`, `project-${index}`)}
                     />
                   </div>
@@ -174,13 +205,18 @@ export function HomeView() {
         title: 'Recent apps',
         description: 'Apps you opened recently.',
         visual: 'analytics',
-        colSpan: 2,
-        rowSpan: 2,
+        colSpan: 3,
+        rowSpan: 1,
         content: (
           <div className="fo-home-tile">
             <div className="fo-home-tile-head">
               <AppsIcon fontSize="small" aria-hidden="true" />
               <h2>Recent apps</h2>
+              {recentApps.length > 0 ? (
+                <span className="fo-home-count" aria-label={`${recentApps.length} recent`}>
+                  {recentApps.length} recent
+                </span>
+              ) : null}
             </div>
             {recentApps.length === 0 ? (
               <p>Open an app to see it here.</p>
@@ -192,6 +228,8 @@ export function HomeView() {
                       control={`app-${index}`}
                       label={leaf(entry)}
                       secondary={entry}
+                      path={entry}
+                      icon="app"
                       onGo={() => go(`/app/${entry}`, `app-${index}`)}
                     />
                   </div>
@@ -215,7 +253,7 @@ export function HomeView() {
         title: 'Activity',
         description: 'Workspace activity appears here when a source is connected.',
         visual: 'automation',
-        colSpan: 2,
+        colSpan: 1,
         rowSpan: 2,
         content: (
           <div className="fo-home-tile">
@@ -247,7 +285,7 @@ export function HomeView() {
       <MagicBento
         items={items}
         columns={4}
-        rowHeight={160}
+        rowHeight={248}
         theme={dark ? 'dark' : 'light'}
         glowColor={undefined}
         textAutoHide={false}

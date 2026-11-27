@@ -37,6 +37,32 @@ export function toSvarEntries(memberPath: string, entries: Entry[]): SvarItem[] 
   }));
 }
 
+// Local vivid icons vendored under public/icons/filemanager (see
+// scripts/vendor-svar-icons.mjs). The store lowercases extensions, so the
+// lookup matches that; anything unlisted falls back to the generic file icon
+// and non-file/folder pseudo types to the CSS icon font (return false).
+const VIVID_EXTS = new Set([
+  '7z', 'rar', 'zip', 'css', 'html', 'js', 'php', 'md', 'xml', 'sql',
+  'aif', 'mid', 'mp3', 'waw', 'wma', 'doc', 'docx', 'txt', 'avi', 'mov',
+  'mp4', 'mpeg', 'mpg', 'pdf', 'xls', 'xlsx', 'gif', 'jpg', 'jpeg', 'png',
+  'psd', 'tiff', 'svg',
+]);
+
+export interface SvarFilePreview {
+  type?: string;
+  ext?: string;
+}
+
+export function svarIconUrl(file: SvarFilePreview, size: 'big' | 'small'): string | false {
+  if (file.type === 'folder') return `/icons/filemanager/${size}/folder.svg`;
+  if (file.type === 'file') {
+    const ext = (file.ext ?? '').toLowerCase();
+    const name = VIVID_EXTS.has(ext) ? ext : 'file';
+    return `/icons/filemanager/${size}/${name}.svg`;
+  }
+  return false;
+}
+
 // v0.2 exposes no download, upload, creation, rename, deletion, copy or move.
 export const UNSUPPORTED_MENU_IDS: ReadonlySet<string> = new Set([
   'download',

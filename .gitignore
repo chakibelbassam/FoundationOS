@@ -14,3 +14,4 @@ dist/
 versions/*/qa/raw/
 versions/*/agents/**/raw/
 *.tsbuildinfo
+versions/*/agents/**/shots/

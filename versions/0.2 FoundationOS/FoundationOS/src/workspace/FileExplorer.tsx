@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import { useMediaQuery } from '@mui/material';
 import { Filemanager, Willow, WillowDark } from '@svar-ui/react-filemanager';
 import type { IApi } from '@svar-ui/react-filemanager';
@@ -10,11 +11,10 @@ import { api, ApiError } from '../api/client';
 import { useSession } from '../app/SessionContext';
 import { usePreferences } from '../app/PreferencesContext';
 import { getLastInput } from '../app/inputMode';
-import { Breadcrumbs } from '../components/Breadcrumbs';
 import { StatePanel } from '../components/StatePanel';
 import { buildRouteData, loadExplorerFolder } from './explorerData';
 import type { SvarEntry } from './explorerData';
-import { explorerMenuOptions, fromSvarId, toSvarId } from './svarIds';
+import { explorerMenuOptions, fromSvarId, svarIconUrl, toSvarId } from './svarIds';
 import { fromState } from './useRememberReturn';
 
 // Unsupported even via menu or keyboard: intercepted in init so nothing runs.
@@ -72,7 +72,12 @@ export function FileExplorer() {
   // Focus the heading on arrival for keyboard users; SVAR rows keep their own
   // tab order and visible focus once the explorer is mounted.
   useEffect(() => {
-    if (getLastInput() === 'keyboard') headingRef.current?.focus();
+    if (getLastInput() !== 'keyboard') return;
+    // The heading is visually hidden (the toolbar already titles this view),
+    // so focus the visible search box; fall back to the heading for SR users.
+    const search = document.querySelector('.fo-explorer input[type="text"]');
+    if (search instanceof HTMLElement) search.focus();
+    else headingRef.current?.focus();
     // Mount-only: browsing inside the explorer must not steal focus.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -201,8 +206,22 @@ export function FileExplorer() {
 
   return (
     <div className="fo-route">
-      <Breadcrumbs path={path} />
-      <Typography variant="h1" className="fo-page-title" tabIndex={-1} ref={headingRef} data-page-heading>
+      <Button
+        size="small"
+        startIcon={<ArrowBackIcon />}
+        onClick={() => navigate('/')}
+        sx={{ mb: 1 }}
+        aria-label="Back to Home"
+      >
+        Home
+      </Button>
+      <Typography
+        variant="h1"
+        className="fo-page-title fo-visually-hidden"
+        tabIndex={-1}
+        ref={headingRef}
+        data-page-heading
+      >
         {title}
       </Typography>
       <Typography variant="body2" className="fo-page-subtitle" color="text.secondary">
@@ -259,9 +278,10 @@ export function FileExplorer() {
             key={`${memberId ?? 'none'}:${attempt}`}
             data={routeData}
             mode="table"
+            preview
             panels={panels}
             readonly
-            icons="simple"
+            icons={svarIconUrl}
             menuOptions={explorerMenuOptions}
             init={handleInit}
             onRequestData={loadData}

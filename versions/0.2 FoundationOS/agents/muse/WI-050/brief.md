@@ -32,11 +32,12 @@ Use `%TEMP%\wi050-tester\` for everything. Never use `%LOCALAPPDATA%\FoundationO
 
 ## Browser rules (OpenCode built-in browser only)
 
-- Drive the **built-in browser** (`browser.tabs.open`, `snapshot`, `click`, `fill`, `press`, `evaluate`, `screenshot`, `wait`). Do not launch Chrome or another browser. Do not count another agent's run as yours.
-- **Access check first.** Call `browser.tabs.list`. If the tool is absent (`Unknown tool 'browser.tabs.list'`), the desktop browser attachment is not available to child sessions in this OpenCode build (upstream limitation: subagents inherit the grant but not the attachment). In that case record the browser pass as **BLOCKED** with the exact error and the upstream reference, do not substitute another browser, and complete every non-browser check you can. Edge keeps WI-050 open until real interactive passes exist.
+- Drive the **built-in browser** (`browser.tabs.open`, `snapshot`, `click`, `fill`, `press`, `evaluate`, `screenshot`, `wait`). Do not count another agent's run as yours.
+- **Access check first.** Call `browser.tabs.list`. If the tool is absent (`Unknown tool 'browser.tabs.list'`), the desktop browser attachment is not available to child sessions in this OpenCode build (upstream limitation: subagents inherit the grant but not the attachment). Record the built-in pass as **BLOCKED** with the exact error and do not present a substitute as the built-in run.
+- **Approved fallback surface.** If `browse.status` shows the OpenCode browse integration connected to Chrome, you may run your independent interactive pass with `browse.*` (navigate, snapshot, click, fill, press, evaluate, screenshot, emulate viewport). Label it explicitly as the **browse integration in Chrome**, not the built-in browser, and record both statuses. Use `browse.emulate({ viewport: { width: 390, height: 600 } })` (and 320×600) for real viewport sizes.
 - Desktop: use the tab opened at the launcher URL.
-- Real narrow viewports: open `<launcher URL>/qa/viewport.html?w=390&h=600&url=/` and `...?w=320&h=600&url=/`. The app runs in an iframe whose layout viewport is exactly that size; confirm `innerWidth`/`innerHeight` inside the frame with `evaluate` and a frame id from `browser.frames`. Interact inside the frame using its refs.
-- Record the actual viewport, browser, input method and candidate SHA for every scenario, plus a screenshot in your folder.
+- If neither surface is available, complete every non-browser check and report the browser gap.
+- Record the actual viewport, browser surface, input method and candidate SHA for every scenario, plus a screenshot in your folder.
 
 ## Journeys (all mandatory for you)
 

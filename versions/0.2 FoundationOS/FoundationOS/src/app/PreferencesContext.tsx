@@ -65,6 +65,7 @@ interface PreferencesValue {
   applied: Preferences;
   draft: Preferences | null;
   effective: Preferences;
+  systemReduced: boolean;
   loading: boolean;
   saveState: 'idle' | 'saving' | 'saved' | 'error';
   saveError: string | null;
@@ -89,6 +90,9 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
   const memberRef = useRef<string | undefined>(profile?.id);
   const appliedRef = useRef(applied);
   appliedRef.current = applied;
+  // Subscribing here re-renders every consumer when the OS setting flips, so
+  // `motionIsReduced(effective.motion)` calls re-evaluate live everywhere.
+  const systemReduced = useSystemReducedMotion();
 
   useEffect(() => {
     memberRef.current = profile?.id;
@@ -240,6 +244,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     applied,
     draft,
     effective,
+    systemReduced,
     loading,
     saveState,
     saveError,
@@ -250,7 +255,7 @@ export function PreferencesProvider({ children }: { children: ReactNode }) {
     reset,
     toggleProject,
     recordRecentApp,
-  }), [applied, draft, effective, loading, saveState, saveError, setDraft, updateDraft, apply, cancel, reset, toggleProject, recordRecentApp]);
+  }), [applied, draft, effective, systemReduced, loading, saveState, saveError, setDraft, updateDraft, apply, cancel, reset, toggleProject, recordRecentApp]);
 
   return <PreferencesContext.Provider value={value}>{children}</PreferencesContext.Provider>;
 }
@@ -262,11 +267,29 @@ export function usePreferences() {
 }
 
 export function prefersReducedMotion() {
-  return typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  return typeof window !== 'undefined' && typeof window.matchMedia === 'function'
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 }
 
 export function motionIsReduced(choice: Preferences['motion']) {
   if (choice === 'off') return true;
   if (choice === 'system') return prefersReducedMotion();
   return false;
+}
+
+// Live Windows reduced-motion state. The provider subscribes once per mount
+// (with cleanup), so a mid-session OS change re-renders every preferences
+// consumer: effective motion, the background fallback, tilt and cursor all
+// follow without touching the On/Off semantics above.
+export function useSystemReducedMotion(): boolean {
+  const [reduced, setReduced] = useState(() => prefersReducedMotion());
+  useEffect(() => {
+    if (typeof window === 'undefined' || typeof window.matchMedia !== 'function') return;
+    const query = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const update = (event: MediaQueryListEvent) => setReduced(event.matches);
+    setReduced(query.matches);
+    query.addEventListener('change', update);
+    return () => query.removeEventListener('change', update);
+  }, []);
+  return reduced;
 }

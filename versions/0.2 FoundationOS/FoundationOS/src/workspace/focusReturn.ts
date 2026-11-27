@@ -23,3 +23,10 @@ export function clearResumeFocus() {
   delete usr.resumeFocus;
   window.history.replaceState({ ...state, usr }, '');
 }
+
+// Attribute-selector escaping with a fallback for environments without
+// CSS.escape (jsdom).
+export function escapeSelector(value: string): string {
+  if (typeof CSS !== 'undefined' && typeof CSS.escape === 'function') return CSS.escape(value);
+  return value.replace(/["\\]/g, '\\$&');
+}

@@ -3,6 +3,7 @@ import {
   UNSUPPORTED_MENU_IDS,
   explorerMenuOptions,
   fromSvarId,
+  svarIconUrl,
   toSvarEntries,
   toSvarId,
 } from './svarIds';
@@ -56,6 +57,15 @@ describe('explorer menu filter', () => {
         expect(ids, `mode ${mode}`).not.toContain(forbidden);
       }
     }
+  });
+
+  it('maps folders and files to the vendored vivid icons', () => {
+    expect(svarIconUrl({ type: 'folder' }, 'big')).toBe('/icons/filemanager/big/folder.svg');
+    expect(svarIconUrl({ type: 'folder' }, 'small')).toBe('/icons/filemanager/small/folder.svg');
+    expect(svarIconUrl({ type: 'file', ext: 'md' }, 'small')).toBe('/icons/filemanager/small/md.svg');
+    expect(svarIconUrl({ type: 'file', ext: 'README' }, 'big')).toBe('/icons/filemanager/big/file.svg');
+    expect(svarIconUrl({ type: 'file' }, 'small')).toBe('/icons/filemanager/small/file.svg');
+    expect(svarIconUrl({ type: 'multiple' }, 'big')).toBe(false);
   });
 
   it('drops the download affordance from the file menu in particular', () => {
