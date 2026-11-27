@@ -34,5 +34,23 @@
       "body": "Muse hands-on tester and GLM 5.3 Flash QA run independent passes at 8eb1a9c; built-in browser access is checked first, browse-in-Chrome is the approved labelled fallback.",
       "documentRefs": []
     }
+  },
+  {
+    "submitted": {
+      "id": "WI-050",
+      "revision": 4,
+      "requestId": "c6a47d64-af07-4b1b-8892-3c3554bb1823",
+      "kind": "progress",
+      "body": "Tester retests at e1cfa29 and f3de003: the redesign retest found 10 PASS / 2 FAIL (narrow explorer only showed the info pane; sort would not return to ascending) and both were fixed; the targeted retest at f3de003 passed 9/9 with no Sev-1, including 390x600 and 320x600 list, details, reader and sort. GLM 5.3 Flash QA is running at e2e8995.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "c6a47d64-af07-4b1b-8892-3c3554bb1823",
+      "recordId": "WI-050",
+      "at": "2026-11-27T03:01:14.096Z",
+      "kind": "progress",
+      "body": "Tester retests at e1cfa29 and f3de003: the redesign retest found 10 PASS / 2 FAIL (narrow explorer only showed the info pane; sort would not return to ascending) and both were fixed; the targeted retest at f3de003 passed 9/9 with no Sev-1, including 390x600 and 320x600 list, details, reader and sort. GLM 5.3 Flash QA is running at e2e8995.",
+      "documentRefs": []
+    }
   }
 ]

@@ -54,6 +54,21 @@ describe('api client', () => {
     await expect(api.list('')).rejects.toMatchObject({ failure: { kind: 'invalid' } });
   });
 
+  it('keeps a silent connect 401 off the global unauthorized channel', async () => {
+    const { onUnauthorized } = await import('./client');
+    const listener = vi.fn();
+    const unsubscribe = onUnauthorized(listener);
+    try {
+      fetchMock.mockResolvedValueOnce(response(401, { error: 'Sign in' }));
+      await expect(api.profile({ notifyUnauthorized: false })).rejects.toMatchObject({
+        failure: { kind: 'unauthorized' },
+      });
+      expect(listener).not.toHaveBeenCalled();
+    } finally {
+      unsubscribe();
+    }
+  });
+
   it('ignores a stale 401 after a member switch and handles the active 401 once', async () => {
     const { onUnauthorized, abortActiveRequests } = await import('./client');
     abortActiveRequests();
@@ -131,6 +146,45 @@ describe('api client', () => {
       fetchMock.mockResolvedValueOnce(response(502, { error: 'Server unreachable' }));
       await expect(api.list('')).rejects.toMatchObject({ failure: { kind: 'offline' } });
       expect(listener).toHaveBeenCalledTimes(1);
+    } finally {
+      unsubscribe();
+    }
+  });
+
+  it('notifies server-unreachable on offline failures but not on aborts or answers', async () => {
+    const { abortActiveRequests, onServerUnreachable } = await import('./client');
+    abortActiveRequests();
+    setToken('token-alice');
+    const listener = vi.fn();
+    const unsubscribe = onServerUnreachable(listener);
+    try {
+      // The network drops: unreachable.
+      fetchMock.mockRejectedValueOnce(new Error('connection reset'));
+      await expect(api.list('')).rejects.toMatchObject({ failure: { kind: 'offline' } });
+      expect(listener).toHaveBeenCalledTimes(1);
+      // The host answers for a dead server: unreachable.
+      fetchMock.mockResolvedValueOnce(response(502, { error: 'Server unreachable' }));
+      await expect(api.list('')).rejects.toMatchObject({ failure: { kind: 'offline' } });
+      expect(listener).toHaveBeenCalledTimes(2);
+      // A 401 proves the host answered: silent.
+      fetchMock.mockResolvedValueOnce(response(401, { error: 'Sign in' }));
+      await expect(api.profile()).rejects.toMatchObject({ failure: { kind: 'unauthorized' } });
+      expect(listener).toHaveBeenCalledTimes(2);
+      // Success proves reachability the other way: silent here.
+      fetchMock.mockResolvedValueOnce(response(200, [{ name: 'Weather', type: 'folder' }]));
+      await api.list('');
+      expect(listener).toHaveBeenCalledTimes(2);
+      // Aborting is navigation, not an outage: silent.
+      fetchMock.mockImplementationOnce(
+        (_url: string, init?: RequestInit) =>
+          new Promise<Response>((_resolve, reject) => {
+            init?.signal?.addEventListener('abort', () => reject(new DOMException('Aborted', 'AbortError')));
+          }),
+      );
+      const pending = api.list('Projects');
+      abortActiveRequests();
+      await expect(pending).rejects.toMatchObject({ failure: { kind: 'aborted' } });
+      expect(listener).toHaveBeenCalledTimes(2);
     } finally {
       unsubscribe();
     }

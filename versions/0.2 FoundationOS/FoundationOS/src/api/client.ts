@@ -5,6 +5,7 @@ let generation = 0;
 const unauthorizedListeners = new Set<() => void>();
 const activeControllers = new Set<AbortController>();
 const reachListeners = new Set<() => void>();
+const unreachableListeners = new Set<() => void>();
 
 export function setToken(token: string | null) {
   sessionToken = token;
@@ -52,6 +53,28 @@ function notifyReachable() {
   }
 }
 
+// Mirrors onServerReachable: fires after a request fails because the server
+// (or the client host in front of it) did not answer. Aborts, 401s and other
+// answered failures prove nothing about reachability and stay silent, so a
+// navigation or a sign-in can never flip the announcement by itself.
+export function onServerUnreachable(listener: () => void) {
+  unreachableListeners.add(listener);
+  return () => {
+    unreachableListeners.delete(listener);
+  };
+}
+
+function notifyUnreachable() {
+  if (unreachableListeners.size === 0) return;
+  for (const listener of unreachableListeners) {
+    try {
+      listener();
+    } catch {
+      /* a listener must never break the request */
+    }
+  }
+}
+
 function notifyUnauthorized() {
   for (const listener of unauthorizedListeners) listener();
 }
@@ -76,6 +99,11 @@ function isAbortError(error: unknown) {
 
 interface RequestOptions {
   signal?: AbortSignal | null;
+  // The connect request authenticates the attempt itself: its 401 belongs to
+  // the caller (invalid or revoked token) and must not fire the global
+  // unauthorized listeners, which would end the session and bump the
+  // generation before the connect catch maps the failure to its copy.
+  notifyUnauthorized?: boolean;
 }
 
 async function request<T>(path: string, init: RequestInit = {}, expect: 'json' | 'text' = 'json', options: RequestOptions = {}): Promise<T> {
@@ -101,6 +129,7 @@ async function request<T>(path: string, init: RequestInit = {}, expect: 'json' |
     if (controller.signal.aborted || isAbortError(error)) {
       throw new ApiError({ kind: 'aborted' });
     }
+    notifyUnreachable();
     throw new ApiError({ kind: 'offline', message: (error as Error).message || 'Server unreachable' });
   } finally {
     activeControllers.delete(controller);
@@ -110,13 +139,21 @@ async function request<T>(path: string, init: RequestInit = {}, expect: 'json' |
     throw new ApiError({ kind: 'aborted' });
   }
   if (response.status === 401) {
-    if (requestToken !== null && requestGeneration === generation && requestToken === sessionToken) {
+    if (
+      options.notifyUnauthorized !== false &&
+      requestToken !== null &&
+      requestGeneration === generation &&
+      requestToken === sessionToken
+    ) {
       notifyUnauthorized();
     }
     throw new ApiError({ kind: 'unauthorized' });
   }
   if (response.status === 404) throw new ApiError({ kind: 'not-found' });
-  if (response.status === 502) throw new ApiError({ kind: 'offline', message: 'Server unreachable' });
+  if (response.status === 502) {
+    notifyUnreachable();
+    throw new ApiError({ kind: 'offline', message: 'Server unreachable' });
+  }
   if (!response.ok) {
     let message = `Request failed (${response.status})`;
     try {

@@ -978,6 +978,26 @@ a[href]:focus-visible,
   .fo-explorer [data-id=':toggle-tree'] {
     display: none;
   }
+  /* The toolbar's left section shrink-wraps the search field (down to ~57 px
+     at 320), clipping its placeholder. Stack the toolbar instead: search
+     takes the full first row, the view modes left-align below. Scoped with
+     :has to the filemanager toolbar so the preview toolbars keep their
+     single-row layout. */
+  .fo-explorer .wx-toolbar:has(> .wx-left) {
+    flex-wrap: wrap;
+    height: auto;
+    row-gap: 8px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .fo-explorer .wx-toolbar:has(> .wx-left) > .wx-left,
+  .fo-explorer .wx-toolbar:has(> .wx-left) > .wx-right {
+    width: 100%;
+    flex-basis: 100%;
+  }
+  .fo-explorer .wx-toolbar:has(> .wx-left) > .wx-right {
+    justify-content: flex-start;
+  }
   .fo-explorer .wx-content {
     width: 100% !important;
   }

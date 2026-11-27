@@ -1,5 +1,5 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from 'react';
-import { checkServer, onServerReachable } from '../api/client';
+import { checkServer, onServerReachable, onServerUnreachable } from '../api/client';
 import type { ClientConfig } from '../api/types';
 
 interface ServerValue {
@@ -21,6 +21,9 @@ export function ServerProvider({ children }: { children: ReactNode }) {
   configRef.current = config;
   const retryTimers = useRef<number[]>([]);
   const checkRef = useRef<() => Promise<ClientConfig | null>>(async () => null);
+  // A check of our own is already in flight: skip redundant rechecks so one
+  // failing episode costs one extra check, not a storm of them.
+  const checkingRef = useRef(false);
 
   const clearRetries = useCallback(() => {
     for (const timer of retryTimers.current) window.clearTimeout(timer);
@@ -29,6 +32,7 @@ export function ServerProvider({ children }: { children: ReactNode }) {
 
   const runCheck = useCallback(async (rearm: boolean) => {
     if (rearm) clearRetries();
+    checkingRef.current = true;
     try {
       const next = await checkServer();
       setConfig(next);
@@ -47,6 +51,7 @@ export function ServerProvider({ children }: { children: ReactNode }) {
       }
       return null;
     } finally {
+      checkingRef.current = false;
       setLoading(false);
     }
   }, [clearRetries]);
@@ -62,6 +67,18 @@ export function ServerProvider({ children }: { children: ReactNode }) {
     return onServerReachable(() => {
       const current = configRef.current;
       if (!current || !current.check.ok) void checkRef.current();
+    });
+  }, []);
+
+  // Any failed request proves the server stopped answering: recheck at once
+  // when the chip still claims ready, instead of waiting for the next poll.
+  // The edge trigger (only while ok) plus the in-flight guard keep one
+  // failing episode to a single extra check.
+  useEffect(() => {
+    return onServerUnreachable(() => {
+      if (checkingRef.current) return;
+      const current = configRef.current;
+      if (current && current.check.ok) void checkRef.current();
     });
   }, []);
 

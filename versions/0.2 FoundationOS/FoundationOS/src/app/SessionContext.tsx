@@ -61,7 +61,11 @@ export function SessionProvider({ children }: { children: ReactNode }) {
     setToken(trimmed);
     const ticket = currentGeneration();
     try {
-      const next = await api.profile();
+      // The connect 401 authenticates this attempt, so it stays silent on
+      // the global unauthorized channel: notifying would clear the token
+      // and bump the generation, and this catch would misread the failure
+      // as a newer connection instead of an invalid token.
+      const next = await api.profile({ notifyUnauthorized: false });
       // A newer connect or a disconnect supersedes this attempt.
       if (ticket !== currentGeneration()) return { ok: false as const, error: 'Superseded by a newer connection.' };
       tokenRef.current = trimmed;
