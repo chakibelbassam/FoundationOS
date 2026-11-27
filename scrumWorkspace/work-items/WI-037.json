@@ -1,0 +1,13 @@
+{
+  "id": "WI-037",
+  "kind": "item",
+  "parent": "S-02-4",
+  "title": "Preview and apply settings on real widgets",
+  "type": "feature",
+  "priority": 1,
+  "effort": 3,
+  "revision": 5,
+  "status": "done",
+  "acceptance": "**Story or goal** · Judge an interface choice on the components I actually use.\n\n**Expected behaviour** · Deliver Profile, Appearance and Workspace pages, a compact About entry and live previews using the real cards. Apply persists, Cancel restores the applied state and Reset previews defaults until applied.\n\n**Scope boundary** · Offer theme, Solid/Glass, density, motion and System/Target cursor.\n\n**Previous in delivery queue** · WI-036\n\n**Depends on** · WI-031, WI-035, WI-036\n\n**Verify** · Preview and cancel a change, apply a different change, restart and check Home. Verify reset and a visible failed-save state.\n\n**Effort basis** · Composes implemented controls and preference storage.",
+  "evidence": "Preview changed the real card and folder immediately; Cancel restored the applied values; Apply persisted; Reset previewed the owner defaults until applied; a failed save showed an explicit error and kept the saved file. Three pages, About, Back to workspace. Evidence: qa/sprint-4/WI-037/. Owner accepted PI-02 on 27 November 2026."
+}

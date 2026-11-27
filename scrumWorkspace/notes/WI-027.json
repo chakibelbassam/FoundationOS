@@ -1,0 +1,20 @@
+[
+  {
+    "submitted": {
+      "id": "WI-027",
+      "revision": 4,
+      "requestId": "5bc726c3-4ae1-4d2c-a0f3-efb30f836dbb",
+      "kind": "progress",
+      "body": "Folder names use dashes because the v0.1 server rejects spaces in path segments; display names keep spaces via app.json. The seeder refuses to write inside the tracked tree except under Edge/workspace.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "5bc726c3-4ae1-4d2c-a0f3-efb30f836dbb",
+      "recordId": "WI-027",
+      "at": "2026-11-26T20:22:09.872Z",
+      "kind": "progress",
+      "body": "Folder names use dashes because the v0.1 server rejects spaces in path segments; display names keep spaces via app.json. The seeder refuses to write inside the tracked tree except under Edge/workspace.",
+      "documentRefs": []
+    }
+  }
+]

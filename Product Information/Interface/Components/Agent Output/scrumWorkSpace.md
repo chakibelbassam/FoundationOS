@@ -10,7 +10,7 @@ Use these Markdown components in conversation with the owner. Choose the smalles
 | Types | ✨ Feature · 🛠️ Task · ⚙️ Enabler · 🐞 Bug · 🔧 Enhancement |
 | Status, in every view | 💭 Proposed · 🟢 Ready · ▶️ Active · 👀 Review · ✅ Done |
 | Priority, highest first | 🔴 P-1 · 🟠 P-2 · 🟠 P-3 · 🟡 P-4 · 🟢 P-5 |
-| Effort, hardest first | 🔴 Ef-2 · 🟠 Ef-3 · 🟡 Ef-4 · 🟢 Ef-5 |
+| Effort, lowest first | 🟢 Ef-1 · 🟡 Ef-2 · 🟠 Ef-3 · 🟠 Ef-4 · 🔴 Ef-5 |
 | Severity for bugs | Sev-1 highest through Sev-5 lowest |
 | Knowledge | 📄 Document · 📝 Draft · ◆ Decision · ⚠️ Blocker · 🧪 Evidence · 🔗 Relationship |
 
@@ -32,7 +32,7 @@ Lead with the outcome. List titled sprints in numerical order with their recorde
 
 | Work item | Type | Status | ⚑ Priority | Effort |
 |---|---|---|---|---|
-| ☐ **WorkItem-{number} ({title})** | 🛠️ Task | 👀 Review | 🔴 P-1 | 🟡 Ef-4 |
+| ☐ **WorkItem-{number} ({title})** | 🛠️ Task | 👀 Review | 🔴 P-1 | 🟡 Ef-2 |
 | ☑ **WorkItem-{number} ({title})** | ⚙️ Enabler | ✅ Done | 🟠 P-2 | 🟠 Ef-3 |
 
 Use ☑ only for stored status `done` and ☐ for every other status. These are display indicators. Order by priority then ID. End with the completed count over the total. Fetch all pages before computing totals or label the displayed subset. For an empty sprint give the heading, acceptance and “0 work items.”
@@ -44,7 +44,7 @@ Use ☑ only for stored status `done` and ☐ for every other status. These are 
 
 | Type | Status | ⚑ Priority | Effort |
 |---|---|---|---|
-| 🛠️ Task | 👀 Review | 🔴 P-1 | 🟡 Ef-4 |
+| 🛠️ Task | 👀 Review | 🔴 P-1 | 🟡 Ef-2 |
 
 **Acceptance** · {observable outcome}  
 **🧪 Recorded evidence** · {what was verified, on which version, with a source}

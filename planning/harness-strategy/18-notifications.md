@@ -159,12 +159,12 @@ can see the app; the notification state is not.
 
 ## 8. Effort
 
-- Job record + state machine: **Ef-2**.
-- Resume-on-boot with revision check: **Ef-2** (process + concurrency).
+- Job record + state machine: **Ef-4**.
+- Resume-on-boot with revision check: **Ef-4** (process + concurrency).
 - Inbox + rail badge + app-card status: **Ef-3**.
 - Browser notification + Windows toast: **Ef-3** (permissions, platform quirk).
 - Escalation/quiet hours/coalescing: **Ef-3**.
-- Email channel: **Ef-4** (config + one provider).
+- Email channel: **Ef-2** (config + one provider).
 
 ## 9. Open questions
 

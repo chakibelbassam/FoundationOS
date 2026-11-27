@@ -1,0 +1,13 @@
+{
+  "id": "WI-038",
+  "kind": "item",
+  "parent": "S-02-4",
+  "title": "Refine cursor behaviour across inputs and pages",
+  "type": "enhancement",
+  "priority": 2,
+  "effort": 4,
+  "revision": 5,
+  "status": "done",
+  "acceptance": "**Story or goal** · Keep the active control predictable as views and input devices change.\n\n**Expected behaviour** · Define entry and return targets for Connect, Home, overview, reader, menus and Settings. Release invalid targets after busy states, scroll and resize.\n\n**Scope boundary** · Cover stylus hover/contact and touch scrolling. Controller readiness follows keyboard focus rules.\n\n**Previous in delivery queue** · WI-037\n\n**Depends on** · WI-030, WI-033, WI-035, WI-037\n\n**Verify** · Replay modality changes, menu dismissal and route restoration. Distinguish physical device results from emulated input and record unavailable hardware.\n\n**Effort basis** · Device variability and focus timing.",
+  "evidence": "Pointer targets the actionable bounds for folder, app card, icon button, Run and menu items; keyboard takes over from a parked pointer; the brackets lock to the card during the turn; menu Escape returns to its trigger; transforms only, so no layout shift. Physical pen, controller and touch hardware were unavailable and are recorded as a gap. Evidence: qa/sprint-4/WI-038/. Owner accepted PI-02 on 27 November 2026."
+}

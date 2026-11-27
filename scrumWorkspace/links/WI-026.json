@@ -1,0 +1,13 @@
+{
+  "revision": 2,
+  "references": [
+    {
+      "relativePath": "PI-02/client-increment-plan.md",
+      "purpose": "requirement"
+    },
+    {
+      "relativePath": "PI-02/server-baseline.md",
+      "purpose": "investigation"
+    }
+  ]
+}

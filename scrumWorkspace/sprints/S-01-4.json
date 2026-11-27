@@ -3,7 +3,8 @@
   "kind": "sprint",
   "title": "Verify boundaries",
   "acceptance": "Exercise isolation and publish launcher evidence for the Manual.",
-  "status": "proposed",
-  "revision": 1,
-  "parent": "PI-01"
+  "status": "done",
+  "revision": 2,
+  "parent": "PI-01",
+  "evidence": "Accepted as part of the owner-confirmed completed PI-01. See the sprint work-item evidence and PI acceptance."
 }

@@ -1,0 +1,20 @@
+[
+  {
+    "submitted": {
+      "id": "WI-028",
+      "revision": 4,
+      "requestId": "973032f8-b72a-443e-8259-b4618ee9bf25",
+      "kind": "progress",
+      "body": "The member-switch redirect is rendered by the protected route (not by the Connect view), which fixed a real defect where the old route stayed visible after the member changed.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "973032f8-b72a-443e-8259-b4618ee9bf25",
+      "recordId": "WI-028",
+      "at": "2026-11-26T21:03:34.031Z",
+      "kind": "progress",
+      "body": "The member-switch redirect is rendered by the protected route (not by the Connect view), which fixed a real defect where the old route stayed visible after the member changed.",
+      "documentRefs": []
+    }
+  }
+]

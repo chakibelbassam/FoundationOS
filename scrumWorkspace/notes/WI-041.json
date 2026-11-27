@@ -1,0 +1,20 @@
+[
+  {
+    "submitted": {
+      "id": "WI-041",
+      "revision": 4,
+      "requestId": "0c10aca5-eef9-456d-81d4-87242c679685",
+      "kind": "progress",
+      "body": "Remaining non-blocking observations: folder/app graphics are accent tints (Sev-4, owner review), text jitter not measured (Sev-4), a menu-item bracket can lag during the menu animation (Sev-4).",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "0c10aca5-eef9-456d-81d4-87242c679685",
+      "recordId": "WI-041",
+      "at": "2026-11-26T21:24:45.130Z",
+      "kind": "progress",
+      "body": "Remaining non-blocking observations: folder/app graphics are accent tints (Sev-4, owner review), text jitter not measured (Sev-4), a menu-item bracket can lag during the menu animation (Sev-4).",
+      "documentRefs": []
+    }
+  }
+]

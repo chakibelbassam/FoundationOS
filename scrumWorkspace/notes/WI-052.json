@@ -1,0 +1,38 @@
+[
+  {
+    "submitted": {
+      "id": "WI-052",
+      "revision": 2,
+      "requestId": "61340ac4-c5b6-41b3-838e-ef5927e09bc4",
+      "kind": "progress",
+      "body": "Sprint-6 feature phase: Bento Home and background picker.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "61340ac4-c5b6-41b3-838e-ef5927e09bc4",
+      "recordId": "WI-052",
+      "at": "2026-11-26T23:07:36.795Z",
+      "kind": "progress",
+      "body": "Sprint-6 feature phase: Bento Home and background picker.",
+      "documentRefs": []
+    }
+  },
+  {
+    "submitted": {
+      "id": "WI-052",
+      "revision": 3,
+      "requestId": "26270f91-b39c-4f3d-83a7-6b3a717e012a",
+      "kind": "progress",
+      "body": "Muse developer integrates vendored React Bits components on top of the explorer and preference boundary.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "26270f91-b39c-4f3d-83a7-6b3a717e012a",
+      "recordId": "WI-052",
+      "at": "2026-11-26T23:07:37.037Z",
+      "kind": "progress",
+      "body": "Muse developer integrates vendored React Bits components on top of the explorer and preference boundary.",
+      "documentRefs": []
+    }
+  }
+]

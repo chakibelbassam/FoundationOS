@@ -1,0 +1,40 @@
+[
+  {
+    "submitted": {
+      "id": "PI-00",
+      "revision": 2,
+      "requestId": "a1f4c2d6-5b7e-4c19-9e83-2d4f6a8b7c01",
+      "kind": "decision",
+      "body": "**Owner accepted PI-00 (development setup) on 26 November 2026.**\n\nAll three sprint items were in review with delivery evidence recorded (PR #1 for WI-001; PR #6 for WI-008 and WI-009). The owner accepted the scope and asked for the sprint and PI to be closed. Items and sprint were closed to done immediately before the PI so the acceptance tree stays consistent.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "a1f4c2d6-5b7e-4c19-9e83-2d4f6a8b7c01",
+      "recordId": "PI-00",
+      "at": "2026-11-26T19:07:08.467Z",
+      "kind": "decision",
+      "body": "**Owner accepted PI-00 (development setup) on 26 November 2026.**\n\nAll three sprint items were in review with delivery evidence recorded (PR #1 for WI-001; PR #6 for WI-008 and WI-009). The owner accepted the scope and asked for the sprint and PI to be closed. Items and sprint were closed to done immediately before the PI so the acceptance tree stays consistent.",
+      "documentRefs": []
+    }
+  },
+  {
+    "submitted": {
+      "id": "PI-00",
+      "revision": 2,
+      "requestId": "b7e2d4a0-3c58-4f61-8a92-6e1d5c0b9f42",
+      "kind": "decision",
+      "body": "**Correction.** The earlier note overstated the result. The owner accepted PI-00 (development setup) on 26 November 2026 and asked for the sprint and PI to be closed, but the status writes were refused: `done` is owner-controlled, so the agent could not close WI-001, WI-008, WI-009, Sprint-1 or PI-00. No status changed. WI-001, WI-008 and WI-009 remain in review; Sprint-1 and PI-00 remain active. The owner must complete the acceptance in the FoundationOS app.",
+      "supersedes": "a1f4c2d6-5b7e-4c19-9e83-2d4f6a8b7c01",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "b7e2d4a0-3c58-4f61-8a92-6e1d5c0b9f42",
+      "recordId": "PI-00",
+      "at": "2026-11-26T19:07:24.293Z",
+      "kind": "decision",
+      "body": "**Correction.** The earlier note overstated the result. The owner accepted PI-00 (development setup) on 26 November 2026 and asked for the sprint and PI to be closed, but the status writes were refused: `done` is owner-controlled, so the agent could not close WI-001, WI-008, WI-009, Sprint-1 or PI-00. No status changed. WI-001, WI-008 and WI-009 remain in review; Sprint-1 and PI-00 remain active. The owner must complete the acceptance in the FoundationOS app.",
+      "supersedes": "a1f4c2d6-5b7e-4c19-9e83-2d4f6a8b7c01",
+      "documentRefs": []
+    }
+  }
+]

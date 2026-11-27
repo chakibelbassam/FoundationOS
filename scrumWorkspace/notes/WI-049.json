@@ -1,0 +1,24 @@
+[
+  {
+    "submitted": {
+      "id": "WI-049",
+      "revision": 2,
+      "requestId": "cb91b1db-1fa2-4d80-8331-520606480623",
+      "kind": "decision",
+      "body": "The owner removed the OneDrive replay before this item began. The proposed record now tracks review and polish of the integrated v0.2 candidate.",
+      "documentRefs": [
+        "PI-02/pr-9-acceptance-follow-up.md"
+      ]
+    },
+    "note": {
+      "id": "cb91b1db-1fa2-4d80-8331-520606480623",
+      "recordId": "WI-049",
+      "at": "2026-11-26T22:30:45.982Z",
+      "kind": "decision",
+      "body": "The owner removed the OneDrive replay before this item began. The proposed record now tracks review and polish of the integrated v0.2 candidate.",
+      "documentRefs": [
+        "PI-02/pr-9-acceptance-follow-up.md"
+      ]
+    }
+  }
+]

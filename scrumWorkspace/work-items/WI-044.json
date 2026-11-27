@@ -1,0 +1,13 @@
+{
+  "id": "WI-044",
+  "kind": "item",
+  "parent": "S-02-3",
+  "title": "Define and verify the motion system",
+  "acceptance": "**Story or goal** · Make every transition feel deliberate and smooth instead of incidental.\n\n**Expected behaviour** · Record a motion token table for hover, menus, the card face and the flip, with durations and easing. Apply it to the app card, folder hover, menus and route changes. Hold 60 fps with no layout shift or text jitter on a busy background. Provide reduced-motion variants that keep the same actions.\n\n**Scope boundary** · Refines implemented controls. v0.2 has no runtime launch animation. Glass is the default surface, so its mid-flip bleed is in scope here and in WI-035.\n\n**Previous in delivery queue** · WI-034\n\n**Depends on** · WI-024, WI-030, WI-034\n\n**Verify** · Capture frame timings for hover, menu, flip and face change in Solid and Glass. Choose Motion off and verify the immediate or minimal variants. Record the token table in the interface inventory.\n\n**Effort basis** · Cross-component visual tuning with frame-level verification.",
+  "effort": 3,
+  "priority": 1,
+  "type": "enhancement",
+  "status": "done",
+  "revision": 5,
+  "evidence": "Token table recorded in the interface inventory and applied to hover, menus, the card face, the turn and route entry. Focused-tab measurement during a full turn: 56 frames in 900 ms, average 16.7 ms, maximum 17.0 ms, 0 frames over 20 ms, layout shift 0.000. Motion Off and Follow system give immediate variants with the same actions. Evidence: qa/sprint-3/WI-044/. Owner accepted PI-02 on 27 November 2026."
+}

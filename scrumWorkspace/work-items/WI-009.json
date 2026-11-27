@@ -4,10 +4,10 @@
   "parent": "S-00-1",
   "title": "Show Git operations in the Edge terminal",
   "acceptance": "Every Git and GitHub command in an Edge session runs in the OpenCode terminal tab with a visible work-item banner, and the lifecycle skill documents the naming, stacked-PR and commit-trailer rules.",
-  "status": "review",
-  "revision": 5,
+  "status": "done",
+  "revision": 7,
   "type": "enabler",
   "priority": 2,
-  "effort": 2,
+  "effort": 4,
   "evidence": "PR #6 carries this work as part of PI-1: https://github.com/chakibelbassam/FoundationOS/pull/6. Adds the OpenCode terminal skill and driver, Show-GitContext.ps1, Work-Item and Agent trailers, stacked-PR rules and the visible-execution rule. Verified: driver tests 8/8, npm test 12/12, and every Git step ran in the terminal tab."
 }

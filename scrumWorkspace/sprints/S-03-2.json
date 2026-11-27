@@ -1,0 +1,9 @@
+{
+  "id": "S-03-2",
+  "kind": "sprint",
+  "parent": "PI-03",
+  "title": "Create accounts and sign in",
+  "acceptance": "Create one owner on an empty store, sign in to an authorized private file through the MUI account screens, and load member preferences from the server.",
+  "revision": 2,
+  "status": "proposed"
+}

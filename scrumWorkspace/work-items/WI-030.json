@@ -1,0 +1,13 @@
+{
+  "id": "WI-030",
+  "kind": "item",
+  "parent": "S-02-2",
+  "title": "Make shelf navigation and cursor targets predictable",
+  "type": "feature",
+  "priority": 1,
+  "effort": 4,
+  "revision": 5,
+  "status": "done",
+  "acceptance": "**Story or goal** · Move to one intended target at a time and find it again after Back.\n\n**Expected behaviour** · Scope arrows to the shelf. Restore focus and scroll. Target Cursor frames the actionable widget or distinct icon button. Latest deliberate input selects pointer or focus targeting.\n\n**Scope boundary** · Keep native keyboard focus and touch controls usable with the effect off.\n\n**Previous in delivery queue** · WI-029\n\n**Depends on** · WI-024, WI-029\n\n**Verify** · Replay row edges, nested icons, separate buttons, keyboard/mouse handoff, a removed target and reduced motion.\n\n**Effort basis** · Timing and geometry across input modes.",
+  "evidence": "ArrowRight moved Journal -> Photos -> Weather desk one step at a time; the right edge and last row kept focus; ArrowLeft returned. With the pointer parked on Broken, ArrowLeft moved focus and the Target Cursor to Projects. Back from alpha focused the alpha card, then Projects. Bracket geometry matched the actionable bounds (folder 47..261 vs 43..264; gear 1157..1187 vs 1153..1191; Run 990..1042 vs 986..1046). Evidence: qa/sprint-2/WI-030/README.md. Owner accepted PI-02 on 27 November 2026."
+}

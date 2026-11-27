@@ -10,3 +10,8 @@ runtime/
 *.tmp
 *.lockdir/
 .opencode/node_modules/
+dist/
+versions/*/qa/raw/
+versions/*/agents/**/raw/
+*.tsbuildinfo
+versions/*/agents/**/shots/

@@ -4,6 +4,7 @@
   "parent": "PI-01",
   "title": "Accept the server increment",
   "acceptance": "The extended acceptance script, Manual and launcher evidence accept the increment.",
-  "status": "ready",
-  "revision": 2
+  "status": "done",
+  "revision": 5,
+  "evidence": "Accepted as part of the owner-confirmed completed PI-01. See the sprint work-item evidence and PI acceptance."
 }

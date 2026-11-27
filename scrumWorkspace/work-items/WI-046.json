@@ -1,0 +1,13 @@
+{
+  "status": "done",
+  "revision": 5,
+  "id": "WI-046",
+  "kind": "item",
+  "parent": "S-02-6",
+  "title": "Ignore stale requests after a member switch",
+  "type": "bug",
+  "priority": 1,
+  "effort": 4,
+  "acceptance": "**Expected behaviour** · Bind in-flight requests, auth failures and state updates to the session that started them. Abort obsolete work where supported. Reconnecting as the same member restores the URL. A different member starts at their own Home.\n\n**Related earlier work** · WI-028\n\n**Delivery dependencies** · Can begin on the current PR head. Coordinate the shared session boundary with the companion fix.\n\n**Verify** · With disposable members, control response order across disconnect and reconnect. Check that stale directory, descriptor and settings results are discarded, and only an unauthorized response from the currently active session returns that session to Connect.\n\n**Delivery** · v0.2 client, existing PR #9.",
+  "evidence": "Every request captures its token and generation, so a late 401 from a previous member cannot end the current session; abortActiveRequests runs on connect/disconnect and directory, descriptor and reader effects ignore aborted or stale responses; preference results are discarded after a member change. Tests cover a stale 401 ignored, an active 401 handled once and abort without notification. Tester retest at f3de003: member switch and reconnect kept the right settings and home (F10 fixed). Evidence: qa/sprint-6/WI-046/."
+}

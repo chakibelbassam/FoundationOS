@@ -1,0 +1,26 @@
+{
+  "requestId": "3bc73a5b-c980-4e8a-959a-4916e768e07d",
+  "operation": "update",
+  "id": "WI-050",
+  "submitted": {
+    "id": "WI-050",
+    "revision": 1,
+    "changes": {
+      "title": "Run two independent browser passes on PR 9",
+      "acceptance": "**Expected behaviour** · A GLM 5.3 Flash QA agent and a separate Muse Spark 1.3 Contributor tester each drive the built candidate through the OpenCode built-in browser. Their assignments are independent of Edge and the Muse developer. Each records and retests findings on the final PR #9 head.\n\n**Related earlier work** · WI-040 and WI-041.\n\n**Delivery dependencies** · All other Sprint-6 items.\n\n**Verify** · Exercise the real launchers, nested Weather journey, session switch, preference isolation, scroll dwell, SVAR explorer routes, Bento destinations, Topography default, all background modes, keyboard, reconnect and Back. Use desktop, 390 px and 320 x 600 actual browser viewports across the two runs. Verify Windows launcher coverage on Windows. Use disposable stores, track exact owned processes, and wait for their exit. Record the actual browser actions, results, head SHA and CI status. Report tool and hardware gaps explicitly.\n\n**Delivery** · v0.2 client, existing PR #9."
+    }
+  },
+  "result": {
+    "status": "proposed",
+    "revision": 2,
+    "id": "WI-050",
+    "kind": "item",
+    "parent": "S-02-6",
+    "title": "Run two independent browser passes on PR 9",
+    "type": "task",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · A GLM 5.3 Flash QA agent and a separate Muse Spark 1.3 Contributor tester each drive the built candidate through the OpenCode built-in browser. Their assignments are independent of Edge and the Muse developer. Each records and retests findings on the final PR #9 head.\n\n**Related earlier work** · WI-040 and WI-041.\n\n**Delivery dependencies** · All other Sprint-6 items.\n\n**Verify** · Exercise the real launchers, nested Weather journey, session switch, preference isolation, scroll dwell, SVAR explorer routes, Bento destinations, Topography default, all background modes, keyboard, reconnect and Back. Use desktop, 390 px and 320 x 600 actual browser viewports across the two runs. Verify Windows launcher coverage on Windows. Use disposable stores, track exact owned processes, and wait for their exit. Record the actual browser actions, results, head SHA and CI status. Report tool and hardware gaps explicitly.\n\n**Delivery** · v0.2 client, existing PR #9."
+  },
+  "at": "2026-11-26T22:30:45.887Z"
+}

@@ -137,10 +137,10 @@ remote) on a schedule, since a corrupted `.git` is a bad day.
 
 ## 9. Effort estimate
 
-- Baseline commit + ignore rules: **Ef-4** (mechanical but wide).
-- Per-app `git init` on create: **Ef-4**.
-- Worktree-per-job in the supervisor: **Ef-2** (process + path handling).
-- Review/apply UI: **Ef-2**.
+- Baseline commit + ignore rules: **Ef-2** (mechanical but wide).
+- Per-app `git init` on create: **Ef-2**.
+- Worktree-per-job in the supervisor: **Ef-4** (process + path handling).
+- Review/apply UI: **Ef-4**.
 - Snapshot fallback: **Ef-3**.
 
 ## 10. Open questions

@@ -100,8 +100,8 @@ export function validate() {
     const allowed = new Set(['id', 'kind', 'title', 'acceptance', 'status', 'revision', 'evidence']);
     if (record.kind === 'pi') {
       allowed.add('targetVersion');
-      if (record.targetVersion !== undefined && (typeof record.targetVersion !== 'string' ||
-          !(record.id === 'PI-00' ? record.targetVersion === 'none' : /^\d+\.\d+(?:\.\d+)?$/.test(record.targetVersion)))) {
+      if (typeof record.targetVersion !== 'string' ||
+          !(record.id === 'PI-00' ? record.targetVersion === 'none' : /^\d+\.\d+(?:\.\d+)?$/.test(record.targetVersion))) {
         error(file, 'Invalid PI target version');
       }
     }
@@ -112,8 +112,8 @@ export function validate() {
       if (!Number.isSafeInteger(record.priority) || record.priority < 1 || record.priority > 5) {
         error(file, 'priority must be 1 through 5');
       }
-      if (!Number.isSafeInteger(record.effort) || record.effort < 2 || record.effort > 5) {
-        error(file, 'effort must be 2 through 5');
+      if (!Number.isSafeInteger(record.effort) || record.effort < 1 || record.effort > 5) {
+        error(file, 'effort must be 1 through 5');
       }
       if (record.severity !== undefined) {
         if (record.type !== 'bug') error(file, 'Only bugs carry severity');
@@ -180,7 +180,7 @@ export function validate() {
       error(file, 'Work-item parent must be a sprint');
     }
     if (parent.status === 'done' && record.status !== 'done') {
-      warning(file, 'Accepted parent ' + parent.id + ' closes this scope');
+      warning(file, 'Parent ' + parent.id + ' is done but this record is not');
     }
   }
 

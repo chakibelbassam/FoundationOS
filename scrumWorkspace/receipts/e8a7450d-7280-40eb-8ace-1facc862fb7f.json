@@ -1,0 +1,25 @@
+{
+  "requestId": "e8a7450d-7280-40eb-8ace-1facc862fb7f",
+  "operation": "update",
+  "id": "WI-065",
+  "submitted": {
+    "id": "WI-065",
+    "revision": 1,
+    "changes": {
+      "title": "Invite and create a member account"
+    }
+  },
+  "result": {
+    "id": "WI-065",
+    "kind": "item",
+    "parent": "S-03-3",
+    "title": "Invite and create a member account",
+    "type": "feature",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Add owner invite management and member signup by code with server confirmation and optional unverified email. Scope each code to its server.\n\n**Verify** · Verify success, username conflict, concurrent redemption, expiry, revocation and retry. The member gets one private Home and cannot see another member’s files.\n\n**Delivery dependencies** · WI-059, WI-061\n\n**Queue** · Follows WI-064 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "proposed",
+    "revision": 2
+  },
+  "at": "2026-11-27T00:02:18.941Z"
+}

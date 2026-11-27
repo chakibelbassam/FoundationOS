@@ -1,0 +1,9 @@
+{
+  "revision": 1,
+  "references": [
+    {
+      "relativePath": "PI-03/accounts-and-connection-plan.md",
+      "purpose": "requirement"
+    }
+  ]
+}

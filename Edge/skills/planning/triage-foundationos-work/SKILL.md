@@ -9,4 +9,4 @@ Capture the version, entry point, user action, observed result and expected resu
 
 For a bug, assess who loses what capability, how often, whether work is lost, and whether a practical workaround exists. Separate severity from scheduling priority. For an enabler, name the capability it unlocks. For a QA or research task, state the decision its evidence supports.
 
-Return a supported type, evidence, uncertainty, and one testable acceptance. Use planning/harness-strategy/09-triage-guide.md and 12-effort-rubric.md for the project scales. Split Ef-1 before proposing a sprint. Use the Scrum update tool only when the user requested a change.
+Return a supported type, evidence, uncertainty, and one testable acceptance. Use planning/harness-strategy/09-triage-guide.md and 12-effort-rubric.md for the project scales. Grade effort from 1 (lowest) through 5 (highest). Use the Scrum update tool only when the user requested a change.

@@ -1,0 +1,38 @@
+[
+  {
+    "submitted": {
+      "id": "S-02-6",
+      "revision": 3,
+      "requestId": "fb007ddc-eb9b-4662-b38d-871dbec193ac",
+      "kind": "progress",
+      "body": "Sprint-6 is the final v0.2 sprint on PR #9.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "fb007ddc-eb9b-4662-b38d-871dbec193ac",
+      "recordId": "S-02-6",
+      "at": "2026-11-26T22:34:43.991Z",
+      "kind": "progress",
+      "body": "Sprint-6 is the final v0.2 sprint on PR #9.",
+      "documentRefs": []
+    }
+  },
+  {
+    "submitted": {
+      "id": "S-02-6",
+      "revision": 4,
+      "requestId": "fab9cf3e-ec7c-4dfd-adf8-e35d14fe06dc",
+      "kind": "progress",
+      "body": "Delivery begins with WI-045 and WI-046 (session and settings boundary), then WI-047/048 in parallel, then WI-051/052/053, WI-049 polish and WI-050 independent browser passes.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "fab9cf3e-ec7c-4dfd-adf8-e35d14fe06dc",
+      "recordId": "S-02-6",
+      "at": "2026-11-26T22:34:44.109Z",
+      "kind": "progress",
+      "body": "Delivery begins with WI-045 and WI-046 (session and settings boundary), then WI-047/048 in parallel, then WI-051/052/053, WI-049 polish and WI-050 independent browser passes.",
+      "documentRefs": []
+    }
+  }
+]

@@ -1,0 +1,20 @@
+[
+  {
+    "submitted": {
+      "id": "WI-035",
+      "revision": 5,
+      "requestId": "35c30a03-52ec-44a8-b266-a8372adfb1b1",
+      "kind": "progress",
+      "body": "Two defects were confirmed during this item: the backing faded in over 240 ms, and Chrome painted both clipped glass faces through each other. Both are fixed in b8459c6.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "35c30a03-52ec-44a8-b266-a8372adfb1b1",
+      "recordId": "WI-035",
+      "at": "2026-11-26T21:03:34.178Z",
+      "kind": "progress",
+      "body": "Two defects were confirmed during this item: the backing faded in over 240 ms, and Chrome painted both clipped glass faces through each other. Both are fixed in b8459c6.",
+      "documentRefs": []
+    }
+  }
+]

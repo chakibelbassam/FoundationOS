@@ -4,9 +4,12 @@ param(
     [ValidateSet('qa','browser','publish','watch','changed')]
     [string]$Tool,
     [Parameter(Position=1)]
-    [string]$Target
+    [string]$Target,
+    [string]$ExpectedVersion,
+    [switch]$ResolveOnly
 )
 $ErrorActionPreference='Stop'
+if (($ExpectedVersion -or $ResolveOnly) -and $Tool -ne 'qa') { throw 'ExpectedVersion applies to QA.' }
 
 function Get-RuntimeDependencies {
     $candidates = @()
@@ -64,6 +67,8 @@ foreach ($candidate in ($candidates | Select-Object -Unique)) {
         if ($Tool -eq 'watch') { $params += '--watch' }
         if ($Tool -eq 'changed') { $params += '--changed' }
         if ($Target) { $params += $Target }
+        if ($ResolveOnly) { $params += '--resolve-only' }
+        if ($ExpectedVersion) { $params += @('--expect-version', $ExpectedVersion) }
         & $candidate @prefix @params
         exit $LASTEXITCODE
     }

@@ -15,6 +15,7 @@ Run these commands from the repository root. From Edge, use `tools/` in place of
 | Create a draft | `documents` with `action:create`, `relativePath`, `revision:0` and `body` |
 | Append an item note | `notes` with `action:append`, the item ID and revision, a `requestId` UUID, `kind` and `body` |
 | Link a document | `knowledge` with `action:link`, item/reference/document revisions, `relativePath` and `purpose` |
+| Verify a PI through its recorded version | From Edge run .\tools\Run-EdgeTool.ps1 qa PI-01. To inspect the selection alone run python tools/qa.py PI-01 --resolve-only. |
 | Check the 0.1 runtime | `python Edge/tools/qa.py 0.1` |
 | Publish the product library | `python Edge/tools/publish.py` |
 | Regenerate only stale or missing PDFs | `python Edge/tools/publish.py --changed` |

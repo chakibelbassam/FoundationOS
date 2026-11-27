@@ -1,0 +1,13 @@
+{
+  "id": "WI-041",
+  "kind": "item",
+  "parent": "S-02-5",
+  "title": "Review visual and input behaviour independently",
+  "type": "task",
+  "priority": 1,
+  "effort": 4,
+  "revision": 5,
+  "status": "done",
+  "acceptance": "**Story or goal** · Verify the release visually and across inputs.\n\n**Expected behaviour** · Review desktop, 390 px and 320 × 600 with Solid/Glass, long labels, flip frames, cursor lock, shelf edges, reduced motion and touch.\n\n**Scope boundary** · Record input hardware and any untested pen behaviour.\n\n**Previous in delivery queue** · WI-040\n\n**Depends on** · WI-024, WI-035, WI-038, WI-039\n\n**Verify** · Capture expected and observed results with viewport, input sequence, visual evidence and a reproducible defect list.\n\n**Effort basis** · Visual judgement and device-dependent verification.",
+  "evidence": "GLM 5.3 Flash visual review in versions/0.2 FoundationOS/agents/qa/WI-041/report.md. One Sev-1: component boundaries at 1.1-2.3:1, including an undefined --fo-glass-border giving a white edge on near-white Glass. Fixed with solid #5f7088 boundary tokens; independent retest revised the verdict to PASS with 0 Sev-1 and measured 3.17-5.05:1 in every physically achievable light/dark, Solid/Glass combination (dark-glass page side 3.17 is the watch item). Text 4.91-17.28, focus rings 4.92-10.34. Turn frames, cursor geometry, motion tokens, narrow layouts and note corrections verified. Owner accepted PI-02 on 27 November 2026."
+}

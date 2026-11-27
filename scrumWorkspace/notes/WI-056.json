@@ -1,0 +1,24 @@
+[
+  {
+    "submitted": {
+      "id": "WI-056",
+      "revision": 2,
+      "requestId": "b0e79607-40de-4253-8637-0d38622e159e",
+      "kind": "decision",
+      "body": "Reframed from migrating a copy of the store to creating the versioned v0.3 store. The owner decided v0.3 supports only a fresh v0.3 store and refuses older schemas, so migration and enrollment are out of scope.",
+      "documentRefs": [
+        "PI-03/owner-decisions.md"
+      ]
+    },
+    "note": {
+      "id": "b0e79607-40de-4253-8637-0d38622e159e",
+      "recordId": "WI-056",
+      "at": "2026-11-27T00:01:40.755Z",
+      "kind": "decision",
+      "body": "Reframed from migrating a copy of the store to creating the versioned v0.3 store. The owner decided v0.3 supports only a fresh v0.3 store and refuses older schemas, so migration and enrollment are out of scope.",
+      "documentRefs": [
+        "PI-03/owner-decisions.md"
+      ]
+    }
+  }
+]

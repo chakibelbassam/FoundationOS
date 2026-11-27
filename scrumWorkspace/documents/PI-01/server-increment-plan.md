@@ -1,23 +1,25 @@
 ---
-revision: 5
+revision: 9
 ---
 # PI-01 FoundationOS Server plan
+
+PI-01 delivers the server in versions/0.1 FoundationOS. Sprints 1–4 cover the initial loopback slice. Sprints 5–9 cover the extended server and review fixes. PI-02 is the proposed v0.2 client foundation.
 
 ## Story
 
 One computer hosts FoundationOS. The operator double-clicks the launcher in the version folder. The server finds its shared store, migrates it when needed, and on a truly empty store creates the admin and prints a one-time key in the console. The admin invites members; each member receives a private home and a credential. Members sign in, work with folders and files by relative path, and sign out. Every operation is scoped to the signed-in member, and traversal, links and other homes are refused. The admin can revoke any session. Restarting keeps everything, because accounts and homes live in one store. Backup is stopping the server and copying the store directory. The OpenAPI contract beside the server copy tells the 0.2 client and every agent what the server promises, and CI calls every documented operation and validates every documented response status against it.
 
-There is no browser client in this increment. The launcher console, the API and the acceptance script are the interface, on purpose.
+The launcher console, API and acceptance script provide the v0.1 interface.
 
 ## Naming
 
-Stored record IDs keep the canonical padded form the tool requires: PI-01, S-01-5, WI-010. In conversation, documents, commit messages and pull requests, use the short form with the title in parentheses: PI 1 (FoundationOS Server), S5 (Build the storage spine), WI-10 (Move the server to one versioned store). Work item numbers start at one and drop the padding in prose. Sprint numbers 1 to 4 inside PI 1 are already used by the delivered 0.1 slice, so the five planned sprints are S5 to S9. Machine-facing fields such as trailers and receipts keep the stored IDs.
+Stored record IDs keep the canonical padded form the tool requires: PI-01, S-01-5, WI-010. In conversation follow Edge’s present-scrum-workspace skill. For branches, commit trailers and pull requests follow the GitHub development lifecycle skill. Sprint numbers 1 to 4 inside PI 1 are already used by the delivered 0.1 slice, so the five planned sprints are S5 to S9. Machine-facing fields such as trailers and receipts keep the stored IDs.
 
 ## Decisions by the owner, 26 November 2026
 
 | Decision | Choice |
 | --- | --- |
-| Increment shape | Extend PI-01; the 0.1 fixture is the first accepted slice |
+| Increment shape | Both server slices belong to PI-01 and ship as v0.1 |
 | Source layout | A frozen server copy per versions folder |
 | Data | One shared store with cumulative migrations and a schema guard |
 | Sign-in | Sessions with revocation, first-run admin, invitations; keys remain member credentials |
@@ -71,14 +73,7 @@ Multi-host and networked databases stay off the roadmap.
 
 S1 to S4 delivered the 0.1 slice and their items are in review.
 
-## Execution
 
-Proceed sprint by sprint in order. One branch per work item, stacked on the previous item when it depends on it, cut from the staging lane. Every Git and GitHub step runs in the OpenCode terminal tab with the context banner. The first branch commits the planning records and, as WI-22, the OpenCode tooling wiring accepted from the parallel session. PI 1 targets versions/0.2 FoundationOS for the server increment, and the 0.1 loopback fixture remains its first accepted slice. Implement and verify the server through the 0.2 folder and its Start.cmd launcher. PI 2 also targets versions/0.2 FoundationOS, for the client foundation built on the same server. A run against 0.1 is evidence for that slice only.
+## Verification
 
-## Done when
-
-- The 0.2 server copy passes the extended acceptance: launcher, first-run admin, invitation, sign-in, folder work, isolation, revocation, restart and contract checks.
-- The 0.1 loopback fixture still passes its acceptance.
-- The OpenAPI file documents every operation and CI exercises each one and validates each documented response status.
-- The Manual records the verified outcome.
-- Every item carries evidence and the owner accepts.
+Run the v0.1 Windows launcher acceptance and the v0.1 Node server and OpenAPI suites. See the Manual for the delivered operator workflow.

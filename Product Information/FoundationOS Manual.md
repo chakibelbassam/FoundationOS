@@ -1,10 +1,10 @@
 # FoundationOS Manual
 
-**Version 0.2 · FoundationOS Server review candidate · 26 November 2026**
+**Version 0.1 · FoundationOS Server · 26 November 2026**
 
 ## Start the server
 
-Install Node.js 24 or later on Windows. Open versions, then 0.2 FoundationOS, and double-click Start.cmd. The console prints a local address ending in /status. On a fresh store it also prints one JSON line with the admin identity and its one-time key. Keep the console open while you use the server. Press Ctrl+C to stop it.
+Install Node.js 24 or later on Windows. Open versions, then 0.1 FoundationOS, and double-click Start.cmd. The console prints a local address ending in /status. On a fresh store it also prints one JSON line with the admin identity and its one-time key. Keep the console open while you use the server. Press Ctrl+C to stop it.
 
 ## Sign in
 
@@ -28,4 +28,4 @@ This version does not include a browser client, remote access, running imported 
 
 ## Acceptance
 
-The 0.2 acceptance exercised the Windows launcher, the first-run admin key, invitations, member creation, sessions, folder and file work, cross-member isolation, traversal, hard links, junctions, revocation and restart. Run it from a terminal in the version folder with `python "FoundationOS Server/verify.py"`; it uses a temporary store and stops its instances.
+The 0.1 acceptance exercised the Windows launcher, the first-run admin key, invitations, member creation, sessions, folder and file work, cross-member isolation, traversal, hard links, junctions, revocation and restart. Run it from a terminal in the version folder with `python "FoundationOS Server/verify.py"`; it uses a temporary store and stops its instances.

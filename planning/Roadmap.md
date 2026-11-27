@@ -4,7 +4,7 @@ Setup precedes PI 0.1. Preserve the planning baseline and establish a reviewable
 
 | PI | Outcome | Imported queue |
 | --- | --- | --- |
-| 0.1 · Local server | Start a loopback Node/TypeScript server, create two private profiles, restart and verify both homes. Scope every file operation to the authenticated principal and exclude links and traversal. | W-06a W-31a |
+| 0.1 · FoundationOS Server | Delivered the loopback server with versioned persistence, admin provisioning, invitations, revocable sessions, private hierarchical homes, and a tested OpenAPI contract. | W-06a W-31a |
 | 0.2 · Client foundation | Open the React client against representative data. Verify folder and app widgets, focus, loading, empty and unavailable states. | New client work |
 | 0.3 · Accounts and connection | Complete first run, invitation, sign-in and sign-out against the real server. A second account can access only its authorised workspace. | W-31b W-31c W-31d W-31e W-34 W-40 |
 | 0.4 · Everyday navigation | Enter a folder, inspect an app and return to the same card with focus restored. Test guidance visibility, shared appearance, keyboard and viewport fit. | New client work |
