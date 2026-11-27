@@ -6,7 +6,8 @@
   "type": "feature",
   "priority": 1,
   "effort": 4,
-  "status": "active",
-  "revision": 3,
-  "acceptance": "**Expected behaviour** · Add Standard, Topography, Magic Rings, Lightfall and Ghost Fibers to Appearance with Preview, Apply, Cancel and Reset. Topography is the default when no background is saved. Keep explicit selections and other existing settings across restarts.\n\n**Delivery dependencies** · WI-045 and WI-046 for preferences and session handling. Integrate with WI-052's shell.\n\n**Verify** · Verify each effect and its static fallback, saved settings for two members and after a port-changing restart, motion preferences, Solid and Glass contrast and interaction layering. Verify switching effects releases the previous resources.\n\n**Delivery** · v0.2 client, existing PR #9."
+  "status": "review",
+  "revision": 4,
+  "acceptance": "**Expected behaviour** · Add Standard, Topography, Magic Rings, Lightfall and Ghost Fibers to Appearance with Preview, Apply, Cancel and Reset. Topography is the default when no background is saved. Keep explicit selections and other existing settings across restarts.\n\n**Delivery dependencies** · WI-045 and WI-046 for preferences and session handling. Integrate with WI-052's shell.\n\n**Verify** · Verify each effect and its static fallback, saved settings for two members and after a port-changing restart, motion preferences, Solid and Glass contrast and interaction layering. Verify switching effects releases the previous resources.\n\n**Delivery** · v0.2 client, existing PR #9.",
+  "evidence": "Appearance offers Standard, Topography, Magic Rings, Lightfall and Ghost Fibers with live preview on the real shell and Apply/Cancel/Reset. Topography is the default on first run and on Reset; only the selected effect mounts, switching releases the previous canvas, DPR is capped and canvases are aria-hidden and pointer-events none. Standard, Motion Off, Follow-system reduced motion and graphics failure fall back to a static background; Follow-system now reacts live. Two members kept distinct settings across a port-changing restart. Evidence: qa/sprint-6/WI-053/."
 }

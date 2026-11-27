@@ -1,6 +1,6 @@
 {
-  "status": "active",
-  "revision": 3,
+  "status": "review",
+  "revision": 4,
   "id": "WI-048",
   "kind": "item",
   "parent": "S-02-6",
@@ -8,5 +8,6 @@
   "type": "bug",
   "priority": 1,
   "effort": 2,
-  "acceptance": "**Expected behaviour** · Cancel pending hover reveal when the page or a nested scrolling surface scrolls. Keep deliberate click, tap and key activation, keyboard Run focus and reduced-motion behaviour.\n\n**Related earlier work** · WI-034\n\n**Delivery dependencies** · Can begin on the current PR head. \n\n**Verify** · Add a regression for pointer entry, partial dwell, scroll and elapsed timer. Verify pointer exit and navigation cancel too. Confirm a fresh hover and explicit activation still work.\n\n**Delivery** · v0.2 client, existing PR #9."
+  "acceptance": "**Expected behaviour** · Cancel pending hover reveal when the page or a nested scrolling surface scrolls. Keep deliberate click, tap and key activation, keyboard Run focus and reduced-motion behaviour.\n\n**Related earlier work** · WI-034\n\n**Delivery dependencies** · Can begin on the current PR head. \n\n**Verify** · Add a regression for pointer entry, partial dwell, scroll and elapsed timer. Verify pointer exit and navigation cancel too. Confirm a fresh hover and explicit activation still work.\n\n**Delivery** · v0.2 client, existing PR #9.",
+  "evidence": "The capturing window scroll listener stays mounted while a card can dwell, so a page or nested-surface scroll cancels the pending reveal; AppCard tests cover enter -> 500 ms -> scroll with no later reveal, nested surface, pointer exit, fresh hover after scroll and the click/Enter/Escape paths. Live stylus timing was unavailable; recorded as a hardware gap. Evidence: qa/sprint-6/WI-048/."
 }
