@@ -52,5 +52,23 @@
       "body": "Tester retests at e1cfa29 and f3de003: the redesign retest found 10 PASS / 2 FAIL (narrow explorer only showed the info pane; sort would not return to ascending) and both were fixed; the targeted retest at f3de003 passed 9/9 with no Sev-1, including 390x600 and 320x600 list, details, reader and sort. GLM 5.3 Flash QA is running at e2e8995.",
       "documentRefs": []
     }
+  },
+  {
+    "submitted": {
+      "id": "WI-050",
+      "revision": 5,
+      "requestId": "238d432a-ba44-4dcb-af6a-82448c83935c",
+      "kind": "blocker",
+      "body": "Built-in browser recheck at d73e407: both the existing GLM QA session and a fresh GLM child returned 'Unknown tool browser.tabs.list'. Session permissions show the Muse tester has its own browser:* grant while both GLM sessions have none. OpenCode's browser plugin revokes a child's inherited grant at prompt time and requires a desktop attachment for that child, so retrying cannot attach it. The GLM built-in pass remains BLOCKED; the labelled Chrome fallback result stands. WI-050 and Sprint-6 stay in review until the owner opens the GLM QA session (ses_de511deb9ffevPHhHeaGkMjBse) in the desktop with its browser pane, or supplies a top-level GLM session. Evidence: agents/qa/WI-050/browser-access.md.",
+      "documentRefs": []
+    },
+    "note": {
+      "id": "238d432a-ba44-4dcb-af6a-82448c83935c",
+      "recordId": "WI-050",
+      "at": "2026-11-27T04:34:54.980Z",
+      "kind": "blocker",
+      "body": "Built-in browser recheck at d73e407: both the existing GLM QA session and a fresh GLM child returned 'Unknown tool browser.tabs.list'. Session permissions show the Muse tester has its own browser:* grant while both GLM sessions have none. OpenCode's browser plugin revokes a child's inherited grant at prompt time and requires a desktop attachment for that child, so retrying cannot attach it. The GLM built-in pass remains BLOCKED; the labelled Chrome fallback result stands. WI-050 and Sprint-6 stay in review until the owner opens the GLM QA session (ses_de511deb9ffevPHhHeaGkMjBse) in the desktop with its browser pane, or supplies a top-level GLM session. Evidence: agents/qa/WI-050/browser-access.md.",
+      "documentRefs": []
+    }
   }
 ]
