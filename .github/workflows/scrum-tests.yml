@@ -53,7 +53,7 @@ jobs:
       - name: Run the QA fixture tests
         run: node --test tests/fixtures/seed.test.mjs
 
-  client-0.3:
+  client-03:
     runs-on: ubuntu-latest
     defaults:
       run:
