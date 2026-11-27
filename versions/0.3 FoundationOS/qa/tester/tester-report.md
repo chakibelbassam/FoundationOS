@@ -77,6 +77,34 @@
   during global sign-out was not simulated.
 - **`maya` and `erik` were not closed** (per instructions); only the disposable `tester1` was.
 
+## Retest at 96c2bd4 (Sev-3 observation 1)
+
+Retest date: 2026-11-27 ~13:00 UTC. In-checkout HEAD at retest time was `77ebcc2`, whose only
+change over `96c2bd4` is `versions/0.3 FoundationOS/qa/release-evidence.md` (docs); product code
+is identical to `96c2bd4` (`WI-075 Open the profile menu without a grow transition`, Header.tsx:
+`transitionDuration={{ enter: 0, exit: … }}`). The served `dist` contains the fix — its sourcemap
+embeds the fixed `Header.tsx` including the `transitionDuration={{ enter: 0, … }}` line. Browser:
+real Chrome on this computer (same jar as the main run). No screenshots taken; this was a
+behavioral retest. Pair left signed in as `erik` at `/`.
+
+Steps and results:
+
+1. Navigated to `http://127.0.0.1:63515/settings/profile` (signed in as `erik`).
+2. Opened the header profile menu and clicked `Sign out` in the fastest sequence the tool
+   allows (open → snapshot → click, same script): landed on `/signin` on the **first click**.
+   Signed back in.
+3. Repeated open-then-immediate-click three more times: **3/3 first clicks worked**
+   (4/4 including step 2). No backdrop-dismiss miss occurred.
+4. Keyboard path: focused `button.fo-username`, pressed Enter to open the menu, then
+   ArrowDown ×3 + Enter. Result: signed out to `/signin` on the first Enter — the focus
+   landed on `Sign out` as expected, not on `Sign out of all sessions`.
+5. Reload of `/signin` after sign-out: page reloaded cleanly. Console capture over the whole
+   retest showed one entry only, the expected signed-out probe
+   `401 (Unauthorized)` for `/api/profile`. No JavaScript errors.
+
+Conclusion: **observation 1 is fixed.** The fast first click no longer lands on the backdrop,
+and the keyboard path reaches `Sign out` deterministically in this run.
+
 ## Verdict
 
 **Pass with findings.** Every required journey in the task list passed on candidate `66ddc0b`

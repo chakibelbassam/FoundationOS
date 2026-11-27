@@ -8,6 +8,6 @@
   "effort": 3,
   "acceptance": "**Expected behaviour** · Refine MUI account layouts, profile save feedback, header avatar, keyboard focus, reduced motion and destructive dialogs. Review the session host, store and route guards and retire obsolete token entry.\n\n**Verify** · Exercise desktop, 390 px and 320 × 600, keyboard, autofill, offline and interrupted actions. Update the inventory with reused controls and regress current workspace navigation.\n\n**Delivery dependencies** · WI-069, WI-072, WI-073, WI-074\n\n**Queue** · Follows WI-074 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
   "status": "review",
-  "revision": 4,
-  "evidence": "Account headings, sign-in and sign-out notices, the duplicate header chip and the destructive dialogs were corrected; screenshots show the account screens at desktop and the 390/320 layouts are covered in QA."
+  "revision": 5,
+  "evidence": "Account headings, notices, duplicate chip and destructive dialogs corrected. The tester found the header Sign out needed a second click; the menu now opens without the grow transition. Retest at 96c2bd4: 4/4 first clicks signed out and the keyboard path reached Sign out on the first Enter. versions/0.3 FoundationOS/qa/tester/tester-report.md."
 }
