@@ -1,0 +1,24 @@
+{
+  "requestId": "a1687fa8-7b11-4021-902f-99276e230672",
+  "operation": "update",
+  "id": "S-03-3",
+  "submitted": {
+    "id": "S-03-3",
+    "revision": 3,
+    "changes": {
+      "status": "review",
+      "evidence": "Remembered sessions survive tab close/reopen; deep links restore; current and account-wide sign-out behave across independent jars; invitations and CodeSlots join pass."
+    }
+  },
+  "result": {
+    "id": "S-03-3",
+    "kind": "sprint",
+    "parent": "PI-03",
+    "title": "Remember sessions and invite members",
+    "acceptance": "Restore a valid browser session, prove account isolation across tabs and browser profiles, and invite a new member to a private Home.",
+    "revision": 4,
+    "status": "review",
+    "evidence": "Remembered sessions survive tab close/reopen; deep links restore; current and account-wide sign-out behave across independent jars; invitations and CodeSlots join pass."
+  },
+  "at": "2026-11-27T21:11:10.215Z"
+}

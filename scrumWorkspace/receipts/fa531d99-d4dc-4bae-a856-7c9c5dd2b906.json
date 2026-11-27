@@ -1,0 +1,24 @@
+{
+  "requestId": "fa531d99-d4dc-4bae-a856-7c9c5dd2b906",
+  "operation": "update",
+  "id": "S-03-6",
+  "submitted": {
+    "id": "S-03-6",
+    "revision": 3,
+    "changes": {
+      "status": "review",
+      "evidence": "Operator guide, tester report, independent reviewer report, fixes, retests and the release evidence table are complete; no Sev-1 and both browser passes cover the final behaviour."
+    }
+  },
+  "result": {
+    "id": "S-03-6",
+    "kind": "sprint",
+    "parent": "PI-03",
+    "title": "Polish the experience and verify the release",
+    "acceptance": "Deliver a reproducible final candidate with polished account and profile screens, documented operations and two independent browser reports with fixes retested.",
+    "revision": 4,
+    "status": "review",
+    "evidence": "Operator guide, tester report, independent reviewer report, fixes, retests and the release evidence table are complete; no Sev-1 and both browser passes cover the final behaviour."
+  },
+  "at": "2026-11-27T21:11:10.271Z"
+}

@@ -4,6 +4,7 @@
   "parent": "PI-03",
   "title": "Create accounts and sign in",
   "acceptance": "Create one owner on an empty store, sign in to an authorized private file through the MUI account screens, and load member preferences from the server.",
-  "revision": 4,
-  "status": "active"
+  "revision": 5,
+  "status": "review",
+  "evidence": "Owner setup, sign-in, private Home and server preferences work through the built client; setup, claim reuse and preferences are covered by tests and browser evidence."
 }

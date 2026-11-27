@@ -4,6 +4,7 @@
   "parent": "PI-03",
   "title": "Polish the experience and verify the release",
   "acceptance": "Deliver a reproducible final candidate with polished account and profile screens, documented operations and two independent browser reports with fixes retested.",
-  "revision": 3,
-  "status": "active"
+  "revision": 4,
+  "status": "review",
+  "evidence": "Operator guide, tester report, independent reviewer report, fixes, retests and the release evidence table are complete; no Sev-1 and both browser passes cover the final behaviour."
 }

@@ -1,6 +1,6 @@
 # PI-3 release evidence · v0.3
 
-Candidate: PR #12, branch `edge-opencode/pi-03-accounts-and-connection`, head `953d261`.
+Candidate: PR #12, branch `edge-opencode/pi-03-accounts-and-connection`, head `c170ee3`.
 Version pair: client 0.3 with server 0.3. Store schema 3.
 Date: 27 November 2026.
 
@@ -18,17 +18,17 @@ Date: 27 November 2026.
 ## Browser reports
 
 - Hands-on tester: `qa/tester/tester-report.md` (Muse Spark 1.3 Contributor, separate session). Pass with findings on `66ddc0b`; no Sev-1; the sign-out menu fix was retested at `96c2bd4` with 4/4 first clicks.
-- Independent reviewer: `qa/reviewer-report.md` (GLM 5.3 Flash, separate session, three real browser cookie jars and a fresh store). Pass with findings on `9252141`, no Sev-1; F-1 and F-5 are fixed at `953d261` and the delta pass is requested.
+- Independent reviewer: `qa/reviewer-report.md` (GLM 5.3 Flash, separate session, three real browser cookie jars and a fresh store). Pass with findings on `9252141`, no Sev-1. Delta review at `d0b74ac`: F-1 and F-5 fixed, the menu first-click fix holds, join/sign-in/profile/accounts reload cleanly, 21 server and 90 client tests pass. The reviewer calls the final head acceptable for owner review.
 
 ## Findings
 
 | ID | Severity | Finding | Status |
 |---|---|---|---|
-| F-1 | Sev-4 | Join showed the generic password error for an invalid, used or revoked invitation | Fixed at `953d261`: the server 401 copy is preserved and shown on the join screen; covered by client and session tests |
+| F-1 | Sev-4 | Join showed the generic password error for an invalid, used or revoked invitation | Fixed at `953d261`; delta review at `d0b74ac` observed "That invitation is not valid. Ask the owner for a new one." with a revoked code |
 | F-2 | Sev-5 | `/files/<file>` deep link is a dead end; the reader lives at `/file/*` | Recorded. The canonical file route works; a redirect is follow-up polish |
 | F-3 | Sev-5 | Four SVAR toolbar buttons have no accessible name | Recorded as a known SVAR library limitation; labelled actions exist elsewhere |
 | F-4 | Sev-5 | A first load with the host offline shows the browser error page | Recorded. The in-app Retry covers the loaded app; a service worker is not part of v0.3 |
-| F-5 | Sev-5 | The offline server popover said "found none" | Fixed at `953d261`: it now says "not reachable" |
+| F-5 | Sev-5 | The offline server popover said "found none" | Fixed at `953d261`; delta review observed "Expected v0.3 · found not reachable" |
 
 ## Work items
 

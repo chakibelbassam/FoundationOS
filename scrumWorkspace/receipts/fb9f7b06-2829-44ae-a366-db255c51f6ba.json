@@ -1,0 +1,24 @@
+{
+  "requestId": "fb9f7b06-2829-44ae-a366-db255c51f6ba",
+  "operation": "update",
+  "id": "S-03-4",
+  "submitted": {
+    "id": "S-03-4",
+    "revision": 3,
+    "changes": {
+      "status": "review",
+      "evidence": "Password change, member reset, owner recovery code and console-R recovery all preserve identity and revoke old sessions; browser and terminal evidence are recorded."
+    }
+  },
+  "result": {
+    "id": "S-03-4",
+    "kind": "sprint",
+    "parent": "PI-03",
+    "title": "Recover access to the same account",
+    "acceptance": "Prove password change and the distinct member, owner-code and local operator recovery paths preserve account identity and revoke old sessions.",
+    "revision": 4,
+    "status": "review",
+    "evidence": "Password change, member reset, owner recovery code and console-R recovery all preserve identity and revoke old sessions; browser and terminal evidence are recorded."
+  },
+  "at": "2026-11-27T21:11:10.235Z"
+}

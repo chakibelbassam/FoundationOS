@@ -1,0 +1,25 @@
+{
+  "requestId": "7e2067a2-d4e6-487d-89b3-de4064e07d2e",
+  "operation": "update",
+  "id": "WI-079",
+  "submitted": {
+    "id": "WI-079",
+    "revision": 2,
+    "changes": {
+      "status": "active"
+    }
+  },
+  "result": {
+    "id": "WI-079",
+    "kind": "item",
+    "parent": "S-03-6",
+    "title": "Fix findings and assemble release evidence",
+    "type": "task",
+    "priority": 1,
+    "effort": 3,
+    "acceptance": "**Expected behaviour** · Triage both reports, correct blocking findings and obtain independent retests on the final head. Link the candidate, CI, evidence and remaining limitations for owner review.\n\n**Verify** · Both tester and QA identify the final SHA and outcomes. Verify all PI acceptance rows, recorded policy decisions and the supported version pair; link a reviewable PR and distinguish remaining gaps from passes.\n\n**Delivery dependencies** · WI-077, WI-078\n\n**Queue** · Follows WI-078 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "active",
+    "revision": 3
+  },
+  "at": "2026-11-27T21:11:10.149Z"
+}
