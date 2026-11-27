@@ -7,6 +7,7 @@
   "priority": 1,
   "effort": 4,
   "acceptance": "**Expected behaviour** · Assign a separate GLM 5.3 Flash QA reviewer. Run an independent pass against the same built candidate in real Edge and the built-in browser, covering account boundaries, offline Home retention, profile polish and existing workspace journeys.\n\n**Verify** · Attach an independent report with real Windows launcher evidence, actual viewport sizes, browser actions, defects and reproducible results. Include Projects, Apps, SVAR, reader, Back, appearance and a second account.\n\n**Delivery dependencies** · WI-075, WI-076\n\n**Queue** · Follows WI-077 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
-  "status": "proposed",
-  "revision": 2
+  "status": "active",
+  "revision": 4,
+  "evidence": "The GLM 5.3 Flash reviewer is running an independent pass on the fresh pair at 127.0.0.1:63464 and will write versions/0.3 FoundationOS/qa/reviewer/reviewer-report.md."
 }
