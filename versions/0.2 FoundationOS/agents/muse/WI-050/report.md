@@ -159,3 +159,29 @@ Hide-details button covers keyboard users).
 
 ### Cleanup — confirmed
 
+
+## Retest at b34bc25 (targeted: wrapped narrow toolbar + token message)
+
+Candidate: PR #9 head `b34bc25` ("WI-046 Correct the invalid-token message and live
+server status"). Fresh disposable stack `%TEMP%\wi050-r3\` (server :53837, client
+:65132, reseeded alice + blair). Dist rebuilt 04:14. Built-in `tools.browser.*` only
+(desktop tab + 390/320 `viewport.html` frames + invalid-token tab). No tokens recorded.
+Curated PNGs `b-*.png` (2 files, no raw).
+
+| # | Item | Result | Evidence |
+|---|---|---|---|
+| B1 | /files at real 390x600: wrapped toolbar (Search full first row, view modes below), placeholder readable | PASS | "Search" placeholder, toggles second row, full names, sw==cw==375 (`b-390-wrap`) |
+| B2 | Search filters at 390 | PASS | "Weath" → Weather only, no overflow |
+| B3 | Show/Hide details + × | PASS | File tap → details pane; Hide button and × both restore the list |
+| B4 | Single tap previews, double tap opens reader, Back returns | PASS | `/file/loose-note.txt` with content; Back → /files, sw==cw |
+| B5 | /files at real 320x600 | PASS | Wrapped toolbar, list, sw==cw==305 (long name ellipsized, no overflow) |
+| B6 | Desktop unchanged: tree + side-by-side preview + eye | PASS | Tree, vivid icons, preview pane; eye toggles it off/on (`b-desktop`) |
+| B7 | Name sort still toggles | PASS | Mouse desc→asc; Enter asc→desc, focus kept on header |
+| B8 | Unknown token message | PASS | "That session token is not valid or has been revoked." — no "Superseded" |
+
+Retest counts: 8 PASS, 0 FAIL, 0 BLOCKED. No new Sev-1. R11 stays fixed; F17 sort
+stays fixed. Carried Sev-3 note: toolbar glyph buttons and pane × still expose no
+accessible names (SVAR pattern; Hide-details button covers keyboard users).
+
+### Cleanup — confirmed
+

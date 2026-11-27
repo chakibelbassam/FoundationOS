@@ -27,7 +27,7 @@ Every interactive scenario below therefore ran on the **browse integration in Ch
 
 ## Scenario results
 
-Totals: **13 PASS · 0 FAIL · 0 BLOCKED** on product checks; 1 tooling-limited sub-check (F5 note below) and 1 access check BLOCKED (built-in browser), reported separately. Evidence PNGs live under `agents/qa/WI-050/screens/` (filenames cited per row; the token field is `type="password"`, so no capture shows a token; no token appears anywhere in this report).
+Totals (first pass at `e2e8995`): **20 PASS · 0 FAIL · 0 BLOCKED** across rows 1–20 (product checks); 1 tooling-limited sub-check (F5 note below) and 1 access check BLOCKED (built-in browser), reported separately. Evidence PNGs live under `agents/qa/WI-050/screens/` (filenames cited per row; the token field is `type="password"`, so no capture shows a token; no token appears anywhere in this report). *Arithmetic corrected during the retest: the original summary line said "13 PASS"; the table has always held 20 PASS rows.*
 
 | # | Check (derived from WI-045…WI-053) | Result | Steps (exact, as driven) | Observed | Evidence |
 | --- | --- | --- | --- | --- | --- |
@@ -100,3 +100,36 @@ Run 1 (`%TEMP%\wi050-qa\`): server PID 13792 (port 51937), client host PID 28616
 Run 2 (`%TEMP%\wi050-qa2\`): server PID 33796 (port 51937), client host PIDs 35220 (51938) and 19804 (51939, restart) — all stopped and verified not alive; all three ports verified not listening; temp tree deleted after the evidence PNGs were copied into the repository (tokens included only in the deleted temp files; every token used is now revoked or store-deleted). My browser tab (group `wi050-qa`) closed; 0 agent tabs remain. Other agents' processes on 58842/51796 were never touched and are still theirs.
 
 Evidence: 19 curated PNGs under `versions/0.2 FoundationOS/agents/qa/WI-050/screens/`, no tokens visible (the connect field is a password input and no capture includes it filled).
+
+## Retest at b34bc25
+
+Targeted retest of F1–F3 at PR #9 head `b34bc2500c117c7215b61b503a1e6fd00ccf2d7f` ("WI-046 Correct the invalid-token message and live server status"), independently re-run by the same GLM 5.3 Flash QA agent on 27 November 2026. F4 and F5 remain as recorded at `e2e8995` and were not re-exercised.
+
+Environment: same rules as the first pass — disposable stack under `%TEMP%\wi050-qa3\` with explicit `FOUNDATIONOS_DATA` (`store`) and `--data-dir` (`client`), never `%LOCALAPPDATA%\FoundationOS`; server on port 51937 (my PID 25716, later restarted as PID 35560 after the F3 outage check), client through the real `Start.cmd` launcher on port 51938 (`--no-open`, host PID 30228); `seed.mjs` + `seed-sprint6.mjs` (alice, blair) plus contract-minted members gina (revoked for F1) as needed. Viewports: native 1920×945 and emulated 390×600 / 320×600 on the **browse integration in Chrome** (the built-in browser remains BLOCKED at this head, same `Unknown tool 'browser.tabs.list'.` error — re-verified once). No other agents' ports or processes touched.
+
+### Suites and build at b34bc25 (run by me)
+
+| Suite (exact command) | Result |
+| --- | --- |
+| `npm test` (FoundationOS/) | **PASS** — 16 test files, **Tests 80 passed (80)** (was 75 at `e2e8995`; the fix adds SessionContext/ServerContext/client tests incl. "reports an invalid or revoked token instead of a superseded connection" and "still reports a genuinely superseded attempt as superseded") |
+| `npm run build` (FoundationOS/) | **PASS** — clean; `dist/assets/index-B9yepN1C.js` 484.80 kB |
+| `node --test tests/host.test.mjs tests/launcher.test.mjs` | **PASS** — 16/16 |
+| `node --test tests/fixtures/seed.test.mjs` | **PASS** — 3/3 |
+| `node --test "FoundationOS Server/server.test.mjs" "FoundationOS Server/openapi.test.mjs"` (0.1 folder) | **PASS** — 14/14 |
+| `node Edge/tools/scrumWorkSpace.mjs validate` | **PASS** — `ok: true` (113 records, 56 notes, 78 links, 16 documents, 26 receipts) |
+| PR #9 CI at `b34bc25` (`gh pr view 9`) | **PASS** — `test` SUCCESS, `client` SUCCESS; state OPEN, MERGEABLE |
+
+### Retest items
+
+| Item | Result | Steps and measurements |
+| --- | --- | --- |
+| F1 · invalid/revoked token at Connect | **PASS** | (a) Connect with a syntactically valid unknown token (`AAAA…`, 43 chars): alert = **"That session token is not valid or has been revoked."**, view stays Connect (`h1` "Connect to your home"), header button "Reconnect" (no session), path unchanged. (b) Contract-minted member gina, her own session revoked via `DELETE /sessions/{id}` with her own token, then her (now revoked) token pasted at Connect: same invalid-token copy, still Connect, no session. (c) Revoke-while-connected: connected as alice, revoked her live session under her, then opened `/files`: alert **"Your session expired. Connect again to continue."** with Connect rendered **at the same route** (`/files`), header "Reconnect". Evidence: r2-01-unknown-token-message.png, r2-02-revoked-token-message.png, r2-03-revoked-while-connected.png. |
+| F1 · genuine newer connection supersedes an older attempt | **PASS (unit-verified; not stageable in-browser)** | Staging attempt: invalid-token attempt A clicked, blair's valid attempt B filled immediately after — A's 401 returned before B could enter flight (local fetch round-trip is faster than the tool relay), so the UI showed A's correct error and B never started; no wrong message and no session leak. The genuine-supersede path is covered by the passing unit test "still reports a genuinely superseded attempt as superseded" (within `npm test` 80/80 at this head); the fix leaves the supersede branch untouched. Recorded as a tooling limitation of the relay, not a product gap. |
+| F2 · narrow explorer search at 320×600 and 390×600 | **PASS** | 320×600: toolbar **stacks** — search input measures **239×30 px** (was 57 px clipped), full "Search" placeholder visible (13.3 px font, right edge 272 px inside the 305 px client width), view-mode segmented control on its own row; typing "Wea" filters to the Weather folder (header becomes "Search results in My files"); clearing restores Journal/Photos/Weather; **no horizontal overflow** (`scrollWidth 305 == clientWidth 305`). 390×600: input **309×30 px**, right edge 342 px, modes row stacked (`sameRow: false`), no horizontal overflow (375 == 375). Evidence: r2-04-explorer-320-search.png, r2-05-explorer-390-search.png. |
+| F3 · live server status flip + recovery | **PASS** | Connected as blair; status announced "Server v0.1 is ready."; stopped my server process (verified exit); opened `/files` and double-clicked Weather (new fetch): the live `[role=status]` announcement flipped to **"Server is not reachable."** and the header chip shows **"Server offline"** (header strip reads "… Server offline blair"); the folder view still shows the honest error panel with Try again. Restarted my server (same store), clicked Try again: the listing loads (`My files > Weather`, app.json + README.md), status returns to **"Server v0.1 is ready."** and the chip is back to green "Connected" with no "offline" text remaining. Evidence: r2-06-server-unreachable-live.png, r2-07-recovered-after-restart.png. |
+
+### Retest totals
+
+**4 PASS · 0 FAIL · 0 BLOCKED** (F1 counts its three observed sub-checks plus the unit-verified supersede path as one PASS row; F2 and F3 one row each; the supersede-staging limitation is recorded inside the F1 row, not as a failure). Findings F1–F3 are closed at this head; F4 and F5 remain open as recorded at `e2e8995`. No new findings, no Sev-1.
+
+Cleanup record: client host PID 30228 and server PIDs 25716/35560 stopped and verified not alive; ports 51937/51938/51939 verified free; browser tab (group `wi050-r2`) closed, 0 agent tabs remain; `%TEMP%\wi050-qa3\` deleted after the 7 retest screenshots were copied into `agents/qa/WI-050/screens/` (tokens existed only inside that deleted tree; no token appears in this report or the screenshots).

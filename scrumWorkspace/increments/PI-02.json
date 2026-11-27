@@ -3,8 +3,8 @@
   "kind": "pi",
   "title": "Client foundation",
   "acceptance": "Start the v0.2 client against the v0.1 server. Connect to a private home, inspect Weather, refresh and reconnect to its README, then return with focus restored. Verify app and folder widgets, Target Cursor, Settings previews, loading, empty and recovery states through the release launcher. Use one active profile and the recorded defaults: System theme, Glass surface, Comfortable density, motion on and Target cursor. Under the same Windows login, save different settings for two members, restart the client on a different port and verify that each member recovers their own settings. Close Sprint-6 on PR #9 with the four fixes, SVAR File Explorer, Magic Bento Home, Topography default and background choices, final polish and two independent browser passes.",
-  "status": "active",
-  "revision": 10,
+  "status": "review",
+  "revision": 11,
   "targetVersion": "0.2",
-  "evidence": "All 21 items are in review with evidence; both independent QA reports pass after retest with zero Sev-1; the combined candidate ran the release journey through the real launcher; CI covers the Edge tools, Scrum store, v0.1 server, client tests, build, host, launcher and fixtures. PR #9 is open against codex/development-workspace for owner review and merge. Assumptions are in scrumWorkspace/documents/PI-02/assumptions.md. This is historical evidence for the original five sprints. The owner approved the expanded Sprint-6 workspace scope on PR #9 and removed the prototype replay requirement. Final acceptance evidence is pending."
+  "evidence": "All Sprint-5 items and the nine Sprint-6 items WI-045..WI-053 are in review with evidence. The final candidate b34bc25 passes client 80/80, host + launcher 16/16, fixtures 3/3, v0.1 contract 14/14, a clean build, Scrum validate and both required CI jobs. The Muse tester and GLM 5.3 Flash QA ran independent passes on their own disposable stacks and retested their findings; the GLM built-in browser was blocked upstream and its pass is labelled as the Chrome browse integration. No Sev-1 is open. PR #9 is open against codex/development-workspace for owner review; merge and the v0.2 tag remain with the owner. Assumptions remain in scrumWorkspace/documents/PI-02/assumptions.md."
 }

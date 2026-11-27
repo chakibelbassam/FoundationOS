@@ -20,5 +20,6 @@ The owner rejected the first integrated Home/explorer. This item records the red
 - Global `:focus-visible` ring (3 px accent, 2 px offset) on buttons, links and role=button, including MUI controls; the existing card/action rings remain.
 - Return focus from an app overview to its originating Apps/Home/Projects row; heading fallback.
 - Follow-system motion subscribes live to `prefers-reduced-motion` and updates the shell/background.
-- The server chip recovers on the first successful request and retries at 2 s/5 s after failure instead of staying “Server offline” for 30 s.
+- The server chip recovers on the first successful request and retries at 2 s/5 s after failure instead of staying “Server offline” for 30 s. A failed request now also notifies the shell, so the live status announcement and chip flip as soon as the server stops answering and recover when it returns.
+- At 320 px the explorer toolbar stacks the search on its own row, so the field is readable instead of a 57 px clip.
 - Tests: 75/75 client, 16/16 host+launcher, 3/3 fixtures, clean build.
