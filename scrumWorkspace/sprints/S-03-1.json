@@ -4,6 +4,6 @@
   "parent": "PI-03",
   "title": "Establish the account foundation",
   "acceptance": "Record the accepted baseline and policy choices, create the fresh v0.3 store, refuse an older store, and launch the v0.3 pair independently on loopback.",
-  "revision": 2,
-  "status": "proposed"
+  "revision": 4,
+  "status": "active"
 }

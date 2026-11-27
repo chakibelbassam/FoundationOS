@@ -1,0 +1,25 @@
+{
+  "requestId": "76041570-8f94-4535-9e61-ac19a4650828",
+  "operation": "update",
+  "id": "WI-057",
+  "submitted": {
+    "id": "WI-057",
+    "revision": 1,
+    "changes": {
+      "status": "ready"
+    }
+  },
+  "result": {
+    "id": "WI-057",
+    "kind": "item",
+    "parent": "S-03-1",
+    "title": "Launch the paired v0.3 client and server",
+    "type": "enabler",
+    "priority": 1,
+    "effort": 3,
+    "acceptance": "**Expected behaviour** · Stage both products under the v0.3 folder, retain separate launchers, loopback and free ports, and expose Open FoundationOS from server control.\n\n**Verify** · Use real Windows launchers. Open the actual bound client address, handle a stopped client, changed ports and incompatible server, and record the supported pair.\n\n**Delivery dependencies** · WI-054, WI-056\n\n**Queue** · Follows WI-056 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "ready",
+    "revision": 2
+  },
+  "at": "2026-11-27T11:16:37.399Z"
+}

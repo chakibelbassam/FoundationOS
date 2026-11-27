@@ -1,0 +1,27 @@
+{
+  "requestId": "54dcdbab-2fe3-45e2-a790-f361a0a355ec",
+  "operation": "update",
+  "id": "WI-065",
+  "submitted": {
+    "id": "WI-065",
+    "revision": 5,
+    "changes": {
+      "status": "review",
+      "evidence": "The owner created a six-digit invitation; a member joined with CodeSlots, chose a username and password, and received a private Home. A collision leaves the invite available."
+    }
+  },
+  "result": {
+    "id": "WI-065",
+    "kind": "item",
+    "parent": "S-03-3",
+    "title": "Invite and create a member account",
+    "type": "feature",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Add owner invite management and member signup by six-digit code with server confirmation and optional unverified email. Enter the code with CodeSlots. Scope each code to its server.\n\n**Verify** · Verify success, username conflict, concurrent redemption, expiry, revocation and retry. The member gets one private Home and cannot see another member’s files.\n\n**Delivery dependencies** · WI-059, WI-061\n\n**Queue** · Follows WI-064 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "review",
+    "revision": 6,
+    "evidence": "The owner created a six-digit invitation; a member joined with CodeSlots, chose a username and password, and received a private Home. A collision leaves the invite available."
+  },
+  "at": "2026-11-27T11:16:46.070Z"
+}

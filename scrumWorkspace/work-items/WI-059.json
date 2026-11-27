@@ -7,6 +7,7 @@
   "priority": 1,
   "effort": 4,
   "acceptance": "**Expected behaviour** · Issue a local, time-limited setup claim only on an empty installation. Create the owner, accept optional unverified email and show the one-time recovery code.\n\n**Verify** · Use competing tabs, expired claim and lost response. Exactly one owner and Home exist. Reopening an initialized store takes the normal sign-in path.\n\n**Delivery dependencies** · WI-056, WI-057, WI-058\n\n**Queue** · Follows WI-058 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
-  "status": "proposed",
-  "revision": 1
+  "status": "review",
+  "revision": 4,
+  "evidence": "The console setup claim created the owner in the browser and showed the 16-character recovery code. A mixed-case claim is covered by the server test."
 }

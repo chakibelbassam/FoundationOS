@@ -1,0 +1,22 @@
+{
+  "requestId": "a4c65f13-6821-42da-9888-ef7d4bebe1cc",
+  "operation": "update",
+  "id": "S-03-5",
+  "submitted": {
+    "id": "S-03-5",
+    "revision": 2,
+    "changes": {
+      "status": "active"
+    }
+  },
+  "result": {
+    "id": "S-03-5",
+    "kind": "sprint",
+    "parent": "PI-03",
+    "title": "Manage my profile and close my account",
+    "acceptance": "Rename the current account, edit its introduction and photo, and exercise self-deletion with an offline, 30-day private Home and last-owner protection.",
+    "revision": 3,
+    "status": "active"
+  },
+  "at": "2026-11-27T11:17:21.697Z"
+}

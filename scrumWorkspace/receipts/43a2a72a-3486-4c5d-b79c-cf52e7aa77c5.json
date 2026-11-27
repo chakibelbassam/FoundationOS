@@ -1,0 +1,27 @@
+{
+  "requestId": "43a2a72a-3486-4c5d-b79c-cf52e7aa77c5",
+  "operation": "update",
+  "id": "WI-054",
+  "submitted": {
+    "id": "WI-054",
+    "revision": 3,
+    "changes": {
+      "status": "review",
+      "evidence": "PI-03/baseline.md records the accepted v0.2 client and v0.1 server at base 74dc456, the launch commands, stores, homes and preferences."
+    }
+  },
+  "result": {
+    "id": "WI-054",
+    "kind": "item",
+    "parent": "S-03-1",
+    "title": "Capture the accepted workspace baseline",
+    "type": "enabler",
+    "priority": 1,
+    "effort": 2,
+    "acceptance": "**Expected behaviour** · Start the accepted v0.2 client and v0.1 server with two disposable accounts. Inventory the account API, stable IDs, homes, profile.json and preference keys.\n\n**Verify** · Record revisions, launch commands, routes and observed Homes, Projects, Apps, reader and settings. Identify the accepted base before copying product code.\n\n**Delivery dependencies** · Accepted v0.2 workspace and v0.1 server baseline.\n\n**Queue** · First item in the v0.3 queue.\n\n**Target** · PI-03, v0.3.",
+    "status": "review",
+    "revision": 4,
+    "evidence": "PI-03/baseline.md records the accepted v0.2 client and v0.1 server at base 74dc456, the launch commands, stores, homes and preferences."
+  },
+  "at": "2026-11-27T11:16:37.324Z"
+}

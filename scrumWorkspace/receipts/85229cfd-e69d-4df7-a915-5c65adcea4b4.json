@@ -1,0 +1,27 @@
+{
+  "requestId": "85229cfd-e69d-4df7-a915-5c65adcea4b4",
+  "operation": "update",
+  "id": "WI-072",
+  "submitted": {
+    "id": "WI-072",
+    "revision": 3,
+    "changes": {
+      "status": "review",
+      "evidence": "account-extra.test.mjs closes a member at 2026-01-01, restarts at 2026-02-01 and asserts the retained Home and account row are gone and the username can join with a new identity."
+    }
+  },
+  "result": {
+    "id": "WI-072",
+    "kind": "item",
+    "parent": "S-03-5",
+    "title": "Recover or expire a retained private Home",
+    "type": "feature",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Provide an authorized local recovery procedure within 30 days of confirmed closure. Define identity verification, restoration to the original identity, fresh credentials and a bounded purge of the correct retained Home and associated retained data.\n\n**Verify** · Use disposable stores and a controlled clock. Test just before the 30-day deadline, at it and after it, a reused username, restart during restore or purge, and an unrelated Home. Document what a separate operator backup retains.\n\n**Delivery dependencies** · WI-055, WI-071\n\n**Queue** · Follows WI-071 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "review",
+    "revision": 4,
+    "evidence": "account-extra.test.mjs closes a member at 2026-01-01, restarts at 2026-02-01 and asserts the retained Home and account row are gone and the username can join with a new identity."
+  },
+  "at": "2026-11-27T11:16:54.056Z"
+}

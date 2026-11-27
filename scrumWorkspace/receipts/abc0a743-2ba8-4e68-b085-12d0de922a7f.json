@@ -1,0 +1,22 @@
+{
+  "requestId": "abc0a743-2ba8-4e68-b085-12d0de922a7f",
+  "operation": "update",
+  "id": "S-03-4",
+  "submitted": {
+    "id": "S-03-4",
+    "revision": 1,
+    "changes": {
+      "status": "ready"
+    }
+  },
+  "result": {
+    "id": "S-03-4",
+    "kind": "sprint",
+    "parent": "PI-03",
+    "title": "Recover access to the same account",
+    "acceptance": "Prove password change and the distinct member, owner-code and local operator recovery paths preserve account identity and revoke old sessions.",
+    "revision": 2,
+    "status": "ready"
+  },
+  "at": "2026-11-27T11:17:21.664Z"
+}

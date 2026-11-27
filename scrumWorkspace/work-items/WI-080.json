@@ -7,6 +7,7 @@
   "effort": 2,
   "priority": 1,
   "type": "enabler",
-  "status": "proposed",
-  "revision": 1
+  "status": "review",
+  "revision": 4,
+  "evidence": "The server stores the theme and other preferences per account; the browser applied Dark, reloaded, stayed dark, and the local cache holds a copy. The server response shows the saved preferences."
 }

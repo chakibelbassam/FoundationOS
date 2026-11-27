@@ -7,6 +7,7 @@
   "priority": 2,
   "effort": 2,
   "acceptance": "**Expected behaviour** · Use a multiline MUI TextField for a short plain-text introduction and a labelled optional unverified email field. Save or cancel edits, clear either field and restore saved values on reopen.\n\n**Verify** · Test empty, multiline, over-limit and markup-like input, failed save and account switch. Only the signed-in member can edit their own profile.\n\n**Delivery dependencies** · WI-070\n\n**Queue** · Follows WI-072 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
-  "status": "proposed",
-  "revision": 1
+  "status": "review",
+  "revision": 4,
+  "evidence": "The profile form saves the introduction and optional email through PATCH /profile; the server enforces the 500-character and email rules and returns the saved profile."
 }

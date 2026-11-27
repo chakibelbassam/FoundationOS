@@ -4,6 +4,6 @@
   "parent": "PI-03",
   "title": "Recover access to the same account",
   "acceptance": "Prove password change and the distinct member, owner-code and local operator recovery paths preserve account identity and revoke old sessions.",
-  "revision": 1,
-  "status": "proposed"
+  "revision": 3,
+  "status": "active"
 }

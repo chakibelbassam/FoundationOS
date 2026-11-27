@@ -1,0 +1,25 @@
+{
+  "requestId": "85696337-9da4-43fb-8d14-5678405b1fa8",
+  "operation": "update",
+  "id": "WI-064",
+  "submitted": {
+    "id": "WI-064",
+    "revision": 1,
+    "changes": {
+      "status": "ready"
+    }
+  },
+  "result": {
+    "id": "WI-064",
+    "kind": "item",
+    "parent": "S-03-3",
+    "title": "End one session or all my sessions",
+    "type": "feature",
+    "priority": 1,
+    "effort": 3,
+    "acceptance": "**Expected behaviour** · Implement current-session sign-out and confirmed account-wide sign-out. Clear local access on uncertain response and explain how to retry.\n\n**Verify** · Use A and B for one account and C for another. Cancel, sign out of one session, sign out of all, drop the response and reopen. C retains access throughout.\n\n**Delivery dependencies** · WI-062, WI-063\n\n**Queue** · Follows WI-063 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "ready",
+    "revision": 2
+  },
+  "at": "2026-11-27T11:16:46.016Z"
+}

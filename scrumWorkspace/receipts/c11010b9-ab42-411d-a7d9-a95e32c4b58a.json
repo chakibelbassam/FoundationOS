@@ -1,0 +1,25 @@
+{
+  "requestId": "c11010b9-ab42-411d-a7d9-a95e32c4b58a",
+  "operation": "update",
+  "id": "WI-056",
+  "submitted": {
+    "id": "WI-056",
+    "revision": 2,
+    "changes": {
+      "status": "ready"
+    }
+  },
+  "result": {
+    "id": "WI-056",
+    "kind": "item",
+    "parent": "S-03-1",
+    "title": "Create the versioned v0.3 account store",
+    "type": "enabler",
+    "priority": 1,
+    "effort": 4,
+    "acceptance": "**Expected behaviour** · Create the schema 3 SQLite account, credential, session, preference and retained-state model with immutable IDs. Define authoritative profile fields and private avatar storage. Refuse any older schema with a clear message.\n\n**Verify** · Start a fresh v0.3 store, interrupt a write, and recover from a copied v0.3 backup. Reject a v0.1 or v0.2 store without changing it. Confirm IDs, roles and stored data survive a restart.\n\n**Delivery dependencies** · WI-055\n\n**Queue** · Follows WI-055 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "ready",
+    "revision": 3
+  },
+  "at": "2026-11-27T11:16:37.368Z"
+}

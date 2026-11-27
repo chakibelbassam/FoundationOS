@@ -1,0 +1,25 @@
+{
+  "requestId": "d8efebbd-7b41-4842-a1fb-4ee6452c83b1",
+  "operation": "update",
+  "id": "WI-066",
+  "submitted": {
+    "id": "WI-066",
+    "revision": 1,
+    "changes": {
+      "status": "ready"
+    }
+  },
+  "result": {
+    "id": "WI-066",
+    "kind": "item",
+    "parent": "S-03-4",
+    "title": "Change my password from Profile",
+    "type": "feature",
+    "priority": 1,
+    "effort": 2,
+    "acceptance": "**Expected behaviour** · Open Settings → Profile → Account, verify the current password, choose a new password and sign in again. Reuse the existing account-form controls.\n\n**Verify** · A rejected change preserves the old login. A successful change revokes all prior sessions and the new password restores the same files and preferences.\n\n**Delivery dependencies** · WI-061, WI-064\n\n**Queue** · Follows WI-065 in the v0.3 delivery order.\n\n**Target** · PI-03, v0.3.",
+    "status": "ready",
+    "revision": 2
+  },
+  "at": "2026-11-27T11:16:46.081Z"
+}
