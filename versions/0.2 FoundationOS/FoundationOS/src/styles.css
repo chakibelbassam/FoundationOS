@@ -922,8 +922,11 @@ a[href]:focus-visible,
 }
 
 /* The preview pane offers a download action for single files; v0.2 has no
-   download, so the icon is removed (the action is also intercepted). */
-.fo-explorer .wx-preview .wxi-download {
+   download, so the icon is removed (the action is also intercepted). The
+   narrow info pane carries its own toolbar outside `.wx-preview`, so both
+   are covered. */
+.fo-explorer .wx-preview .wxi-download,
+.fo-explorer .wx-info-narrow .wxi-download {
   display: none;
 }
 
@@ -954,8 +957,25 @@ a[href]:focus-visible,
   display: none;
 }
 
+/* The info pane lists Type and Date rows. v0.1 supplies neither sizes nor
+   dates, and the vendored pane always appends a literal space to an empty
+   Date value (so :empty never matches). Scope the hide to single-item panes
+   via their wrapper: multi-select and search states render their own glyph
+   elsewhere in the same wrapper, while single file/folder panes do not.
+   That keeps the multi-select Count/Type rows intact and hides only the
+   permanently blank Date name/value pair (children 3 and 4). */
+.fo-explorer .wx-wrapper:not(:has(.wxi-file-multiple-outline)):not(:has(.wxi-search)) .wx-info-panel .wx-list > span.wx-name:nth-child(3),
+.fo-explorer .wx-wrapper:not(:has(.wxi-file-multiple-outline)):not(:has(.wxi-search)) .wx-info-panel .wx-list > span.wx-value:nth-child(4) {
+  display: none;
+}
+
 @media (max-width: 640px) {
   .fo-explorer .wx-sidebar {
+    display: none;
+  }
+  /* The tree itself stays hidden on narrow viewports, so SVAR's off-canvas
+     tree toggle would open nothing: remove the dead control instead. */
+  .fo-explorer [data-id=':toggle-tree'] {
     display: none;
   }
   .fo-explorer .wx-content {

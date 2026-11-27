@@ -63,9 +63,22 @@ export function svarIconUrl(file: SvarFilePreview, size: 'big' | 'small'): strin
   return false;
 }
 
+// The vendored grid registers its sort-rows handler once at mount, closing
+// over that render's (empty) sort state, so every header click recomputes
+// "descending" and the toggle never engages. We own the correction at our
+// init hook instead: track the last applied order per folder and column,
+// then rewrite the event in place (no re-emit, no remount, no loop).
+export type SortOrder = 'asc' | 'desc';
+
+export function nextSortOrder(previous: SortOrder | undefined, incoming: unknown): SortOrder {
+  if (previous === undefined) {
+    return incoming === 'asc' ? 'asc' : 'desc';
+  }
+  return previous === 'desc' ? 'asc' : 'desc';
+}
+
 // v0.2 exposes no download, upload, creation, rename, deletion, copy or move.
-export const UNSUPPORTED_MENU_IDS: ReadonlySet<string> = new Set([
-  'download',
+export const UNSUPPORTED_MENU_IDS: ReadonlySet<string> = new Set([  'download',
   'upload',
   'add-file',
   'add-folder',

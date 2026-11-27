@@ -3,6 +3,7 @@ import {
   UNSUPPORTED_MENU_IDS,
   explorerMenuOptions,
   fromSvarId,
+  nextSortOrder,
   svarIconUrl,
   toSvarEntries,
   toSvarId,
@@ -79,5 +80,16 @@ describe('explorer menu filter', () => {
       const options = explorerMenuOptions(mode);
       expect(Array.isArray(options), `mode ${mode}`).toBe(true);
     }
+  });
+
+  it('toggles the sort order per column instead of sticking at descending', () => {
+    // First click on a column follows the incoming order (descending).
+    expect(nextSortOrder(undefined, 'desc')).toBe('desc');
+    expect(nextSortOrder(undefined, undefined)).toBe('desc');
+    // Repeat clicks alternate regardless of what the library recomputes.
+    expect(nextSortOrder('desc', 'desc')).toBe('asc');
+    expect(nextSortOrder('desc', 'asc')).toBe('asc');
+    expect(nextSortOrder('asc', 'desc')).toBe('desc');
+    expect(nextSortOrder('asc', undefined)).toBe('desc');
   });
 });

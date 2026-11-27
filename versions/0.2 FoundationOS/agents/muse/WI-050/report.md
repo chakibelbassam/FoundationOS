@@ -1,5 +1,56 @@
 # Interim tester report · WI-050 (functional only — visual pass superseded)
 
+Candidate: PR #9 head `e1cfa29` ("WI-049 Rebuild the Home and explorer to the owner's design
+bar"). Fresh disposable stack `%TEMP%\wi050-retest\` (server :62567, client :53391,
+reseeded alice + blair). Dist rebuilt 01:19 contains the new design (`wxi` present).
+No tokens recorded. Raw `shots/` folder removed; curated secret-free PNGs sit directly
+in this folder (`r-*.png`).
+
+Browser: built-in `tools.browser.*` first and primary (6 tabs: desktop + 4 viewport
+frames + blair), plus the connected `browse.*` Chrome integration for the Follow-system
+live test and true 1307×800 / 1024×700 viewports (viewport.html clamps width at 900,
+so 1307/1024 were done via `browse.emulate`).
+
+### Prior FAILs / observation — all resolved except sort
+
+- F10 Back overview→/apps focus: FIXED. Back #2 from `/app/Projects/Weather` now lands
+  focus on the originating Weather Lab card front button (collapsed). Verified built-in.
+- F17 Name-sort toggle: STILL FAILS (unchanged). First click sorts descending; further
+  clicks and Enter keep descending in the rebuilt Name-only table. No app sort code —
+  SVAR-internal (v2.6.0). Sev-3, dev decision needed.
+- F24 Follow-system live change: FIXED. `PreferencesContext` now subscribes to the
+  media query. Verified live in Chrome: emulate reduce → `change:true` → static
+  backdrop, canvas 1→0; reset → canvas back to 1. Both directions, no reload.
+
+### Retest rows (all e1cfa29 unless noted)
+
+| # | Item | Result | Viewport / surface |
+|---|---|---|---|
+| R1 | New Home composition (1x1 Files square, wide Projects, tall Activity, wide Recent) | PASS | 1905 desktop built-in; 1307/1024 Chrome (`r1307-home`, `r1024-home`); 390/320 frames (`r-home-390`, `r-home-320`) |
+| R2 | Three projects / three recents, no clipping, Show all visible, Activity honest | PASS (by inspection, empty states + 1 recent) | desktop + 390/320, no h-overflow (sw==cw: 375/375, 305/305) |
+| R3 | Explorer: vivid icons, info/preview pane, Name-only table, wxi toolbar font, no tree h-scrollbar | PASS | desktop built-in (`r-explorer-preview`); tree shows full names, preview shows icon + Type/Date |
+| R4 | Explorer deep link + Back | PASS | `/files/Projects/Weather` direct + reconnect lands; Back to parent works |
+| R5 | Pin/unpin | PASS | Unpin flips header, Home tile empties, recents entry still opens overview directly |
+| R6 | F10 focus return | PASS (fixed) | desktop built-in, see above |
+| R7 | Sort toggle | FAIL (unchanged) | desktop built-in, 3 clicks + Enter stay descending |
+| R8 | Follow-system live | PASS (fixed) | Chrome emulate, both directions |
+| R9 | Backgrounds first-run Topography + one-effect switching | PASS | blair first run canvas=1 Topography; Magic Rings/Lightfall/Ghost Fibers 1 canvas each; Standard static |
+| R10 | Keyboard focus rings + Enter activation | PASS | 4xTab → visible ring on Open/Show-all (`r-home-focus`); Enter → /apps |
+| R11 | Explorer at real 390x600 | FAIL — NEW Sev-1 | 390 frame: only the "Select file or folder" info placeholder renders; no tree/table/search/toolbar roles in DOM (`wx-info-narrow`, `wx-no-info-panel`); × click is a no-op. File browsing impossible at 390 wide. 320 same by construction (not separately loaded). Desktop unaffected. |
+| R12 | Primary journey end-to-end on rebuild | PASS | Home → Files → Projects → nested Weather → pin → Apps (2 distinct cards) → Open → overview → README → reload/reconnect → Back → Back + focus |
+
+Revised counts (retest scope): 10 PASS, 2 FAIL (1 carried Sev-3 sort, 1 new Sev-1 mobile
+explorer), 0 BLOCKED. No new Sev-1 besides R11. Sev-1 list: R11 explorer unusable at
+390×600 (mobile file browsing completely blocked).
+
+### Cleanup — confirmed
+
+Killed and verified exited: server node 10472, client node 30148 (wrappers 21940,
+15860 exit with them). Ports 62567/53391 free. `%TEMP%\wi050-retest` deleted in full.
+All 6 built-in tabs and the Chrome `re098` tab closed.
+
+## Interim tester report · WI-050 (functional only — visual pass superseded)
+
 Candidate: PR #9 head `8eb1a9c` as instructed (local HEAD observed `8eb1a9c`).
 Pair tested: built client 0.2 (`dist` 27 Nov) against released v0.1 server, both started
 disposable: `%TEMP%\wi050-tester\` (store + client data-dir + logs). Seeded alice + blair
