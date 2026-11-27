@@ -136,7 +136,9 @@ function Protected() {
   if (!profile) return <AccountRoutes />;
   if (wasReplaced) return <SwitchHome />;
   if (ACCOUNT_PATHS.includes(location.pathname)) {
-    return <Navigate to="/" replace />;
+    const from = (location.state as { from?: { pathname?: string; search?: string } } | null)?.from;
+    const target = from?.pathname ? `${from.pathname}${from.search ?? ''}` : '/';
+    return <Navigate to={target} replace />;
   }
   return <WorkspaceRoutes />;
 }
