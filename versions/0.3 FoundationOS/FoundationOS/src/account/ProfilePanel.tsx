@@ -51,6 +51,7 @@ export function ProfilePanel() {
   const [avatarError, setAvatarError] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement | null>(null);
 
+  const [confirmAll, setConfirmAll] = useState(false);
   const [deleteOpen, setDeleteOpen] = useState(false);
   const [deletePassword, setDeletePassword] = useState('');
   const [deleteError, setDeleteError] = useState<string | null>(null);
@@ -294,18 +295,18 @@ export function ProfilePanel() {
           </form>
 
           <Divider sx={{ my: 3 }} />
-          <Typography variant="h3" component="h3" sx={{ mb: 1 }}>Sessions</Typography>
+          <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 600, mb: 1 }}>Sessions</Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
             End every session for this account on this server, including this browser. Other members stay signed in.
           </Typography>
-          <Button variant="outlined" onClick={() => void signOutAll()}>
+          <Button variant="outlined" onClick={() => setConfirmAll(true)}>
             Sign out of all sessions
           </Button>
 
           {profile.role === 'member' ? (
             <>
               <Divider sx={{ my: 3 }} />
-              <Typography variant="h3" component="h3" sx={{ mb: 1 }}>Delete my account</Typography>
+              <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 600, mb: 1 }}>Delete my account</Typography>
               <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
                 Access ends immediately. The private Home stays offline for 30 days, then it is permanently deleted and
                 the username becomes available.
@@ -321,6 +322,30 @@ export function ProfilePanel() {
           )}
         </div>
       </section>
+
+      <Dialog open={confirmAll} onClose={() => setConfirmAll(false)} aria-labelledby="profile-sign-out-all-title">
+        <DialogTitle id="profile-sign-out-all-title">Sign out of all sessions?</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            This ends every session for {profile.name} on this server, including this browser. Other members stay
+            signed in. Your files, settings and password are unchanged.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={() => setConfirmAll(false)}>Cancel</Button>
+          <Button
+            color="error"
+            variant="contained"
+            onClick={async () => {
+              setConfirmAll(false);
+              await signOutAll();
+              navigate('/signin', { replace: true });
+            }}
+          >
+            Sign out of all sessions
+          </Button>
+        </DialogActions>
+      </Dialog>
 
       <Dialog open={deleteOpen} onClose={() => setDeleteOpen(false)} aria-labelledby="delete-account-title">
         <DialogTitle id="delete-account-title">Delete your account?</DialogTitle>

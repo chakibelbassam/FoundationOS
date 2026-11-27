@@ -144,7 +144,7 @@ export function AccountsPanel() {
         ) : null}
 
         <Divider sx={{ my: 3 }} />
-        <Typography variant="h3" component="h3" sx={{ mb: 1 }}>Members</Typography>
+        <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 600, mb: 1 }}>Members</Typography>
         {accounts.length === 0 ? (
           <Typography variant="body2" color="text.secondary">No accounts yet.</Typography>
         ) : (
@@ -175,7 +175,7 @@ export function AccountsPanel() {
         )}
 
         <Divider sx={{ my: 3 }} />
-        <Typography variant="h3" component="h3" sx={{ mb: 1 }}>Invitations</Typography>
+        <Typography variant="subtitle1" component="h3" sx={{ fontWeight: 600, mb: 1 }}>Invitations</Typography>
         {invitations.length === 0 ? (
           <Typography variant="body2" color="text.secondary">No invitations yet.</Typography>
         ) : (
