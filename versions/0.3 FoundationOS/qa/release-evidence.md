@@ -1,6 +1,6 @@
 # PI-3 release evidence · v0.3
 
-Candidate: PR #12, branch `edge-opencode/pi-03-accounts-and-connection`, head `96c2bd4`.
+Candidate: PR #12, branch `edge-opencode/pi-03-accounts-and-connection`, head `953d261`.
 Version pair: client 0.3 with server 0.3. Store schema 3.
 Date: 27 November 2026.
 
@@ -9,7 +9,7 @@ Date: 27 November 2026.
 | Check | Command | Result |
 |---|---|---|
 | Server | `node --test "versions/0.3 FoundationOS/FoundationOS Server/server.test.mjs" "versions/0.3 FoundationOS/FoundationOS Server/account-extra.test.mjs"` | 21/21 pass |
-| Client | `npm test` in `versions/0.3 FoundationOS/FoundationOS` | 88/88 pass |
+| Client | `npm test` in `versions/0.3 FoundationOS/FoundationOS` | 90/90 pass |
 | Host and launcher | `node --test tests/host.test.mjs tests/launcher.test.mjs` | 16/16 pass |
 | Production build | `npm run build` | pass |
 | Scrum store | `scrumWorkSpace validate` | ok, 0 errors, 0 warnings |
@@ -18,7 +18,17 @@ Date: 27 November 2026.
 ## Browser reports
 
 - Hands-on tester: `qa/tester/tester-report.md` (Muse Spark 1.3 Contributor, separate session). Pass with findings on `66ddc0b`; no Sev-1; the sign-out menu fix was retested at `96c2bd4` with 4/4 first clicks.
-- Independent reviewer: `qa/reviewer/reviewer-report.md` (GLM 5.3 Flash, separate session, separate browser jar and fresh store). Pending.
+- Independent reviewer: `qa/reviewer-report.md` (GLM 5.3 Flash, separate session, three real browser cookie jars and a fresh store). Pass with findings on `9252141`, no Sev-1; F-1 and F-5 are fixed at `953d261` and the delta pass is requested.
+
+## Findings
+
+| ID | Severity | Finding | Status |
+|---|---|---|---|
+| F-1 | Sev-4 | Join showed the generic password error for an invalid, used or revoked invitation | Fixed at `953d261`: the server 401 copy is preserved and shown on the join screen; covered by client and session tests |
+| F-2 | Sev-5 | `/files/<file>` deep link is a dead end; the reader lives at `/file/*` | Recorded. The canonical file route works; a redirect is follow-up polish |
+| F-3 | Sev-5 | Four SVAR toolbar buttons have no accessible name | Recorded as a known SVAR library limitation; labelled actions exist elsewhere |
+| F-4 | Sev-5 | A first load with the host offline shows the browser error page | Recorded. The in-app Retry covers the loaded app; a service worker is not part of v0.3 |
+| F-5 | Sev-5 | The offline server popover said "found none" | Fixed at `953d261`: it now says "not reachable" |
 
 ## Work items
 
@@ -48,7 +58,7 @@ Date: 27 November 2026.
 | WI-075 Polish account and profile interactions | Headings, notices, duplicate chip, focus and destructive dialogs corrected | Browser screenshots; 390/320 checks in the reports |
 | WI-076 Document launch, store and account operations | Operator and member guide written from the built candidate | `versions/0.3 FoundationOS/README.md` |
 | WI-077 Test the release journeys in real browsers | Tester journey report | `qa/tester/tester-report.md` |
-| WI-078 Independently review the release in real browsers | Independent reviewer report | `qa/reviewer/reviewer-report.md` |
+| WI-078 Independently review the release in real browsers | Independent reviewer report | `qa/reviewer-report.md` |
 | WI-079 Fix findings and assemble release evidence | This table, the two reports and the retests | This file; PR #12 and PR 2 |
 | WI-080 Sync member preferences through the server | Server stores preferences; the client caches and reloads them | Browser; `server.test.mjs` |
 
