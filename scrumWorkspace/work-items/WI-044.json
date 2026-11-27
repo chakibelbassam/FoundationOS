@@ -7,7 +7,7 @@
   "effort": 3,
   "priority": 1,
   "type": "enhancement",
-  "status": "review",
-  "revision": 4,
-  "evidence": "Token table recorded in the interface inventory and applied to hover, menus, the card face, the turn and route entry. Focused-tab measurement during a full turn: 56 frames in 900 ms, average 16.7 ms, maximum 17.0 ms, 0 frames over 20 ms, layout shift 0.000. Motion Off and Follow system give immediate variants with the same actions. Evidence: qa/sprint-3/WI-044/."
+  "status": "done",
+  "revision": 5,
+  "evidence": "Token table recorded in the interface inventory and applied to hover, menus, the card face, the turn and route entry. Focused-tab measurement during a full turn: 56 frames in 900 ms, average 16.7 ms, maximum 17.0 ms, 0 frames over 20 ms, layout shift 0.000. Motion Off and Follow system give immediate variants with the same actions. Evidence: qa/sprint-3/WI-044/. Owner accepted PI-02 on 27 November 2026."
 }

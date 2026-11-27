@@ -6,8 +6,8 @@
   "type": "enabler",
   "priority": 1,
   "effort": 4,
-  "revision": 4,
-  "status": "review",
+  "revision": 5,
+  "status": "done",
   "acceptance": "**Story or goal** · Identify app folders without interrupting browsing.\n\n**Expected behaviour** · Read direct app.json descriptors for visible candidates with bounded concurrency and prioritize the activated item. Preserve focus and order on late results.\n\n**Scope boundary** · A valid nonblank name and optional text brief identify the v0.2 app. Missing or malformed metadata leaves the folder browsable.\n\n**Previous in delivery queue** · WI-031\n\n**Depends on** · WI-027, WI-029, WI-030\n\n**Verify** · Measure request counts in a representative large home. Activate a pending card, change routes and deliver a late response.\n\n**Effort basis** · Asynchronous discovery and cancellation.",
-  "evidence": "Fixture with 200 entries and 40 folders: 206 cards rendered before probes settled; 11 app.json requests initially (the 12th slot is reserved) with a three-worker pool; focusing Bulk-35 early spent the reserved slot, produced exactly 12 requests total and recognised Bulk 35 as an app. Order stayed stable. Broken's empty name stayed a folder. Image: qa/sprint-3/WI-032/206-entries-11-probes.jpg."
+  "evidence": "Fixture with 200 entries and 40 folders: 206 cards rendered before probes settled; 11 app.json requests initially (the 12th slot is reserved) with a three-worker pool; focusing Bulk-35 early spent the reserved slot, produced exactly 12 requests total and recognised Bulk 35 as an app. Order stayed stable. Broken's empty name stayed a folder. Image: qa/sprint-3/WI-032/206-entries-11-probes.jpg. Owner accepted PI-02 on 27 November 2026."
 }

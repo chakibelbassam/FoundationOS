@@ -6,8 +6,8 @@
   "type": "task",
   "priority": 1,
   "effort": 3,
-  "revision": 4,
-  "status": "review",
+  "revision": 5,
+  "status": "done",
   "acceptance": "**Story or goal** · Decide which prototype behaviours can be adopted.\n\n**Expected behaviour** · Replay glass-card flip, folder graphic versus label, nested Back, directional movement and cursor lock in the OneDrive prototype.\n\n**Scope boundary** · Investigate the prototype as a reference for v0.2.\n\n**Previous in delivery queue** · First item in PI-2.\n\n**Depends on** · No PI-2 work-item prerequisite.\n\n**Verify** · Record input, expected and observed result, version and a reuse/adapt/replace decision for each interaction.\n\n**Effort basis** · Verifiability of visual symptoms across inputs.",
-  "evidence": "scrumWorkspace/documents/PI-02/prototype-replay.md (118 lines) records the replay matrix for the glass flip, folder gestures, nested Back, directional movement and cursor paths with reuse/adapt/replace decisions. The OneDrive FoundationOS-Interface was not present on this machine; the record cites the owner's source-inspection notes in the PI-02 drafts and marks live behaviour as not observable here. Target cursor owns the actionable bounds; keyboard and later controller navigation follow focus. Edge reviewed the document and confirmed the gap statement."
+  "evidence": "scrumWorkspace/documents/PI-02/prototype-replay.md (118 lines) records the replay matrix for the glass flip, folder gestures, nested Back, directional movement and cursor paths with reuse/adapt/replace decisions. The OneDrive FoundationOS-Interface was not present on this machine; the record cites the owner's source-inspection notes in the PI-02 drafts and marks live behaviour as not observable here. Target cursor owns the actionable bounds; keyboard and later controller navigation follow focus. Edge reviewed the document and confirmed the gap statement. Owner accepted PI-02 on 27 November 2026."
 }

@@ -6,8 +6,8 @@
   "type": "task",
   "priority": 1,
   "effort": 3,
-  "revision": 4,
-  "status": "review",
+  "revision": 5,
+  "status": "done",
   "acceptance": "**Story or goal** · Verify the release from the operator and member entry points.\n\n**Expected behaviour** · Use two homes and the built launcher. Check server-first startup, wrong server, revocation, delayed responses, reconnect, different-port restart and member-specific settings.\n\n**Scope boundary** · Independent QA against the v0.2 client and released v0.1 backend.\n\n**Previous in delivery queue** · WI-039\n\n**Depends on** · WI-027, WI-028, WI-033, WI-036, WI-037, WI-039\n\n**Verify** · Attach candidate identity, commands, observed results and reproduction steps for every failed scenario.\n\n**Effort basis** · Multi-step verification against explicit outcomes.",
-  "evidence": "GLM 5.3 Flash report in versions/0.2 FoundationOS/agents/qa/WI-040/report.md: 18 scenarios plus a retest, combined 22 PASS / 0 FAIL / 0 SKIP, Sev-1 count 0. Found and reproduced one Sev-1 (Start.cmd rejected the positional URL because unescaped parentheses broke cmd block parsing) and one Sev-2 (two PI documents without revision headers); both fixed and retested PASS. Revocation, offline, wrong-version, non-loopback, preferences matrix, stale-response code review and different-port restart all passed. Screenshots: qa/sprint-5/WI-040/."
+  "evidence": "GLM 5.3 Flash report in versions/0.2 FoundationOS/agents/qa/WI-040/report.md: 18 scenarios plus a retest, combined 22 PASS / 0 FAIL / 0 SKIP, Sev-1 count 0. Found and reproduced one Sev-1 (Start.cmd rejected the positional URL because unescaped parentheses broke cmd block parsing) and one Sev-2 (two PI documents without revision headers); both fixed and retested PASS. Revocation, offline, wrong-version, non-loopback, preferences matrix, stale-response code review and different-port restart all passed. Screenshots: qa/sprint-5/WI-040/. Owner accepted PI-02 on 27 November 2026."
 }

@@ -4,7 +4,7 @@
   "parent": "PI-02",
   "title": "Prove the client and inspect the prototype",
   "acceptance": "Start both launchers separately, read a real private file in the built browser client, and show which prototype interactions to adapt or replace.",
-  "status": "review",
-  "revision": 4,
-  "evidence": "Both launchers started separately; the built client (http://127.0.0.1:64617/) read alice's /file/Weather/README.md with her session token and showed blair's different README at the same path. Prototype replay recorded in scrumWorkspace/documents/PI-02/prototype-replay.md with the absent-source gap. Build, host tests 10/10 and fixture tests 3/3 pass."
+  "status": "done",
+  "revision": 5,
+  "evidence": "Both launchers started separately; the built client (http://127.0.0.1:64617/) read alice's /file/Weather/README.md with her session token and showed blair's different README at the same path. Prototype replay recorded in scrumWorkspace/documents/PI-02/prototype-replay.md with the absent-source gap. Build, host tests 10/10 and fixture tests 3/3 pass. Owner accepted PI-02 on 27 November 2026."
 }

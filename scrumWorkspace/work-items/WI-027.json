@@ -6,8 +6,8 @@
   "type": "feature",
   "priority": 1,
   "effort": 3,
-  "revision": 4,
-  "status": "review",
+  "revision": 5,
+  "status": "done",
   "acceptance": "**Story or goal** · Prove the first real member journey and prepare reusable QA data.\n\n**Expected behaviour** · Connect with an existing session in memory, display identity and read text. Prepare two isolated test homes with distinguishable content and a Weather README.\n\n**Scope boundary** · Use disposable data and the published v0.1 contract.\n\n**Previous in delivery queue** · WI-026\n\n**Depends on** · WI-026\n\n**Verify** · Read a real private file through the launcher and verify the correct member’s content. Keep session material out of fixtures and logs.\n\n**Effort basis** · A small vertical slice with a published contract.",
-  "evidence": "tests/fixtures/seed.mjs created alice and blair with distinguishable homes (alice: Weather app + README + Projects + Empty + malformed Broken; blair: Weather desk, Journal, Photos). README text `Weather 0.2` was read through the launcher at /file/Weather/README.md as alice. Session tokens live only in Edge/workspace/qa/fixtures.json (ignored); logs and the repository contain no tokens. Fixture smoke test 3/3 pass; scripts/session.mjs prints only the session id and token."
+  "evidence": "tests/fixtures/seed.mjs created alice and blair with distinguishable homes (alice: Weather app + README + Projects + Empty + malformed Broken; blair: Weather desk, Journal, Photos). README text `Weather 0.2` was read through the launcher at /file/Weather/README.md as alice. Session tokens live only in Edge/workspace/qa/fixtures.json (ignored); logs and the repository contain no tokens. Fixture smoke test 3/3 pass; scripts/session.mjs prints only the session id and token. Owner accepted PI-02 on 27 November 2026."
 }
